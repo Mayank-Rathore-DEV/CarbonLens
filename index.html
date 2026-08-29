@@ -1,0 +1,1340 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="CarbonLens is a personal carbon footprint calculator that helps you estimate, understand, and reduce your annual carbon emissions."
+    />
+
+    <meta name="theme-color" content="#0b0f0d" />
+
+    <title>CarbonLens — Personal Carbon Footprint Calculator</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- =====================================================
+     HEADER / NAVIGATION
+     ===================================================== -->
+
+    <header class="site-header">
+      <nav class="navbar" aria-label="Main navigation">
+        <a href="#hero" class="logo" aria-label="CarbonLens home">
+          CarbonLens
+        </a>
+
+        <button
+          type="button"
+          class="menu-toggle"
+          id="menu-toggle"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="main-menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <ul class="nav-links" id="main-menu">
+          <li>
+            <a href="#calculator"> Calculator </a>
+          </li>
+
+          <li>
+            <a href="#learn"> Learn </a>
+          </li>
+
+          <li>
+            <a href="#methodology"> Methodology </a>
+          </li>
+
+          <li>
+            <a href="#about"> About </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
+
+    <main>
+      <!-- ===================================================
+       HERO
+       =================================================== -->
+
+      <section id="hero" class="hero-section">
+        <div class="hero-content">
+          <p class="eyebrow">PERSONAL CARBON FOOTPRINT CALCULATOR</p>
+
+          <h1>
+            Understand your
+            <span>carbon footprint.</span>
+          </h1>
+
+          <p class="hero-description">
+            Measure the estimated greenhouse-gas emissions associated with your
+            everyday choices, understand where they come from, and identify
+            practical ways to reduce your impact.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#calculator" class="button primary-button">
+              Calculate my footprint
+            </a>
+
+            <a href="#learn" class="button secondary-button">
+              Learn about carbon footprints
+            </a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <strong> CO₂e </strong>
+
+              <span> Common emissions unit </span>
+            </div>
+
+            <div class="hero-stat">
+              <strong> Annual </strong>
+
+              <span> Footprint estimate </span>
+            </div>
+
+            <div class="hero-stat">
+              <strong> 4+ </strong>
+
+              <span> Major emission areas </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-glow"></div>
+
+          <img
+            src="assets/carbon-globe.png"
+            alt="Illustration representing the Earth's atmosphere and carbon emissions"
+          />
+        </div>
+      </section>
+
+      <!-- ===================================================
+       LEARN / INTRODUCTION
+       =================================================== -->
+
+      <section id="learn" class="learn-section section">
+        <div class="section-heading">
+          <p class="eyebrow">WHY IT MATTERS</p>
+
+          <h2>Your everyday choices create an impact.</h2>
+
+          <p>
+            A carbon footprint represents the greenhouse-gas emissions
+            associated with activities such as using electricity, travelling,
+            consuming food, and generating waste.
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <article class="info-card">
+            <div class="info-card-icon">⚡</div>
+
+            <h3>Energy</h3>
+
+            <p>
+              Electricity and fuels used at home can contribute significantly to
+              your overall emissions.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <div class="info-card-icon">🚗</div>
+
+            <h3>Transportation</h3>
+
+            <p>
+              Cars, motorcycles, buses, trains, and flights can all contribute
+              to your transportation footprint.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <div class="info-card-icon">🍽️</div>
+
+            <h3>Food</h3>
+
+            <p>
+              Different foods have very different emissions associated with
+              their production and supply chains.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <div class="info-card-icon">♻️</div>
+
+            <h3>Waste</h3>
+
+            <p>
+              What we throw away and how waste is managed can also contribute to
+              greenhouse-gas emissions.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===================================================
+       CALCULATOR
+       =================================================== -->
+
+      <section id="calculator" class="calculator-section section">
+        <div class="section-heading">
+          <p class="eyebrow">PERSONAL CALCULATOR</p>
+
+          <h2>Calculate your carbon footprint.</h2>
+
+          <p>
+            Enter information about your household energy, transportation, food
+            consumption, and waste. Your result will be an estimated annual
+            footprint.
+          </p>
+        </div>
+
+        <form id="carbon-form" novalidate>
+          <!-- ===============================================
+           HOUSEHOLD ENERGY
+           =============================================== -->
+
+          <fieldset class="form-section">
+            <legend>Household Energy</legend>
+
+            <p class="fieldset-description">
+              Tell us about the electricity and cooking fuel used in your
+              household during a typical year.
+            </p>
+
+            <div class="form-group">
+              <label for="household-size"> Household size </label>
+
+              <p class="input-help">How many people live in your household?</p>
+
+              <div class="input-with-unit">
+                <input
+                  id="household-size"
+                  name="householdSize"
+                  type="number"
+                  min="1"
+                  max="30"
+                  step="1"
+                  value="1"
+                  required
+                />
+
+                <span> people </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="electricity">
+                Annual household electricity consumption
+              </label>
+
+              <p class="input-help">
+                Check your electricity bills for your annual consumption if
+                possible.
+              </p>
+
+              <div class="input-with-unit">
+                <input
+                  id="electricity"
+                  name="electricity"
+                  type="number"
+                  min="0"
+                  step="1"
+                  placeholder="e.g. 4000"
+                  required
+                />
+
+                <span> kWh / year </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="solar"> Electricity generated from solar </label>
+
+              <p class="input-help">
+                Enter the electricity generated by your solar system during the
+                year.
+              </p>
+
+              <div class="input-with-unit">
+                <input
+                  id="solar"
+                  name="solar"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value="0"
+                  placeholder="e.g. 1500"
+                />
+
+                <span> kWh / year </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cooking-fuel"> Primary cooking fuel </label>
+
+              <select id="cooking-fuel" name="cookingFuel">
+                <option value="">Select cooking fuel</option>
+
+                <option value="lpg">LPG</option>
+
+                <option value="png">PNG</option>
+
+                <option value="electric">Electricity</option>
+
+                <option value="none">None</option>
+              </select>
+            </div>
+
+            <div class="form-group conditional-field" id="lpg-field" hidden>
+              <label for="lpg-cylinders"> LPG cylinders used per year </label>
+
+              <p class="input-help">Standard domestic LPG cylinder.</p>
+
+              <div class="input-with-unit">
+                <input
+                  id="lpg-cylinders"
+                  name="lpgCylinders"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value="0"
+                  placeholder="e.g. 8"
+                />
+
+                <span> cylinders / year </span>
+              </div>
+            </div>
+
+            <div class="form-group conditional-field" id="png-field" hidden>
+              <label for="png-consumption"> PNG consumption </label>
+
+              <p class="input-help">
+                Enter your annual PNG consumption using the unit shown on your
+                gas bill.
+              </p>
+
+              <div class="input-with-unit">
+                <input
+                  id="png-consumption"
+                  name="pngConsumption"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value="0"
+                  placeholder="Enter annual consumption"
+                />
+
+                <span> annual usage </span>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ===============================================
+           PRIVATE TRANSPORTATION
+           =============================================== -->
+
+          <fieldset class="form-section">
+            <legend>Private Transportation</legend>
+
+            <p class="fieldset-description">
+              Tell us whether you use a private vehicle and, if you do, provide
+              details about your usual vehicle.
+            </p>
+
+            <div class="form-group">
+              <span id="private-vehicle-label" class="form-label">
+                Do you use a private vehicle?
+              </span>
+
+              <div
+                class="radio-group"
+                role="radiogroup"
+                aria-labelledby="private-vehicle-label"
+              >
+                <label class="radio-option">
+                  <input type="radio" name="privateVehicle" value="yes" />
+
+                  <span> Yes </span>
+                </label>
+
+                <label class="radio-option">
+                  <input
+                    type="radio"
+                    name="privateVehicle"
+                    value="no"
+                    checked
+                  />
+
+                  <span> No </span>
+                </label>
+              </div>
+            </div>
+
+            <!--
+          This section is hidden by default.
+          app.js displays it when the user selects "Yes".
+        -->
+
+            <div
+              id="private-vehicle-fields"
+              class="conditional-group"
+              hidden
+              aria-hidden="true"
+            >
+              <div class="form-group">
+                <label for="vehicle-type"> Vehicle type </label>
+
+                <select id="vehicle-type" name="vehicleType">
+                  <option value="">Select a vehicle</option>
+
+                  <option value="petrol-car">Petrol car</option>
+
+                  <option value="diesel-car">Diesel car</option>
+
+                  <option value="cng-car">CNG car</option>
+
+                  <option value="petrol-bike">
+                    Petrol motorcycle / scooter
+                  </option>
+
+                  <option value="ev">Electric vehicle</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="vehicle-distance">
+                  Distance travelled per year
+                </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="vehicle-distance"
+                    name="vehicleDistance"
+                    type="number"
+                    min="0"
+                    step="1"
+                    placeholder="e.g. 12000"
+                  />
+
+                  <span> km / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="vehicle-efficiency">
+                  Average vehicle efficiency
+                </label>
+
+                <p class="input-help">
+                  Enter the average efficiency of your vehicle.
+                </p>
+
+                <div class="input-with-unit">
+                  <input
+                    id="vehicle-efficiency"
+                    name="vehicleEfficiency"
+                    type="number"
+                    min="0.1"
+                    step="0.1"
+                    placeholder="e.g. 15"
+                  />
+
+                  <span id="efficiency-unit"> km / litre </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="vehicle-occupancy">
+                  Average number of people in the vehicle
+                </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="vehicle-occupancy"
+                    name="vehicleOccupancy"
+                    type="number"
+                    min="1"
+                    max="20"
+                    step="0.1"
+                    value="1"
+                  />
+
+                  <span> people </span>
+                </div>
+
+                <p class="input-help">Include yourself and other passengers.</p>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ===============================================
+           PUBLIC TRANSPORTATION
+           =============================================== -->
+
+          <fieldset class="form-section">
+            <legend>Public Transportation</legend>
+
+            <p class="fieldset-description">
+              Enter the approximate passenger distance you travel by train and
+              city bus each year.
+            </p>
+
+            <div class="form-group">
+              <label for="rail-distance"> Train travel </label>
+
+              <div class="input-with-unit">
+                <input
+                  id="rail-distance"
+                  name="railDistance"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value="0"
+                  placeholder="e.g. 3000"
+                />
+
+                <span> passenger-km / year </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="bus-distance"> City bus travel </label>
+
+              <div class="input-with-unit">
+                <input
+                  id="bus-distance"
+                  name="busDistance"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value="0"
+                  placeholder="e.g. 2000"
+                />
+
+                <span> passenger-km / year </span>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ===============================================
+           AIR TRAVEL
+           =============================================== -->
+
+          <fieldset class="form-section">
+            <legend>Air Travel</legend>
+
+            <p class="fieldset-description">
+              Enter the passenger distance you travel by air during a typical
+              year.
+            </p>
+
+            <div class="form-group">
+              <label for="domestic-flight-distance"> Domestic flights </label>
+
+              <p class="input-help">
+                Total passenger distance for domestic flights.
+              </p>
+
+              <div class="input-with-unit">
+                <input
+                  id="domestic-flight-distance"
+                  name="domesticFlightDistance"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value="0"
+                  placeholder="e.g. 4000"
+                />
+
+                <span> passenger-km / year </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="international-flight-distance">
+                International flights
+              </label>
+
+              <p class="input-help">
+                Total passenger distance for international flights.
+              </p>
+
+              <div class="input-with-unit">
+                <input
+                  id="international-flight-distance"
+                  name="internationalFlightDistance"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value="0"
+                  placeholder="e.g. 10000"
+                />
+
+                <span> passenger-km / year </span>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ===============================================
+           FOOD
+           =============================================== -->
+
+          <fieldset class="form-section">
+            <legend>Food</legend>
+
+            <p class="fieldset-description">
+              Estimate the amount of different food categories you consume
+              during a typical year.
+            </p>
+
+            <div class="food-category">
+              <h3>Animal Products</h3>
+
+              <div class="form-group">
+                <label for="beef-kg"> Beef </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="beef-kg"
+                    name="beefKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="lamb-kg"> Lamb </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="lamb-kg"
+                    name="lambKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="pork-kg"> Pork </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="pork-kg"
+                    name="porkKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="poultry-kg"> Poultry </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="poultry-kg"
+                    name="poultryKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="cheese-kg"> Cheese </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="cheese-kg"
+                    name="cheeseKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="milk-kg"> Milk </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="milk-kg"
+                    name="milkKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="eggs-kg"> Eggs </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="eggs-kg"
+                    name="eggsKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="food-category">
+              <h3>Plant Foods</h3>
+
+              <div class="form-group">
+                <label for="rice-kg"> Rice </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="rice-kg"
+                    name="riceKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="tofu-kg"> Tofu </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="tofu-kg"
+                    name="tofuKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="peas-kg"> Peas </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="peas-kg"
+                    name="peasKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="beans-kg"> Beans </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="beans-kg"
+                    name="beansKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="potatoes-kg"> Potatoes </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="potatoes-kg"
+                    name="potatoesKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="root-vegetables-kg"> Root vegetables </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="root-vegetables-kg"
+                    name="rootVegetablesKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="bananas-kg"> Bananas </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="bananas-kg"
+                    name="bananasKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="apples-kg"> Apples </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="apples-kg"
+                    name="applesKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="tomatoes-kg"> Tomatoes </label>
+
+                <div class="input-with-unit">
+                  <input
+                    id="tomatoes-kg"
+                    name="tomatoesKg"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="0"
+                  />
+
+                  <span> kg / year </span>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ===============================================
+           WASTE
+           =============================================== -->
+
+          <fieldset class="form-section">
+            <legend>Waste</legend>
+
+            <p class="fieldset-description">
+              Enter your approximate annual household waste.
+            </p>
+
+            <div class="form-group">
+              <label for="food-waste-kg"> Food waste </label>
+
+              <div class="input-with-unit">
+                <input
+                  id="food-waste-kg"
+                  name="foodWasteKg"
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  value="0"
+                  placeholder="e.g. 50"
+                />
+
+                <span> kg / year </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="mixed-waste-kg"> General household waste </label>
+
+              <div class="input-with-unit">
+                <input
+                  id="mixed-waste-kg"
+                  name="mixedWasteKg"
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  value="0"
+                  placeholder="e.g. 150"
+                />
+
+                <span> kg / year </span>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ===============================================
+           CALCULATOR ACTIONS
+           =============================================== -->
+
+          <div class="calculator-actions">
+            <button
+              type="submit"
+              id="calculate-button"
+              class="button primary-button"
+            >
+              Calculate my footprint
+            </button>
+
+            <button
+              type="reset"
+              id="reset-button"
+              class="button secondary-button"
+            >
+              Reset
+            </button>
+          </div>
+
+          <div
+            id="form-status"
+            class="form-status"
+            role="status"
+            aria-live="polite"
+          ></div>
+        </form>
+
+        <!-- =================================================
+         RESULTS
+         ================================================= -->
+
+        <section
+          id="results"
+          class="results-section"
+          hidden
+          aria-labelledby="results-title"
+        >
+          <div class="results-header">
+            <p class="eyebrow">YOUR RESULT</p>
+
+            <h2 id="results-title">Your estimated carbon footprint</h2>
+          </div>
+
+          <div class="result-main-card">
+            <span class="result-label"> Annual footprint </span>
+
+            <strong id="total-emissions"> 0 </strong>
+
+            <span class="result-unit"> kgCO₂e / year </span>
+
+            <p id="result-summary">
+              Your estimated annual greenhouse-gas emissions.
+            </p>
+          </div>
+
+          <div class="result-grid">
+            <article class="result-card">
+              <span> Monthly </span>
+
+              <strong id="monthly-emissions"> 0 </strong>
+
+              <small> kgCO₂e / month </small>
+            </article>
+
+            <article class="result-card">
+              <span> Daily </span>
+
+              <strong id="daily-emissions"> 0 </strong>
+
+              <small> kgCO₂e / day </small>
+            </article>
+
+            <article class="result-card">
+              <span> Tonnes </span>
+
+              <strong id="tonne-emissions"> 0 </strong>
+
+              <small> tCO₂e / year </small>
+            </article>
+
+            <article class="result-card">
+              <span> Per household member </span>
+
+              <strong id="per-person-emissions"> 0 </strong>
+
+              <small> kgCO₂e / person / year </small>
+            </article>
+          </div>
+
+          <!-- ===============================================
+           EMISSIONS BREAKDOWN
+           =============================================== -->
+
+          <div class="breakdown-section">
+            <div class="section-heading">
+              <p class="eyebrow">BREAKDOWN</p>
+
+              <h3>Where your emissions come from</h3>
+            </div>
+
+            <div class="breakdown-list">
+              <div class="breakdown-item">
+                <div class="breakdown-label">
+                  <span> Energy </span>
+
+                  <strong id="energy-emissions"> 0 kgCO₂e </strong>
+                </div>
+
+                <div
+                  class="progress-track"
+                  role="progressbar"
+                  aria-label="Energy emissions"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow="0"
+                >
+                  <div id="energy-progress" class="progress-bar"></div>
+                </div>
+              </div>
+
+              <div class="breakdown-item">
+                <div class="breakdown-label">
+                  <span> Transportation </span>
+
+                  <strong id="transport-emissions"> 0 kgCO₂e </strong>
+                </div>
+
+                <div
+                  class="progress-track"
+                  role="progressbar"
+                  aria-label="Transportation emissions"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow="0"
+                >
+                  <div id="transport-progress" class="progress-bar"></div>
+                </div>
+              </div>
+
+              <div class="breakdown-item">
+                <div class="breakdown-label">
+                  <span> Food </span>
+
+                  <strong id="food-emissions"> 0 kgCO₂e </strong>
+                </div>
+
+                <div
+                  class="progress-track"
+                  role="progressbar"
+                  aria-label="Food emissions"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow="0"
+                >
+                  <div id="food-progress" class="progress-bar"></div>
+                </div>
+              </div>
+
+              <div class="breakdown-item">
+                <div class="breakdown-label">
+                  <span> Waste </span>
+
+                  <strong id="waste-emissions"> 0 kgCO₂e </strong>
+                </div>
+
+                <div
+                  class="progress-track"
+                  role="progressbar"
+                  aria-label="Waste emissions"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow="0"
+                >
+                  <div id="waste-progress" class="progress-bar"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="methodology-notice">
+            <h3>About this estimate</h3>
+
+            <p>
+              Your result is calculated using activity data and documented
+              emission factors. Different emission factors can use different
+              system boundaries, assumptions, and geographic conditions, so the
+              result should be treated as an estimate rather than a precise
+              measurement.
+            </p>
+
+            <p id="calculation-status"></p>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================
+       METHODOLOGY
+       =================================================== -->
+
+      <section id="methodology" class="methodology-section section">
+        <div class="section-heading">
+          <p class="eyebrow">METHODOLOGY</p>
+
+          <h2>How CarbonLens calculates your footprint.</h2>
+
+          <p>
+            CarbonLens uses activity data and emission factors to estimate
+            greenhouse-gas emissions.
+          </p>
+        </div>
+
+        <div class="methodology-grid">
+          <article class="methodology-card">
+            <span class="methodology-number"> 01 </span>
+
+            <h3>Collect activity data</h3>
+
+            <p>
+              We collect information such as electricity consumption, travel
+              distance, food consumption, and waste generation.
+            </p>
+          </article>
+
+          <article class="methodology-card">
+            <span class="methodology-number"> 02 </span>
+
+            <h3>Apply emission factors</h3>
+
+            <p>
+              Each activity is multiplied by an appropriate emission factor to
+              estimate its greenhouse-gas emissions.
+            </p>
+          </article>
+
+          <article class="methodology-card">
+            <span class="methodology-number"> 03 </span>
+
+            <h3>Convert to CO₂e</h3>
+
+            <p>
+              Different greenhouse gases are expressed using
+              carbon-dioxide-equivalent values so their climate impact can be
+              represented consistently.
+            </p>
+          </article>
+
+          <article class="methodology-card">
+            <span class="methodology-number"> 04 </span>
+
+            <h3>Show your breakdown</h3>
+
+            <p>
+              Your estimated emissions are grouped into major categories so you
+              can understand where the largest contributions come from.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===================================================
+       ABOUT
+       =================================================== -->
+
+      <section id="about" class="about-section section">
+        <div class="about-content">
+          <p class="eyebrow">ABOUT CARBONLENS</p>
+
+          <h2>Make your footprint visible.</h2>
+
+          <p>
+            CarbonLens is designed to make personal carbon accounting easier to
+            understand. Instead of giving you a single unexplained number, the
+            calculator breaks your estimated footprint into major sources so you
+            can understand what is driving it.
+          </p>
+
+          <p>
+            The project focuses on transparency, clear assumptions, responsive
+            design, and understandable calculations.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+    <footer class="site-footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="#hero" class="logo" aria-label="CarbonLens home">
+            CarbonLens
+          </a>
+
+          <p>Understand your impact. Make informed choices.</p>
+        </div>
+
+        <div class="footer-links">
+          <div>
+            <h3>Explore</h3>
+
+            <a href="#calculator"> Calculator </a>
+
+            <a href="#learn"> Learn </a>
+
+            <a href="#methodology"> Methodology </a>
+
+            <a href="#about"> About </a>
+          </div>
+
+          <!-- =================================================
+           SOCIAL LINKS
+           ================================================= -->
+
+          <div class="social-section">
+            <h3>Connect</h3>
+
+            <div class="social-links">
+              <!-- GitHub -->
+
+              <a
+                href="https://github.com/Mayank-Rathore-DEV"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link github"
+                aria-label="Visit my GitHub profile"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2.17c-3.22.7-3.9-1.38-3.9-1.38-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.04 1.77 2.72 1.26 3.38.96.1-.75.41-1.26.74-1.55-2.57-.29-5.28-1.29-5.28-5.75 0-1.27.45-2.31 1.19-3.12-.12-.29-.52-1.47.11-3.07 0 0 .97-.31 3.17 1.19a11 11 0 0 1 5.77 0c2.2-1.5 3.17-1.19 3.17-1.19.63 1.6.23 2.78.11 3.07.74.81 1.19 1.85 1.19 3.12 0 4.47-2.72 5.46-5.3 5.75.42.36.79 1.08.79 2.18v3.22c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .5Z"
+                  />
+                </svg>
+
+                <span> GitHub </span>
+              </a>
+
+              <!-- LinkedIn -->
+
+              <a
+                href="https://www.linkedin.com/in/mayank-rathore-897180182/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link linkedin"
+                aria-label="Visit my LinkedIn profile"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M20.45 20.45h-3.56v-5.58c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.68H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.48v6.26ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM3.56 20.45h3.56V9H3.56v11.45Z"
+                  />
+                </svg>
+
+                <span> LinkedIn </span>
+              </a>
+
+              <!-- Instagram -->
+
+              <a
+                href="https://www.instagram.com/yours._mayank/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link instagram"
+                aria-label="Visit my Instagram profile"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6Zm9.65 1.5a1.35 1.35 0 1 1 0 2.7 1.35 1.35 0 0 1 0-2.7ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+                  />
+                </svg>
+
+                <span> Instagram </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          © <span id="current-year"></span>
+          CarbonLens. All rights reserved.
+        </p>
+
+        <p>
+          Built as a personal carbon-footprint education and estimation project.
+        </p>
+      </div>
+    </footer>
+
+    <!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+    <script src="js/emissionFactors.js"></script>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>
