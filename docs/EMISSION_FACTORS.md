@@ -18,7 +18,7 @@ Database date: 1 August 2026
 Financial Year 2025–26
 
 ### Source Location
-Results sheet, row 14.
+Results sheet, cell AA14.
 
 Metric:
 Weighted Average Grid Emission Rate
