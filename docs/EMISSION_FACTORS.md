@@ -110,3 +110,43 @@ subject to the limitations above.
 This is not a claim of independent scientific
 validation of the underlying CEA dataset.
 
+## 11. LPG Emission Factor — Research Record
+
+### Candidate Factor
+
+2.985 kg CO2 per kg of LPG.
+
+### Source Data
+
+IPCC 2006 Guidelines, Volume 2,
+Chapter 1, as reproduced in the
+Kerala GHG Inventory Report.
+
+### Input Values
+
+- Net calorific value: 47.3 TJ/Gg
+- CO2 emission factor: 63.1 tonnes CO2/TJ
+
+### Calculation
+
+LPG emissions = LPG consumed (kg)
+× 2.985 kg CO2/kg LPG
+
+### Example
+
+14.2 kg × 2.985 = approximately
+42.39 kg CO2 per cylinder.
+
+### Limitations
+
+- This is a direct-combustion CO2 estimate.
+- It does not include the full LPG supply chain.
+- CO2e treatment, including CH4 and N2O,
+  requires separate calculation.
+- Further review is required before final approval.
+
+### Status
+
+Research candidate — not yet approved
+for production calculations.
+
