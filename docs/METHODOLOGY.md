@@ -65,3 +65,22 @@ emission factors, and calculation assumptions.
 - Better food-related datasets
 - Uncertainty estimates
 - Independent scientific review
+
+- 
+## 9. Electricity Reporting Period
+
+CarbonLens will initially use Indian financial years
+for annual electricity-emission calculations.
+
+Each electricity consumption period must be matched
+with the corresponding CEA emission factor.
+
+The application will not automatically use the latest
+factor for historical electricity consumption.
+
+The initial electricity factor is expressed in kg CO2/kWh,
+not kg CO2e/kWh.
+
+The selected factor and its source version must be
+preserved with every calculation.
+
