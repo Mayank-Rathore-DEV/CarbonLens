@@ -205,3 +205,87 @@ Fuel emission factor / Mileage (km/litre)
 Research candidates — not approved
 for production calculations.
 
+## 13. City Bus Emission Factor — Research Record
+
+### Candidate Factor
+
+0.015161 kg CO2/passenger-km.
+
+### Source
+
+India GHG Program,
+India Specific Road Transport Emission Factors,
+2015, Version 1.0.
+
+### Scope
+
+Intracity bus transport only.
+
+Not applicable to BRTS or intercity buses.
+
+### Calculation
+
+Emissions = Passenger distance (km)
+× 0.015161 kg CO2/passenger-km
+
+### Example
+
+100 passenger-km × 0.015161
+= 1.5161 kg CO2
+
+### Limitations
+
+- Source is from 2015.
+- Represents CO2, not automatically CO2e.
+- Bus occupancy and operating conditions vary.
+- Further review is required.
+
+### Status
+
+Research candidate — not approved
+for production calculations.
+
+---
+
+## 14. Indian Railways Emission Factor — Research Record
+
+### Candidate Factors
+
+- Non-suburban rail: 0.007837 kg CO2/passenger-km.
+- Suburban rail: 0.007976 kg CO2/passenger-km.
+
+### Source
+
+India GHG Program,
+India Specific Rail Transport Emission Factors
+for Passenger Travel and Material Transport,
+2015, Version 1.0.
+
+### Reference Year
+
+2014–15.
+
+### Calculation
+
+Emissions = Passenger distance (km)
+× Applicable rail emission factor.
+
+### Example
+
+100 passenger-km on non-suburban rail:
+
+100 × 0.007837 = 0.7837 kg CO2
+
+### Limitations
+
+- Old reference-year data.
+- Factors are specific to Indian Railways.
+- Not applicable to metro systems.
+- Does not distinguish AC and non-AC classes.
+- Represents CO2, not automatically CO2e.
+- Further review and updated data are required.
+
+### Status
+
+Research candidates — not approved
+for production calculations.
