@@ -4,57 +4,52 @@
 ## Research Record 001: Electricity — India
 
 ### Primary Source
-
 Central Electricity Authority (CEA), Government of India.
 
-Official database:
+Official source:
 https://cea.nic.in/cdm-co2-baseline-view?lang=en&mappingId=234
 
-### Database Version
-
+### Database
 Version 22.0
 
+Database date: 1 August 2026
+
 ### Data Period
+Financial Year 2025–26
 
-Financial Year 2025-26
+### Source Location
+Results sheet, row 14.
 
-### Factor Type
+Metric:
+Weighted Average Grid Emission Rate
+(Incl. RES, Captive), including imports.
 
-Indian Grid Weighted Average Emission Factor
+### Original Value
+0.675098683 tonnes CO2/MWh
 
-### Reported Value
-
-0.675 tonnes CO2/MWh
-
-Equivalent to:
-
-0.675 kg CO2/kWh
-
-### Scientific Status
-
-Pending verification against the downloaded
-CEA Version 22.0 Excel database and User Guide.
+### Converted Value
+0.675098683 kg CO2/kWh
 
 ### Intended Use
+Candidate factor for location-based household
+electricity emission estimates in CarbonLens.
 
-Initial candidate for estimating electricity-related
-emissions in CarbonLens.
+### Important Distinctions
+CEA also reports other weighted-average factors.
+They must not be confused with this metric.
 
-### Important Limitations
-
-- India-wide grid factor, not state-specific.
+### Scientific Limitations
+- India-wide grid factor.
 - Financial-year-specific.
 - Expressed as CO2, not automatically CO2e.
-- Does not represent full electricity lifecycle emissions.
-- Must be matched to the electricity consumption period.
+- Does not represent full lifecycle electricity emissions.
+- Suitability for the household reporting boundary
+  requires methodological review.
 
-### Research Decision
+### Verification Status
+Primary CEA Version 22.0 Excel spreadsheet inspected.
+User Guide and full methodology review pending.
 
-Use the weighted-average factor as the initial
-candidate for location-based household electricity
-calculations, subject to primary-document verification.
-
-### Source Documents
-
-- CEA Baseline Database Version 22.0 (XLSX)
-- CEA User Guide Version 22.0 (PDF)
+### Decision
+Retain as a provisional candidate.
+Do not mark as scientifically approved yet.
