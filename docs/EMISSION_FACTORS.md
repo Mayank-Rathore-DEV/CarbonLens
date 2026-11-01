@@ -150,3 +150,58 @@ LPG emissions = LPG consumed (kg)
 Research candidate — not yet approved
 for production calculations.
 
+## 12. Road Transport Fuel — Research Record
+
+### Candidate Emission Factors
+
+- Petrol: 2.27 kg CO2/litre
+- Diesel: 2.6444 kg CO2/litre
+
+### Source
+
+India GHG Program,
+India Specific Road Transport Emission Factors,
+Technical Paper.
+
+### Calculation
+
+Fuel-based emissions:
+
+Emissions = Fuel consumed (litres)
+× Fuel emission factor (kg CO2/litre)
+
+### Example
+
+10 litres of petrol:
+
+10 × 2.27 = 22.7 kg CO2
+
+10 litres of diesel:
+
+10 × 2.6444 = 26.444 kg CO2
+
+### Important Methodology Note
+
+These are fuel-based CO2 factors,
+not universal vehicle-kilometre factors.
+
+To estimate emissions per kilometre,
+vehicle fuel efficiency must also be considered:
+
+Emissions per km =
+Fuel emission factor / Mileage (km/litre)
+
+### Limitations
+
+- The source is an older India-specific
+  technical reference (2015).
+- These factors represent CO2, not automatically CO2e.
+- Actual vehicle emissions vary with fuel,
+  vehicle technology, age and operating conditions.
+- Updated factors and independent review are required.
+
+### Status
+
+Research candidates — not approved
+for production calculations.
+
