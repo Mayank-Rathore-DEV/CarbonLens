@@ -335,7 +335,7 @@ const EMISSION_FACTORS = {
 
       calculationBasis: "electricity",
 
-      factor: 0.7117,
+      factor: 0.6751,
 
       unit: "kgCO2e/kWh",
 
@@ -343,10 +343,10 @@ const EMISSION_FACTORS = {
 
       region: "India",
 
-      referenceYear: "FY 2024-25",
+      referenceYear: "FY 2025-26",
 
       source:
-        "Central Electricity Authority — India grid emission factor.",
+        "Central Electricity Authority — India grid emission factor. CEA V22.0",
 
       sourceUrl:
         "https://cea.nic.in/cdm-co2-baseline-database/",
