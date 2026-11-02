@@ -1076,6 +1076,43 @@
             <p class="guest-privacy-note"><span aria-hidden="true">↗</span> Guest calculation · Your answers are used only to calculate this result. CarbonLens does not save them.</p>
           </section>
 
+          <section id="reduction-planner" class="reduction-planner-section" aria-labelledby="reduction-planner-title">
+            <div class="details-section-heading">
+              <div><p class="eyebrow">WHAT-IF SCENARIOS</p><h3 id="reduction-planner-title">Explore your carbon reduction plan</h3><p>Adjust a category to see how a hypothetical reduction changes your annual estimate.</p></div>
+              <span class="details-basis">Interactive estimate · no data saved</span>
+            </div>
+            <p id="scenario-priority" class="scenario-priority" aria-live="polite">Your largest emission category will be identified after calculation.</p>
+            <div class="scenario-controls">
+              <div class="scenario-control">
+                <label for="reduction-energy">Energy <output id="reduction-energy-value">0%</output></label>
+                <input id="reduction-energy" data-reduction="energy" type="range" min="0" max="50" step="5" value="0">
+                <small id="reduction-energy-saving">Estimated saving: 0 kgCO₂e/year</small>
+              </div>
+              <div class="scenario-control">
+                <label for="reduction-transport">Transportation <output id="reduction-transport-value">0%</output></label>
+                <input id="reduction-transport" data-reduction="transport" type="range" min="0" max="50" step="5" value="0">
+                <small id="reduction-transport-saving">Estimated saving: 0 kgCO₂e/year</small>
+              </div>
+              <div class="scenario-control">
+                <label for="reduction-food">Food <output id="reduction-food-value">0%</output></label>
+                <input id="reduction-food" data-reduction="food" type="range" min="0" max="50" step="5" value="0">
+                <small id="reduction-food-saving">Estimated saving: 0 kgCO₂e/year</small>
+              </div>
+              <div class="scenario-control">
+                <label for="reduction-waste">Waste <output id="reduction-waste-value">0%</output></label>
+                <input id="reduction-waste" data-reduction="waste" type="range" min="0" max="50" step="5" value="0">
+                <small id="reduction-waste-saving">Estimated saving: 0 kgCO₂e/year</small>
+              </div>
+            </div>
+            <div class="scenario-results" aria-live="polite">
+              <div><span>Current footprint</span><strong id="scenario-current">0</strong><small>kgCO₂e/year</small></div>
+              <div><span>Estimated reduction</span><strong id="scenario-saved">0</strong><small>kgCO₂e/year · <b id="scenario-saved-percent">0%</b></small></div>
+              <div><span>Projected footprint</span><strong id="scenario-projected">0</strong><small>kgCO₂e/year</small></div>
+            </div>
+            <p id="scenario-assumptions" class="scenario-assumptions">Each slider will scale the selected category linearly. This is a scenario, not a guaranteed forecast.</p>
+            <button type="button" id="reduction-reset" class="button secondary-button">Reset scenarios</button>
+          </section>
+
           <section class="calculation-details-section" aria-labelledby="calculation-details-title">
             <div class="details-section-heading">
               <div><p class="eyebrow">TRANSPARENT METHODOLOGY</p><h3 id="calculation-details-title">Explore the calculation</h3><p>Open a category to inspect its activity data, emission factor and arithmetic.</p></div>
