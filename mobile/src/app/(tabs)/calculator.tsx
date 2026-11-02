@@ -61,7 +61,7 @@ const steps = [
   { title: "Household energy", subtitle: "Electricity and cooking fuel", mark: "01" },
   { title: "Transport", subtitle: "Your annual travel activity", mark: "02" },
   { title: "Food", subtitle: "Average food consumed per person", mark: "03" },
-  { title: "Waste", subtitle: "Household waste generated in a year", mark: "04" }
+  { title: "Experimental waste", subtitle: "Optional estimate shown separately from your footprint", mark: "04" }
 ];
 
 function OptionGroup({
