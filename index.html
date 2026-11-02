@@ -625,7 +625,8 @@
               <h3>Animal Products</h3>
 
               <div class="form-group">
-                <label for="beef-kg"> Beef </label>
+                <label for="beef-kg"> Beef (beef-herd proxy) </label>
+              <p class="input-help">Uses the global beef-herd factor, not dairy-herd beef or an India-specific buffalo factor.</p>
 
                 <div class="input-with-unit">
                   <input
@@ -748,7 +749,8 @@
               <h3>Plant Foods</h3>
 
               <div class="form-group">
-                <label for="rice-kg"> Rice </label>
+                <label for="rice-kg"> Rice (dry weight) </label>
+                <p class="input-help">Enter dry/uncooked rice weight, not cooked weight.</p>
 
                 <div class="input-with-unit">
                   <input
@@ -799,7 +801,8 @@
               </div>
 
               <div class="form-group">
-                <label for="beans-kg"> Beans </label>
+                <label for="beans-kg"> Beans / pulses (dry weight) </label>
+                <p class="input-help">Enter dry weight before cooking. Mapped to the global “Other Pulses” category, not an India-specific dal factor.</p>
 
                 <div class="input-with-unit">
                   <input
@@ -909,10 +912,11 @@
 
           <div class="wizard-step" data-step="3" aria-label="Step 4: Waste">
 <fieldset class="form-section">
-            <legend>Waste</legend>
+            <legend>Experimental waste estimate</legend>
 
             <p class="fieldset-description">
-              Enter your approximate annual household waste.
+              Enter approximate annual household waste if you want to see a separate experimental estimate.
+              It is excluded from your headline footprint because local disposal and methane-capture methods are not captured.
             </p>
 
             <div class="form-group">
@@ -1081,7 +1085,6 @@
                 <button type="button" class="donut-legend-item" data-category="energy" aria-pressed="false"><span class="legend-swatch energy"></span><span class="legend-copy"><strong>Energy</strong><small id="donut-energy-value">--</small></span><b id="donut-energy-share">--</b></button>
                 <button type="button" class="donut-legend-item" data-category="transport" aria-pressed="false"><span class="legend-swatch transport"></span><span class="legend-copy"><strong>Transportation</strong><small id="donut-transport-value">--</small></span><b id="donut-transport-share">--</b></button>
                 <button type="button" class="donut-legend-item" data-category="food" aria-pressed="false"><span class="legend-swatch food"></span><span class="legend-copy"><strong>Food</strong><small id="donut-food-value">--</small></span><b id="donut-food-share">--</b></button>
-                <button type="button" class="donut-legend-item" data-category="waste" aria-pressed="false"><span class="legend-swatch waste"></span><span class="legend-copy"><strong>Waste</strong><small id="donut-waste-value">--</small></span><b id="donut-waste-share">--</b></button>
                 <div class="donut-selection" id="donut-selection" aria-live="polite"><span>SELECT A CATEGORY</span><strong>Explore your breakdown</strong><p>Choose any category to see how much it contributes to your annual estimate.</p></div>
               </div>
             </div>
@@ -1180,24 +1183,12 @@
                 </div>
               </div>
 
-              <div class="breakdown-item">
+              <div class="breakdown-item experimental-waste">
                 <div class="breakdown-label">
-                  <span> Waste </span>
-
-                  <strong id="waste-emissions"> 0 kgCO₂e </strong>
-                  <small id="waste-share" class="breakdown-share">0%</small>
+                  <span>Experimental waste estimate — excluded from headline total</span>
+                  <strong id="waste-emissions">Not included</strong>
                 </div>
-
-                <div
-                  class="progress-track"
-                  role="progressbar"
-                  aria-label="Waste emissions"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                  aria-valuenow="0"
-                >
-                  <div id="waste-progress" class="progress-bar"></div>
-                </div>
+                <p class="details-intro">Low-confidence disposal proxy shown separately. It is not part of the energy, transport and food total.</p>
               </div>
             </div>
           </div>
@@ -1248,7 +1239,8 @@
             <strong>Important:</strong> CarbonLens combines factors with different geographic scopes and greenhouse-gas coverage.
             Electricity, fuel combustion, Indian rail and intracity bus factors are CO₂-only proxies; food uses global
             lifecycle CO₂e averages; aviation uses UK government CO₂ + CH₄ + N₂O factors that exclude distance and
-            radiative-forcing uplifts; and household waste uses low-confidence non-India-specific disposal proxies.
+            radiative-forcing uplifts. Experimental household-waste proxies are displayed separately and excluded from
+            the headline total because disposal methods and local factors are not sufficiently modelled.
             The result is a partial indicative estimate, not a verified, fully India-specific or harmonised CO₂e inventory.
             Confidence labels describe source quality and applicability: high = strong source for the stated activity and region;
             medium = published factor with limitations; low = context-specific proxy.

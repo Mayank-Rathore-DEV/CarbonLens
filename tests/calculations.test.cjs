@@ -211,7 +211,7 @@ test("EV emissions use the configured Indian grid factor", () => {
   assert.ok(Math.abs(calc.api.calculateTransportationEmissions() - 675.1) < 1e-9);
 });
 
-test("combined footprint total equals the sum of all four categories", () => {
+test("headline footprint total includes energy, transport and food but excludes experimental waste", () => {
   const calc = createCalculator({
     "household-size": 2,
     electricity: 1000,
@@ -237,7 +237,7 @@ test("combined footprint total equals the sum of all four categories", () => {
   assert.ok(result);
   assert.equal(
     result.total,
-    result.energy + result.transport + result.food + result.waste
+    result.energy + result.transport + result.food
   );
   assert.ok(result.total > 0);
   assert.equal(result.householdSize, 2);
@@ -252,9 +252,10 @@ test("combined footprint total equals the sum of all four categories", () => {
   assert.ok(result.details.food.some(item => item.label === "Rice"));
   assert.ok(result.details.waste.some(item => item.label === "Food waste"));
 
-  // Household energy and waste are divided across two members.
+  // Household energy and experimental waste are divided across two members.
   assert.ok(Math.abs(result.energy - 422.75) < 1e-9);
   assert.ok(Math.abs(result.waste - 5.442) < 1e-9);
+  assert.ok(Math.abs(result.total - 2889.23) < 1e-9);
 
   // Transport and food remain individual estimates.
   assert.ok(Math.abs(result.transport - 2257.2) < 1e-9);
@@ -290,6 +291,13 @@ test("footprint insights identify the largest category and its share", () => {
   assert.match(insight.action, /frequent journeys/);
 });
 
+test("footprint insights ignore experimental waste when ranking core sources", () => {
+  const calc = createCalculator();
+  const insight = calc.api.getFootprintInsights({ energy: 100, transport: 200, food: 300, waste: 1000 });
+  assert.equal(insight.largest, "food");
+  assert.equal(insight.share, 50);
+});
+
 test("footprint insights handle an all-zero result without dividing by zero", () => {
   const calc = createCalculator();
   const insight = calc.api.getFootprintInsights({
@@ -315,15 +323,15 @@ test("activity scenario planner sums distinct source-row reductions without doub
       waste: [{ label: "Food waste", emissions: 40 }]
     }
   }, { "energy:0": 20, "transport:0": 10, "food:1": 50, "waste:0": 25 });
-  assert.equal(result.current, 640);
+  assert.equal(result.current, 600);
   assert.equal(result.savingsByCategory.energy, 12);
   assert.equal(result.savingsByCategory.transport, 15);
   assert.equal(result.savingsByCategory.food, 50);
-  assert.equal(result.savingsByCategory.waste, 10);
-  assert.equal(result.saved, 87);
-  assert.equal(result.projected, 553);
-  assert.equal(result.savedPercent, 87 / 640 * 100);
-  assert.equal(result.activities.length, 7);
+  assert.equal(result.savingsByCategory.waste, undefined);
+  assert.equal(result.saved, 77);
+  assert.equal(result.projected, 523);
+  assert.equal(result.savedPercent, 77 / 600 * 100);
+  assert.equal(result.activities.length, 6);
   assert.equal(result.largestCategory, "food");
 });
 

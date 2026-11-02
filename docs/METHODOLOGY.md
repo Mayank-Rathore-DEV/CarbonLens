@@ -6,9 +6,9 @@
 CarbonLens estimates greenhouse gas emissions
 associated with selected personal lifestyle activities.
 
-## 2. Categories currently included
+## 2. Categories included in the headline footprint
 
-The current calculator includes:
+The current v1 headline total includes:
 
 - Household grid electricity
 - LPG and PNG cooking fuel
@@ -16,21 +16,22 @@ The current calculator includes:
 - Passenger rail and intracity bus travel
 - Domestic and international air travel
 - Selected food consumption
-- Food waste and mixed household waste
 
-## 3. Categories excluded
+## 3. Categories excluded from the headline footprint
 
-The current calculator does not include:
+The current v1 headline total excludes:
 
+- Household food and mixed waste (collected as experimental inputs and shown separately only)
 - Shopping and durable goods
 - Water consumption
 - Digital services
 - Carbon offsets
 - Solar-panel manufacturing and lifecycle emissions
 
-Waste is included only as a low-confidence proxy estimate. It is not
-an India-specific municipal-waste inventory and should not be treated
-as a reliable measure of local disposal emissions.
+Waste is not included in the headline because its emissions depend heavily on
+local waste composition, collection, landfill conditions, methane capture,
+composting and recycling. The current generic proxies are not sufficiently
+India-specific or treatment-specific.
 
 ## 4. Calculation Formula
 
@@ -134,7 +135,7 @@ system boundaries. In particular:
   passenger factors include CO2, CH4 and N2O but exclude the distance and
   radiative-forcing uplifts in the base values used here.
 - Food factors are global lifecycle CO2e averages.
-- Waste factors are low-confidence, non-India-specific disposal proxies.
+- Experimental waste factors are low-confidence, non-India-specific disposal proxies and are excluded from the headline total.
 
 These factors cannot be presented as a single fully harmonised lifecycle
 inventory. The result is an indicative partial footprint with explicit

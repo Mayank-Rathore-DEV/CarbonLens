@@ -82,9 +82,17 @@ test("mobile engine reproduces the independently calculated reference case", asy
 
   assert.ok(Math.abs(result.categories.energy - 625.28) < 1e-9);
   assert.ok(Math.abs(result.categories.transport - 760.92) < 1e-9);
-  assert.ok(Math.abs(result.categories.food - 714.91) < 1e-9);
+  assert.ok(Math.abs(result.categories.food - 721.21) < 1e-9);
   assert.ok(Math.abs(result.categories.waste - 36.2232) < 1e-9);
-  assert.ok(Math.abs(result.total - 2137.3332) < 1e-9);
+  assert.ok(Math.abs(result.total - 2107.41) < 1e-9);
+  assert.ok(Math.abs(result.categories.waste - 36.2232) < 1e-9);
+});
+
+test("experimental waste is calculated separately and excluded from the mobile headline total", async () => {
+  const { calculateFootprint } = await calculatorModule;
+  const result = calculateFootprint({ ...baseValues });
+  assert.ok(Math.abs(result.total - (result.categories.energy + result.categories.transport + result.categories.food)) < 1e-9);
+  assert.ok(result.categories.waste > 0);
 });
 
 test("monthly electricity is annualised and uses billed grid imports directly", async () => {

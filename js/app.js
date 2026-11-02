@@ -1314,22 +1314,15 @@ function calculateFootprint() {
 
 
   /*
-   * Energy and waste are household totals.
-   * Transport and food are already individual estimates.
+   * Energy and waste are household totals; transport and food are personal.
+   * Waste is retained as an experimental proxy but excluded from the v1 headline.
    */
   const personalEnergy = energy / householdSize;
   const personalWaste = waste / householdSize;
 
-  const total =
-    personalEnergy +
-    transport +
-    food +
-    personalWaste;
+  const total = personalEnergy + transport + food;
 
-  const householdTotal =
-    energy +
-    waste +
-    (transport + food) * householdSize;
+  const householdTotal = energy + (transport + food) * householdSize;
 
   if (
     !Number.isFinite(total) ||
@@ -1385,8 +1378,8 @@ function renderCalculationDetails(result) {
   const root=document.getElementById("calculation-details");
   if(!root||!result||!result.details)return;
   root.textContent="";
-  const intro=document.createElement("p");intro.className="details-intro";intro.textContent="Each line shows the activity, factor and arithmetic behind the estimate. Household energy and waste are divided by household size; food and travel are personal inputs.";root.appendChild(intro);
-  [["energy","Energy",result.energy],["transport","Transportation",result.transport],["food","Food",result.food],["waste","Waste",result.waste]].forEach(([key,label,total])=>{
+  const intro=document.createElement("p");intro.className="details-intro";intro.textContent="Each line shows the activity, factor and arithmetic behind the estimate. Household energy and experimental waste are divided by household size; food and travel are personal inputs. The waste estimate is displayed separately and is not included in the headline total.";root.appendChild(intro);
+  [["energy","Energy",result.energy],["transport","Transportation",result.transport],["food","Food",result.food],["waste","Experimental waste estimate — excluded from total",result.waste]].forEach(([key,label,total])=>{
     const section=document.createElement("details");section.className="calculation-detail";
     const summary=document.createElement("summary"),name=document.createElement("span"),amount=document.createElement("strong");name.textContent=label;amount.textContent=`${formatNumber(total,2)} kgCO₂e / person / year`;summary.append(name,amount);section.appendChild(summary);
     const items=result.details[key];
@@ -1408,8 +1401,8 @@ function renderCalculationDetails(result) {
 /* Transparent scenario model: category reductions scale the selected
    category total linearly. This is a what-if estimate, not a forecast. */
 function calculateReductionScenario(result, reductions = {}) {
-  const categories = ["energy", "transport", "food", "waste"];
-  const savingsByCategory = { energy: 0, transport: 0, food: 0, waste: 0 };
+  const categories = ["energy", "transport", "food"];
+  const savingsByCategory = { energy: 0, transport: 0, food: 0 };
   const activities = [];
   categories.forEach((category) => {
     const rows = result.details && Array.isArray(result.details[category])
@@ -1459,7 +1452,7 @@ function renderReductionPlanner(result, resetControls = true) {
   if (!root || !container || !result) return;
   if (resetControls || !container.dataset.rendered) {
     container.textContent = "";
-    [["energy","Energy"],["transport","Transportation"],["food","Food"],["waste","Waste"]].forEach(([category,title]) => {
+    [["energy","Energy"],["transport","Transportation"],["food","Food"]].forEach(([category,title]) => {
       const rows = result.details && Array.isArray(result.details[category]) ? result.details[category] : [];
       if (!rows.length) return;
       const group = document.createElement("section");
@@ -2296,10 +2289,7 @@ function displayResults(
 
   setText(
     wasteEmissions,
-    `${formatNumber(
-      result.waste,
-      1
-    )} kgCO₂e`
+    `${formatNumber(result.waste, 1)} kgCO₂e · excluded from total`
   );
 
 
@@ -2348,8 +2338,7 @@ function updateDonutChart(result) {
   const categories = [
     { key: "energy", label: "Energy", color: "#a6b58b", value: sanitizeNumber(result.energy), detail: "Home electricity and cooking fuel, allocated across household members." },
     { key: "transport", label: "Transportation", color: "#d58b58", value: sanitizeNumber(result.transport), detail: "Allocated private-vehicle emissions plus public transport and air travel." },
-    { key: "food", label: "Food", color: "#79a99a", value: sanitizeNumber(result.food), detail: "Estimated emissions associated with the food quantities entered." },
-    { key: "waste", label: "Waste", color: "#9b91bd", value: sanitizeNumber(result.waste), detail: "Your allocated share of household food and mixed waste emissions." }
+    { key: "food", label: "Food", color: "#79a99a", value: sanitizeNumber(result.food), detail: "Estimated emissions associated with the food quantities entered." }
   ];
   const total = categories.reduce((sum, item) => sum + item.value, 0);
   const totalLabel = document.getElementById("donut-total");
@@ -2425,12 +2414,6 @@ function updateBreakdownBars(
     total
   );
 
-
-  updateProgressBar(
-    wasteProgress,
-    result.waste,
-    total
-  );
 
   Object.entries(categoryShareElements).forEach(([category, element]) => {
     if (!element) return;
@@ -2526,13 +2509,13 @@ function setupCSVExport() {
 
     const rows = [columns];
     const summary = [
-      ["Summary", "All categories", "Annual footprint per person", lastCalculation.total, "kgCO2e/year"],
+      ["Summary", "Headline total (energy, transport, food)", "Annual footprint per person", lastCalculation.total, "kgCO2e/year"],
       ["Summary", "Household", "Annual household footprint", lastCalculation.householdTotal, "kgCO2e/year"],
       ["Summary", "Household", "Household size", lastCalculation.householdSize, "people"],
       ["Summary", "Energy", "Per-person annual emissions", lastCalculation.energy, "kgCO2e/year"],
       ["Summary", "Transportation", "Per-person annual emissions", lastCalculation.transport, "kgCO2e/year"],
       ["Summary", "Food", "Per-person annual emissions", lastCalculation.food, "kgCO2e/year"],
-      ["Summary", "Waste", "Per-person annual emissions", lastCalculation.waste, "kgCO2e/year"]
+      ["Summary", "Experimental waste (excluded from headline)", "Per-person annual proxy estimate", lastCalculation.waste, "kgCO2e/year"]
     ];
 
     summary.forEach((item) => rows.push([
@@ -2543,7 +2526,7 @@ function setupCSVExport() {
       energy: "Energy",
       transport: "Transportation",
       food: "Food",
-      waste: "Waste"
+      waste: "Experimental waste (excluded from headline)"
     };
 
     Object.entries(lastCalculation.details || {}).forEach(([category, items]) => {
@@ -2558,7 +2541,7 @@ function setupCSVExport() {
     });
 
     rows.push([]);
-    rows.push(["Note", "", "Estimates use the factors and boundaries documented by this CarbonLens version. Categories may have different system boundaries; this is not a fully harmonised lifecycle inventory."]);
+    rows.push(["Note", "", "Estimates use the factors and boundaries documented by this CarbonLens version. The headline total includes energy, transportation and food only. Experimental waste is listed separately and excluded from the headline total. Categories may have different system boundaries; this is not a fully harmonised lifecycle inventory."]);
 
     const csv = "\uFEFF" + rows.map((row) => row.map(escapeCell).join(",")).join("\r\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -2585,8 +2568,7 @@ function getFootprintInsights(result) {
   const categories = [
     { key: "energy", label: "Energy", value: sanitizeNumber(result.energy) },
     { key: "transport", label: "Transportation", value: sanitizeNumber(result.transport) },
-    { key: "food", label: "Food", value: sanitizeNumber(result.food) },
-    { key: "waste", label: "Waste", value: sanitizeNumber(result.waste) }
+    { key: "food", label: "Food", value: sanitizeNumber(result.food) }
   ];
 
   const total = categories.reduce((sum, item) => sum + item.value, 0);
@@ -2606,8 +2588,7 @@ function getFootprintInsights(result) {
   const actions = {
     energy: "Review your electricity bill and identify high-use appliances. Reduce avoidable cooling and standby use, and consider efficient appliances when replacing old ones.",
     transport: "Look at your most frequent journeys first. Combine errands, use public transport for suitable routes, or share rides where practical.",
-    food: "Review your highest-impact food choices and avoid unnecessary food waste. Try replacing some high-impact meals with lower-impact alternatives that fit your diet.",
-    waste: "Separate wet and dry waste where local collection supports it, compost suitable organic waste, and avoid sending recyclable material into mixed waste."
+    food: "Review your highest-impact food choices. Try replacing some high-impact meals with lower-impact alternatives that fit your diet."
   };
 
   return {
@@ -2725,7 +2706,7 @@ function showFormSuccess(
    ============================================================ */
 
 const wizardSteps = Array.from(document.querySelectorAll(".wizard-step"));
-const wizardStepNames = ["Household & energy", "Transportation", "Food", "Waste"];
+const wizardStepNames = ["Household & energy", "Transportation", "Food", "Experimental waste"];
 let activeWizardStep = 0;
 
 function setupCalculatorWizard() {

@@ -32,7 +32,7 @@ export const foodFactors: Record<string, number> = {
   rice: 4.45,
   tofu: 3.16,
   peas: 0.98,
-  beans: 1.37,
+  beans: 1.79,
   potatoes: 0.46,
   rootVegetables: 0.43,
   bananas: 0.86,
@@ -173,7 +173,8 @@ export function calculateFootprint(values: CalculatorValues): CalculationResult 
 
   const energyPerPerson = householdEnergy / householdSize;
   const wastePerPerson = householdWaste / householdSize;
-  const total = energyPerPerson + transport + food + wastePerPerson;
+  // Waste is retained as an experimental proxy but excluded from the v1 headline total.
+  const total = energyPerPerson + transport + food;
 
   if (!Number.isFinite(total) || total < 0) {
     throw new CalculationInputError("The entered values produced an invalid result.", 3);
@@ -181,7 +182,7 @@ export function calculateFootprint(values: CalculatorValues): CalculationResult 
 
   return {
     total,
-    householdTotal: householdEnergy + householdWaste + (transport + food) * householdSize,
+    householdTotal: householdEnergy + (transport + food) * householdSize,
     categories: {
       energy: energyPerPerson,
       transport,

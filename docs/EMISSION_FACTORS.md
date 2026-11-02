@@ -236,8 +236,9 @@ Emissions = Passenger distance (km)
 
 ### Status
 
-Active in the prototype as a low-confidence, CO2-only proxy.
-Not suitable for BRTS, intercity buses or formal inventory reporting.
+Active in the headline calculation as a low-confidence, CO2-only
+intracity bus proxy. Excludes BRTS and intercity buses; not suitable for
+formal inventory reporting without updated data.
 
 ---
 
@@ -282,10 +283,9 @@ Emissions = Passenger distance (km)
 
 ### Status
 
-Active in the prototype as a low-confidence, CO2-only Indian Railways proxy.
-The rounded single factor does not distinguish suburban/non-suburban service
-or passenger class. It is not suitable for metro/MRTS or formal inventory
-reporting without updated, mode-specific data.
+Active in the headline calculation as a low-confidence, CO2-only
+Indian Railways proxy. It uses 2014–15 data, excludes metro/MRTS, and does
+not distinguish passenger class.
 
 
 ## 15. Passenger Aviation Factors — Active Prototype Inputs
@@ -327,3 +327,94 @@ data or an appropriate harmonised global dataset is adopted.
 Active in the prototype as medium-confidence non-India-specific proxies.
 They must not be described as India-specific or as including aviation's
 non-CO2 radiative-forcing effects.
+
+
+## 16. Experimental Waste Factors — Excluded from Headline
+
+### Food waste
+
+- Factor: 0.4208 kg CO2e/kg.
+- Source: Beijing urban-dining lifecycle study (2022), Table 4.
+- Scope: context-specific home-cooking food-waste disposal estimate.
+- Limitation: not India-specific and does not represent every local
+  treatment route.
+
+### Mixed household waste
+
+- Factor: 0.333843 kg CO2e/kg (calculator rounds to 0.3338).
+- Source: New Zealand Measuring Emissions Catalogue 2026, Table 10.3,
+  unknown-composition general waste sent to a municipal landfill with
+  landfill-gas recovery.
+- Important limitation: the factor is not a universal mixed-waste value.
+  New Zealand's same guide reports 0.635339 kg CO2e/kg for general waste
+  sent to a municipal landfill without gas recovery. Composting and
+  anaerobic digestion have different factors.
+
+### Status
+
+Both factors are retained only to show an experimental waste estimate.
+They are excluded from the headline footprint because the app does not
+capture the user's actual disposal route, landfill methane capture,
+composting, recycling or local waste composition. They must not be used
+as India-specific waste factors.
+
+
+## 17. Food Lifecycle Factors — Active Prototype Inputs
+
+### Source and scope
+
+The food factors are global mean greenhouse-gas emissions per kilogram of
+food product from Poore & Nemecek (2018), as processed by Our World in Data.
+The displayed dataset is for 2010 and uses kg CO2e/kg food. The underlying
+meta-analysis includes approximately 570 studies, 38,700 farms and 119
+countries; the values are global averages, not India-specific factors.
+
+Source:
+https://ourworldindata.org/grapher/ghg-per-kg-poore
+
+The dataset covers cradle-to-retail stages including land-use change,
+farm production, processing, transport to retail and packaging. It does
+not include household cooking, refrigeration after retail or household
+food waste.
+
+### Food mappings used
+
+| Calculator input | Factor (kg CO2e/kg) | Dataset mapping |
+|---|---:|---|
+| Beef | 99.48 | Beef (beef herd) |
+| Lamb / mutton | 39.72 | Lamb & Mutton |
+| Pork | 12.31 | Pig Meat |
+| Poultry | 9.87 | Poultry Meat |
+| Cheese | 23.88 | Cheese |
+| Milk | 3.15 | Milk |
+| Eggs | 4.67 | Eggs |
+| Rice | 4.45 | Rice |
+| Tofu | 3.16 | Tofu |
+| Peas | 0.98 | Peas |
+| Beans / pulses | 1.79 | Other Pulses |
+| Potatoes | 0.46 | Potatoes |
+| Root vegetables | 0.43 | Root Vegetables |
+| Bananas | 0.86 | Bananas |
+| Apples | 0.43 | Apples |
+| Tomatoes | 2.09 | Tomatoes |
+
+### Important mappings and limitations
+
+- The 99.48 beef value is specifically the beef-herd factor. The same
+  dataset reports 33.30 kg CO2e/kg for beef from dairy herds. The calculator
+  labels the input as a beef-herd proxy; it is not a buffalo-specific factor.
+- Beans/pulses is mapped to the dataset's "Other Pulses" value of 1.79.
+  The previous 1.37 value did not match this cited dataset and has been
+  corrected.
+- Food quantities are user-entered product mass per person per year.
+  Rice and pulses should be entered on a dry/uncooked weight basis.
+- These are global 2010 means. Indian production systems, irrigation,
+  fertilizer use, yields, livestock systems, cold chains and food loss can
+  differ substantially.
+
+### Status
+
+Active in the headline prototype as medium-confidence global lifecycle
+proxies. They are traceable and internally consistent with the selected
+OWID dataset, but they are not India-specific and should be replaced or
+supplemented when suitable Indian product-level LCA data are available.

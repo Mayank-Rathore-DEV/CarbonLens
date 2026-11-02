@@ -39,17 +39,17 @@ const initialValues: Values = {
 };
 
 const foodFields: FieldDef[] = [
-  { key: "beef", label: "Beef", unit: "kg / person / year" },
+  { key: "beef", label: "Beef (beef-herd proxy)", unit: "kg / person / year", hint: "Uses the global beef-herd factor, not dairy-herd beef or an India-specific buffalo factor." },
   { key: "lamb", label: "Lamb / mutton", unit: "kg / person / year" },
   { key: "pork", label: "Pork", unit: "kg / person / year" },
   { key: "poultry", label: "Chicken / poultry", unit: "kg / person / year" },
   { key: "cheese", label: "Cheese", unit: "kg / person / year" },
   { key: "milk", label: "Milk", unit: "kg / person / year" },
   { key: "eggs", label: "Eggs", unit: "kg / person / year" },
-  { key: "rice", label: "Rice", unit: "kg / person / year" },
+  { key: "rice", label: "Rice", unit: "kg / person / year", hint: "Enter dry/uncooked rice weight, not cooked weight." },
   { key: "tofu", label: "Tofu", unit: "kg / person / year" },
   { key: "peas", label: "Peas", unit: "kg / person / year" },
-  { key: "beans", label: "Beans / pulses", unit: "kg / person / year" },
+  { key: "beans", label: "Beans / pulses", unit: "kg / person / year", hint: "Enter dry weight before cooking. Mapped to the global \"Other Pulses\" category, not an India-specific dal factor." },
   { key: "potatoes", label: "Potatoes", unit: "kg / person / year" },
   { key: "rootVegetables", label: "Root vegetables", unit: "kg / person / year" },
   { key: "bananas", label: "Bananas", unit: "kg / person / year" },
@@ -61,7 +61,7 @@ const steps = [
   { title: "Household energy", subtitle: "Electricity and cooking fuel", mark: "01" },
   { title: "Transport", subtitle: "Your annual travel activity", mark: "02" },
   { title: "Food", subtitle: "Average food consumed per person", mark: "03" },
-  { title: "Waste", subtitle: "Household waste generated in a year", mark: "04" }
+  { title: "Experimental waste", subtitle: "Optional estimate shown separately from your footprint", mark: "04" }
 ];
 
 function OptionGroup({
@@ -169,8 +169,7 @@ export default function CalculatorScreen() {
     const categoryRows = [
       { name: "Energy", value: result.categories.energy },
       { name: "Transport", value: result.categories.transport },
-      { name: "Food", value: result.categories.food },
-      { name: "Waste", value: result.categories.waste }
+      { name: "Food", value: result.categories.food }
     ];
     return (
       <SafeAreaView style={styles.safe} edges={["top"]}>
@@ -194,7 +193,13 @@ export default function CalculatorScreen() {
               </View>
             </View>
           ))}
-          <Text style={styles.methodNote}>Method: activity data × emission factor. Electricity uses the India CEA FY 2025–26 grid factor (0.6751 kg CO₂/kWh) on annualised bill kWh. Household energy and waste are divided by household size; food and travel are personal inputs. Food factors are global lifecycle averages; waste factors are low-confidence proxies. Transport, fuel and electricity factors do not all cover the same greenhouse gases or lifecycle stages: rail, bus and fuel-combustion factors are CO₂-only, while the aviation factors include CO₂, CH₄ and N₂O but exclude radiative-forcing and distance uplifts. Treat this as a partial indicative estimate, not a complete harmonised CO₂e inventory.</Text>
+          <View style={styles.resultCard}>
+            <Text style={styles.resultLabel}>Experimental waste estimate — excluded from the headline total</Text>
+            <Text style={styles.resultNumber}>{result.categories.waste.toLocaleString("en-IN", { maximumFractionDigits: 1 })}</Text>
+            <Text style={styles.resultUnit}>kg CO₂e per person / year (low-confidence proxy)</Text>
+            <Text style={styles.resultNote}>This is shown separately only. The factor assumes disposal conditions that may not match your local municipal system, so it is not added to your footprint total.</Text>
+          </View>
+          <Text style={styles.methodNote}>Method: activity data × emission factor. Electricity uses the India CEA FY 2025–26 grid factor (0.6751 kg CO₂/kWh) on annualised bill kWh. Household energy is divided by household size; food and travel are personal inputs. Food factors are global lifecycle averages. Waste is an experimental low-confidence proxy and is excluded from the headline total. Transport, fuel and electricity factors do not all cover the same greenhouse gases or lifecycle stages: rail, bus and fuel-combustion factors are CO₂-only, while the aviation factors include CO₂, CH₄ and N₂O but exclude radiative-forcing and distance uplifts. Treat this as a partial indicative estimate, not a complete harmonised CO₂e inventory.</Text>
           <Pressable style={styles.primaryButton} onPress={reset}>
             <Text style={styles.primaryButtonText}>Calculate again</Text>
           </Pressable>
@@ -280,7 +285,7 @@ export default function CalculatorScreen() {
 
             {step === 3 ? (
               <>
-                <Text style={styles.infoNote}>Enter the approximate waste generated by your whole household over one year. The result is divided by household size.</Text>
+                <Text style={styles.infoNote}>Optional: enter approximate annual household waste to see a separate experimental estimate. It is divided by household size but excluded from the headline footprint because local disposal and methane-capture methods are not captured.</Text>
                 <NumberField label="Food waste" unit="kg / household / year" value={values.foodWaste} onChange={(v) => update("foodWaste", v)} hint="Uneaten food and food scraps discarded." />
                 <NumberField label="Mixed household waste" unit="kg / household / year" value={values.mixedWaste} onChange={(v) => update("mixedWaste", v)} hint="Other mixed household waste. Recyclable treatment is not separately modelled." />
                 <Text style={styles.infoNote}>Waste factors are low-confidence proxies and vary substantially with local disposal and treatment methods.</Text>

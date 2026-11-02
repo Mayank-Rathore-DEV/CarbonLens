@@ -799,13 +799,12 @@ const EMISSION_FACTORS = {
     beans: {
 
       /*
-       * Our World in Data lists beans under broader pulse
-       * categories. We use the available beans/pulses factor
-       * as an estimate rather than claiming an India-specific
-       * bean lifecycle factor.
+       * Mapped to Our World in Data's "Other Pulses" category.
+       * This is a global 2010 mean, not an India-specific
+       * beans or dal factor.
        */
 
-      factor: 1.37,
+      factor: 1.79,
 
       confidence: "medium",
 
@@ -816,7 +815,7 @@ const EMISSION_FACTORS = {
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg — beans/pulses estimate",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg; Other Pulses proxy",
 
       sourceUrl:
         "https://ourworldindata.org/grapher/ghg-per-kg-poore"
