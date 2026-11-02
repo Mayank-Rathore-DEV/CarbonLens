@@ -2648,15 +2648,19 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{ou
 .methodology-boundary-note{max-width:900px;margin:22px auto 0;padding:18px 20px;border:1px solid var(--border);border-left:3px solid #b6a06b;border-radius:8px;background:rgba(182,160,107,.07);color:var(--text-muted);font-size:.82rem;line-height:1.75}
 .methodology-boundary-note strong{color:var(--text)}
 
-/* Carbon reduction scenario planner */
+/* Activity-level carbon reduction planner */
 .reduction-planner-section{max-width:900px;margin:0 auto 36px;padding:28px;border:1px solid var(--border);border-radius:14px;background:#17251f}
-.scenario-priority{margin:0 0 20px;padding:14px 16px;border-left:3px solid var(--primary);background:rgba(196,214,163,.06);color:#d9e2d0;font-size:.84rem;line-height:1.6}
-.scenario-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.scenario-control{padding:17px;border:1px solid var(--border);border-radius:9px;background:rgba(255,255,255,.015)}
-.scenario-control label{display:flex;justify-content:space-between;gap:12px;color:var(--text);font-size:.88rem;font-weight:620}
-.scenario-control output{color:var(--primary);font-variant-numeric:tabular-nums}
-.scenario-control input[type=range]{display:block;width:100%;margin:17px 0 10px;accent-color:var(--primary);cursor:pointer}
-.scenario-control small{color:var(--text-muted);font-size:.73rem}
+.scenario-priorty{margin:0 0 20px;padding:14px 16px;border-left:3px solid var(--primary);background:rgba(196,214,163,.06);color:#d9e2d0;font-size:.84rem;line-height:1.6}
+.scenario-activity-controls{display:grid;gap:20px}
+.scenario-activity-group{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.scenario-activity-group h4{grid-column:1/-1;margin:0;color:#dce5d5;font-size:.95rem;font-weight:650}
+.scenario-control{min-width:0;padding:16px;border:1px solid var(--border);border-radius:9px;background:rgba(255,255,255,.015)}
+.scenario-control label{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;color:var(--text);font-size:.82rem;font-weight:620}
+.scenario-control label span{line-height:1.5}
+.scenario-control output{flex:none;color:var(--primary);font-variant-numeric:tabular-nums}
+.scenario-control input[type=range]{display:block;width:100%;margin:15px 0 9px;accent-color:var(--primary);cursor:pointer}
+.scenario-control small{color:var(--text-muted);font-size:.72rem;line-height:1.5}
+.scenario-empty{color:var(--text-muted);font-size:.82rem}
 .scenario-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}
 .scenario-results>div{display:grid;gap:5px;padding:17px;border:1px solid var(--border);border-radius:9px;background:#1b2b23}
 .scenario-results span{color:var(--text-muted);font-size:.72rem}
@@ -2664,4 +2668,4 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{ou
 .scenario-results small{color:var(--text-muted);font-size:.69rem}
 .scenario-results small b{color:var(--primary)}
 .scenario-assumptions{margin:0 0 17px;color:var(--text-muted);font-size:.76rem;line-height:1.7}
-@media(max-width:600px){.reduction-planner-section{padding:20px 16px}.scenario-controls{grid-template-columns:1fr}.scenario-results{grid-template-columns:1fr}.scenario-results>div{grid-template-columns:1fr auto;align-items:center}.scenario-results small{grid-column:1/-1}}
+@media(max-width:600px){.reduction-planner-section{padding:20px 16px}.scenario-activity-group{grid-template-columns:1fr}.scenario-results{grid-template-columns:1fr}.scenario-results>div{grid-template-columns:1fr auto;align-items:center}.scenario-results small{grid-column:1/-1}}
