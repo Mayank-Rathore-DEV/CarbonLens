@@ -1294,7 +1294,7 @@ function buildCalculationDetails(householdSize) {
   const rows = { energy: [], transport: [], food: [], waste: [] };
   const add = (category,label,activity,data,formula,emissions,note) => {
     if (!data || !Number.isFinite(emissions) || emissions <= 0) return;
-    rows[category].push({label,activity,factor:data.factor,unit:data.unit||"",formula,emissions:sanitizeNumber(emissions),source:data.source||"Source not specified",sourceUrl:data.sourceUrl||"",referenceYear:data.referenceYear||"",region:data.region||"",notes:note||data.notes||""});
+    rows[category].push({label,activity,factor:data.factor,unit:data.unit||"",formula,emissions:sanitizeNumber(emissions),source:data.source||"Source not specified",sourceUrl:data.sourceUrl||"",referenceYear:data.referenceYear||"",region:data.region||data.geographicScope||"",confidence:data.confidence||"medium",notes:note||data.notes||""});
   };
   const electricity=getRequiredNumber("electricity"), solar=getNumber("solar"), grid=Math.max(electricity-solar,0);
   const ef=getEmissionFactorData(EMISSION_FACTORS.energy,"electricity");
@@ -1327,7 +1327,7 @@ function renderCalculationDetails(result) {
       const line=document.createElement("article");line.className="detail-line";
       const title=document.createElement("h4"),value=document.createElement("strong"),activity=document.createElement("p"),math=document.createElement("code"),source=document.createElement("p");
       title.textContent=item.label;value.textContent=`${formatNumber(item.emissions,2)} kgCO₂e`;activity.textContent="Activity: "+item.activity;math.textContent=item.formula;
-      source.className="detail-source";source.textContent=`Factor: ${item.factor} ${item.unit}${item.referenceYear?" · "+item.referenceYear:""}${item.region?" · "+item.region:""} · Source: ${item.source}`;
+      source.className="detail-source";source.textContent=`Factor: ${item.factor} ${item.unit}${item.referenceYear?" · "+item.referenceYear:""}${item.region?" · "+item.region:""} · Confidence: ${item.confidence.toUpperCase()} · Source: ${item.source}`;
       line.append(title,value,activity,math,source);
       if(item.notes){const note=document.createElement("p");note.className="detail-note";note.textContent=item.notes;line.appendChild(note);}
       if(item.sourceUrl){const link=document.createElement("a");link.href=item.sourceUrl;link.target="_blank";link.rel="noopener noreferrer";link.textContent="Open source reference";line.appendChild(link);}
