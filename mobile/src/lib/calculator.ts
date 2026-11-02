@@ -173,7 +173,8 @@ export function calculateFootprint(values: CalculatorValues): CalculationResult 
 
   const energyPerPerson = householdEnergy / householdSize;
   const wastePerPerson = householdWaste / householdSize;
-  const total = energyPerPerson + transport + food + wastePerPerson;
+  // Waste is retained as an experimental proxy but excluded from the v1 headline total.
+  const total = energyPerPerson + transport + food;
 
   if (!Number.isFinite(total) || total < 0) {
     throw new CalculationInputError("The entered values produced an invalid result.", 3);
@@ -181,7 +182,7 @@ export function calculateFootprint(values: CalculatorValues): CalculationResult 
 
   return {
     total,
-    householdTotal: householdEnergy + householdWaste + (transport + food) * householdSize,
+    householdTotal: householdEnergy + (transport + food) * householdSize,
     categories: {
       energy: energyPerPerson,
       transport,
