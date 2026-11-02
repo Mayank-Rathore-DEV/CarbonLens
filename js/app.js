@@ -1343,72 +1343,115 @@ function renderCalculationDetails(result) {
    category total linearly. This is a what-if estimate, not a forecast. */
 function calculateReductionScenario(result, reductions = {}) {
   const categories = ["energy", "transport", "food", "waste"];
-  const current = categories.reduce((sum, key) => sum + sanitizeNumber(result[key]), 0);
-  const savingsByCategory = {};
-  const appliedReductions = {};
-  categories.forEach((key) => {
-    const percentage = Math.min(50, Math.max(0, Number(reductions[key]) || 0));
-    appliedReductions[key] = percentage;
-    savingsByCategory[key] = sanitizeNumber(result[key]) * percentage / 100;
+  const savingsByCategory = { energy: 0, transport: 0, food: 0, waste: 0 };
+  const activities = [];
+  categories.forEach((category) => {
+    const rows = result.details && Array.isArray(result.details[category])
+      ? result.details[category] : [];
+    rows.forEach((item, index) => {
+      const key = category + ":" + index;
+      const percentage = Math.min(50, Math.max(0, Number(reductions[key]) || 0));
+      const emissions = sanitizeNumber(item.emissions);
+      const saved = emissions * percentage / 100;
+      savingsByCategory[category] += saved;
+      activities.push({ key, category, label: item.label, emissions, reduction: percentage, saved });
+    });
   });
-  const saved = categories.reduce((sum, key) => sum + savingsByCategory[key], 0);
+  const current = categories.reduce((sum, key) => sum + sanitizeNumber(result[key]), 0);
+  const saved = activities.reduce((sum, item) => sum + item.saved, 0);
   const projected = Math.max(0, current - saved);
+  const largestCategory = categories
+    .sort((a, b) => sanitizeNumber(result[b]) - sanitizeNumber(result[a]))
+    .find((key) => sanitizeNumber(result[key]) > 0) || null;
   return {
-    current,
-    saved,
-    projected,
+    current, saved, projected,
     savedPercent: current > 0 ? saved / current * 100 : 0,
-    savingsByCategory,
-    reductions: appliedReductions,
-    largestCategory: categories.sort((a, b) => sanitizeNumber(result[b]) - sanitizeNumber(result[a]))[0]
+    savingsByCategory, activities, reductions: Object.fromEntries(activities.map(item => [item.key, item.reduction])),
+    largestCategory
   };
 }
 
 function setupReductionPlanner() {
   const root = document.getElementById("reduction-planner");
   if (!root) return;
-  root.querySelectorAll("[data-reduction]").forEach((input) => {
-    input.addEventListener("input", () => {
-      if (lastCalculation) renderReductionPlanner(lastCalculation, false);
-    });
+  const controls = document.getElementById("scenario-activity-controls");
+  if (controls) controls.addEventListener("input", (event) => {
+    if (event.target && event.target.matches("[data-scenario-reduction]") && lastCalculation) {
+      renderReductionPlanner(lastCalculation, false);
+    }
   });
   const reset = document.getElementById("reduction-reset");
   if (reset) reset.addEventListener("click", () => {
-    root.querySelectorAll("[data-reduction]").forEach((input) => { input.value = "0"; });
+    if (controls) controls.querySelectorAll("[data-scenario-reduction]").forEach(input => { input.value = "0"; });
     if (lastCalculation) renderReductionPlanner(lastCalculation, false);
   });
 }
 
 function renderReductionPlanner(result, resetControls = true) {
   const root = document.getElementById("reduction-planner");
-  if (!root || !result) return;
-  const controls = [...root.querySelectorAll("[data-reduction]")];
-  if (resetControls) controls.forEach((input) => { input.value = "0"; });
+  const container = document.getElementById("scenario-activity-controls");
+  if (!root || !container || !result) return;
+  if (resetControls || !container.dataset.rendered) {
+    container.textContent = "";
+    [["energy","Energy"],["transport","Transportation"],["food","Food"],["waste","Waste"]].forEach(([category,title]) => {
+      const rows = result.details && Array.isArray(result.details[category]) ? result.details[category] : [];
+      if (!rows.length) return;
+      const group = document.createElement("section");
+      group.className = "scenario-activity-group";
+      const heading = document.createElement("h4");
+      heading.textContent = title;
+      group.appendChild(heading);
+      rows.forEach((item,index) => {
+        const key = category + ":" + index;
+        const card = document.createElement("div");
+        card.className = "scenario-control";
+        const label = document.createElement("label");
+        label.setAttribute("for","scenario-"+category+"-"+index);
+        const name = document.createElement("span");
+        name.textContent = item.label + " · " + formatNumber(item.emissions,1) + " kgCO₂e/year";
+        const output = document.createElement("output");
+        output.id = "scenario-value-"+category+"-"+index;
+        output.textContent = "0%";
+        label.append(name,output);
+        const input = document.createElement("input");
+        input.id = "scenario-"+category+"-"+index;
+        input.type = "range";
+        input.min = "0";
+        input.max = "50";
+        input.step = "5";
+        input.value = "0";
+        input.dataset.scenarioReduction = key;
+        const saving = document.createElement("small");
+        saving.id = "scenario-saving-"+category+"-"+index;
+        saving.textContent = "Estimated saving: 0 kgCO₂e/year";
+        card.append(label,input,saving);
+        group.appendChild(card);
+      });
+      container.appendChild(group);
+    });
+    container.dataset.rendered = "true";
+  }
+  const controls = [...container.querySelectorAll("[data-scenario-reduction]")];
   const reductions = {};
-  controls.forEach((input) => { reductions[input.dataset.reduction] = Number(input.value); });
+  controls.forEach(input => { reductions[input.dataset.scenarioReduction] = Number(input.value); });
   const scenario = calculateReductionScenario(result, reductions);
-  const set = (id, value) => { const node = document.getElementById(id); if (node) node.textContent = value; };
-  set("scenario-current", formatNumber(scenario.current, 1));
-  set("scenario-saved", formatNumber(scenario.saved, 1));
-  set("scenario-projected", formatNumber(scenario.projected, 1));
-  set("scenario-saved-percent", scenario.savedPercent.toFixed(1) + "%");
-  controls.forEach((input) => {
-    const key = input.dataset.reduction;
-    const output = document.getElementById("reduction-" + key + "-value");
-    if (output) output.textContent = input.value + "%";
-    const saving = document.getElementById("reduction-" + key + "-saving");
-    if (saving) saving.textContent = "Estimated saving: " + formatNumber(scenario.savingsByCategory[key], 1) + " kgCO₂e/year";
+  const set = (id,value) => { const node = document.getElementById(id); if (node) node.textContent = value; };
+  set("scenario-current",formatNumber(scenario.current,1));
+  set("scenario-saved",formatNumber(scenario.saved,1));
+  set("scenario-projected",formatNumber(scenario.projected,1));
+  set("scenario-saved-percent",scenario.savedPercent.toFixed(1)+"%");
+  scenario.activities.forEach(item => {
+    const parts = item.key.split(":");
+    set("scenario-value-"+parts[0]+"-"+parts[1],item.reduction+"%");
+    set("scenario-saving-"+parts[0]+"-"+parts[1],"Estimated saving: "+formatNumber(item.saved,1)+" kgCO₂e/year");
   });
-  const ranked = ["energy", "transport", "food", "waste"]
-    .map((key) => ({ key, value: sanitizeNumber(result[key]) }))
-    .sort((a, b) => b.value - a.value);
-  const largest = ranked.find((item) => item.value > 0);
-  set("scenario-priority", largest
-    ? "Your largest current category is " + ({energy:"Energy",transport:"Transportation",food:"Food",waste:"Waste"}[largest.key]) +
-      " at " + formatNumber(largest.value, 1) + " kgCO₂e per person per year. Test reductions here first."
+  const categoryNames = {energy:"Energy",transport:"Transportation",food:"Food",waste:"Waste"};
+  const largest = scenario.largestCategory;
+  set("scenario-priority",largest
+    ? "Your largest current category is "+categoryNames[largest]+" at "+formatNumber(result[largest],1)+" kgCO₂e per person per year. Start by testing specific activities in this category."
     : "Your current estimate is zero, so there is no modelled reduction opportunity yet.");
   const status = document.getElementById("scenario-assumptions");
-  if (status) status.textContent = "Model assumption: each slider reduces that entire category by the selected percentage. This assumes emissions fall proportionally with activity. It does not model a specific product, behaviour, rebound effect, or guaranteed outcome. Waste uses low-confidence proxy factors, so treat waste savings with extra caution.";
+  if (status) status.textContent = "Each slider reduces one entered activity by up to 50%. Savings are calculated from that activity's existing emissions row; separate rows are summed once, so categories are not reduced a second time. This is a proportional what-if estimate, not a forecast. It assumes the activity and its emissions factor both remain otherwise unchanged. Food factors are global averages; waste factors have low confidence.";
 }
 
 /* ============================================================
