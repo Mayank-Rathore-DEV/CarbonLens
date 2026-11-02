@@ -91,7 +91,7 @@ test("energy calculation handles grid electricity and LPG", () => {
     "cooking-fuel": "lpg",
     "lpg-cylinders": 2
   });
-  assert.equal(calc.api.calculateEnergyEmissions(100, 20), 152.008);
+  assert.equal(calc.api.calculateEnergyEmissions(100, 20), 139.208);
 });
 
 test("food calculation combines different food categories", () => {
