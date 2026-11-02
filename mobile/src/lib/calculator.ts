@@ -40,6 +40,22 @@ export const foodFactors: Record<string, number> = {
   tomatoes: 2.09
 };
 
+export const calculationFactors = {
+  electricity: 0.6751,
+  lpg: { factor: 3.0, cylinderMassKg: 14.2 },
+  png: 2.0,
+  vehicles: {
+    "petrol-car": 2.31,
+    "diesel-car": 2.68,
+    "cng-car": 2.75,
+    "petrol-bike": 2.31,
+    ev: 0.6751
+  } as Record<string, number>,
+  publicTransport: { rail: 0.008, bus: 0.0152 },
+  flights: { domestic: 0.1252, international: 0.0778 },
+  waste: { food: 0.4208, mixed: 0.3338 }
+};
+
 const numericFieldSteps: Record<string, number> = {
   householdSize: 0,
   electricity: 0,
@@ -98,12 +114,12 @@ export function calculateFootprint(values: CalculatorValues): CalculationResult 
   }
 
   const electricity = annual(values, "electricity", "electricityPeriod");
-  let householdEnergy = electricity * 0.6751;
+  let householdEnergy = electricity * calculationFactors.electricity;
 
   if (values.cookingFuel === "lpg") {
-    householdEnergy += readNumber(values, "lpgCylinders") * 14.2 * 3.0;
+    householdEnergy += readNumber(values, "lpgCylinders") * calculationFactors.lpg.cylinderMassKg * calculationFactors.lpg.factor;
   } else if (values.cookingFuel === "png") {
-    householdEnergy += annual(values, "pngConsumption", "pngPeriod") * 2.0;
+    householdEnergy += annual(values, "pngConsumption", "pngPeriod") * calculationFactors.png;
   } else if (!["electric", "none"].includes(values.cookingFuel)) {
     throw new CalculationInputError("Select a valid cooking fuel.", 0);
   }
@@ -122,14 +138,7 @@ export function calculateFootprint(values: CalculatorValues): CalculationResult 
         throw new CalculationInputError("Enter a whole number of occupants, at least 1.", 1);
       }
 
-      const vehicleFactors: Record<string, number> = {
-        "petrol-car": 2.31,
-        "diesel-car": 2.68,
-        "cng-car": 2.75,
-        "petrol-bike": 2.31,
-        ev: 0.6751
-      };
-      const factor = vehicleFactors[values.vehicleType];
+      const factor = calculationFactors.vehicles[values.vehicleType];
       if (factor === undefined) {
         throw new CalculationInputError("Select a valid private vehicle type.", 1);
       }
@@ -140,10 +149,10 @@ export function calculateFootprint(values: CalculatorValues): CalculationResult 
     throw new CalculationInputError("Select Yes or No for private vehicle use.", 1);
   }
 
-  transport += readNumber(values, "railDistance") * 0.008;
-  transport += readNumber(values, "busDistance") * 0.0152;
-  transport += readNumber(values, "domesticFlightDistance") * 0.1252;
-  transport += readNumber(values, "internationalFlightDistance") * 0.0778;
+  transport += readNumber(values, "railDistance") * calculationFactors.publicTransport.rail;
+  transport += readNumber(values, "busDistance") * calculationFactors.publicTransport.bus;
+  transport += readNumber(values, "domesticFlightDistance") * calculationFactors.flights.domestic;
+  transport += readNumber(values, "internationalFlightDistance") * calculationFactors.flights.international;
 
   let food = 0;
   for (const [key, factor] of Object.entries(foodFactors)) {
@@ -151,8 +160,8 @@ export function calculateFootprint(values: CalculatorValues): CalculationResult 
   }
 
   const householdWaste =
-    readNumber(values, "foodWaste") * 0.4208 +
-    readNumber(values, "mixedWaste") * 0.3338;
+    readNumber(values, "foodWaste") * calculationFactors.waste.food +
+    readNumber(values, "mixedWaste") * calculationFactors.waste.mixed;
 
   const energyPerPerson = householdEnergy / householdSize;
   const wastePerPerson = householdWaste / householdSize;
