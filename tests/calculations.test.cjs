@@ -175,6 +175,30 @@ test("transport calculation includes car, rail, bus and flights", () => {
   assert.ok(Math.abs(calc.api.calculateTransportationEmissions() - 2257.2) < 1e-9);
 });
 
+test("monthly private-vehicle distance is annualized in emissions and source details", () => {
+  const calc = createCalculator({
+    "household-size": 1,
+    electricity: 0,
+    "electricity-period": "annual",
+    solar: 0,
+    "cooking-fuel": "none",
+    "vehicle-type": "petrol-car",
+    "vehicle-distance": 1000,
+    "vehicle-distance-period": "monthly",
+    "vehicle-efficiency": 10,
+    "vehicle-occupancy": 1
+  }, "yes");
+
+  const result = calc.api.calculateFootprint();
+  assert.ok(result);
+  assert.ok(Math.abs(result.transport - 277.2) < 1e-9);
+
+  const vehicleRow = result.details.transport.find(item => item.label === "Petrol car");
+  assert.ok(vehicleRow);
+  assert.ok(Math.abs(vehicleRow.emissions - 277.2) < 1e-9);
+  assert.match(vehicleRow.activity, /12,000 km/);
+});
+
 test("EV emissions use the configured Indian grid factor", () => {
   const calc = createCalculator({
     "vehicle-type": "ev",
