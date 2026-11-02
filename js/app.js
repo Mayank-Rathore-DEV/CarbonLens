@@ -314,8 +314,18 @@ function toggleField(
       "input, select, textarea"
     );
 
+  element.setAttribute(
+    "aria-hidden",
+    String(!shouldShow)
+  );
+
   inputs.forEach((input) => {
     input.disabled = !shouldShow;
+    input.required = shouldShow;
+    if (!shouldShow) {
+      input.removeAttribute("aria-invalid");
+      input.setCustomValidity("");
+    }
   });
 }
 
@@ -355,6 +365,11 @@ function updatePrivateVehicleFields() {
   privateVehicleFields.hidden =
     !shouldShow;
 
+  privateVehicleFields.setAttribute(
+    "aria-hidden",
+    String(!shouldShow)
+  );
+
   const inputs =
     privateVehicleFields.querySelectorAll(
       "input, select, textarea"
@@ -362,6 +377,11 @@ function updatePrivateVehicleFields() {
 
   inputs.forEach((input) => {
     input.disabled = !shouldShow;
+    input.required = shouldShow;
+    if (!shouldShow) {
+      input.removeAttribute("aria-invalid");
+      input.setCustomValidity("");
+    }
   });
 
   if (!shouldShow) {
@@ -471,6 +491,7 @@ function handleFormSubmit(event) {
   event.preventDefault();
 
   clearFormStatus();
+  clearFieldErrors();
 
   if (!verifyEmissionFactors()) {
     return;
@@ -646,7 +667,113 @@ function formatNumber(
    13. FORM VALIDATION
    ============================================================ */
 
+/*
+ * Validate a number against the constraints declared in HTML.
+ * Returns an error message, or an empty string when valid.
+ */
+function validateNumericInputValue(rawValue, constraints = {}) {
+  const raw = String(rawValue ?? "").trim();
+
+  if (raw === "") {
+    return constraints.required
+      ? "This field is required."
+      : "";
+  }
+
+  const value = Number(raw);
+
+  if (!Number.isFinite(value)) {
+    return "Enter a valid number.";
+  }
+
+  const min = constraints.min === null || constraints.min === undefined || constraints.min === ""
+    ? NaN
+    : Number(constraints.min);
+  const max = constraints.max === null || constraints.max === undefined || constraints.max === ""
+    ? NaN
+    : Number(constraints.max);
+  const step = constraints.step === null || constraints.step === undefined || constraints.step === "any" || constraints.step === ""
+    ? NaN
+    : Number(constraints.step);
+
+  if (Number.isFinite(min) && value < min) {
+    return "Value must be at least " + min + ".";
+  }
+
+  if (Number.isFinite(max) && value > max) {
+    return "Value must be no more than " + max + ".";
+  }
+
+  if (Number.isFinite(step) && step > 0) {
+    const base = Number.isFinite(min) ? min : 0;
+    const steps = (value - base) / step;
+    if (Math.abs(steps - Math.round(steps)) > 1e-8) {
+      return "Use increments of " + step + ".";
+    }
+  }
+
+  return "";
+}
+
+
+function validateNumericInputs() {
+  if (!carbonForm) {
+    return { valid: true, field: null, message: "" };
+  }
+
+  const numericInputs =
+    carbonForm.querySelectorAll('input[type="number"]');
+
+  for (const input of numericInputs) {
+    if (input.disabled) {
+      continue;
+    }
+
+    const message = validateNumericInputValue(
+      input.value,
+      {
+        required: input.required,
+        min: input.getAttribute("min"),
+        max: input.getAttribute("max"),
+        step: input.getAttribute("step")
+      }
+    );
+
+    if (message) {
+      return {
+        valid: false,
+        field: input.id || null,
+        message
+      };
+    }
+  }
+
+  return { valid: true, field: null, message: "" };
+}
+
+
+function clearFieldErrors() {
+  if (!carbonForm) {
+    return;
+  }
+
+  carbonForm
+    .querySelectorAll("input, select, textarea")
+    .forEach((field) => {
+      field.removeAttribute("aria-invalid");
+      field.setCustomValidity("");
+    });
+}
+
+
 function validateForm() {
+
+  const numericValidation =
+    validateNumericInputs();
+
+  if (!numericValidation.valid) {
+    return numericValidation;
+  }
 
   /* ----------------------------------------------------------
      Household size
@@ -735,6 +862,15 @@ function validateForm() {
     cookingFuel
       ? cookingFuel.value
       : "";
+
+
+  if (!selectedFuel) {
+    return {
+      valid: false,
+      field: "cooking-fuel",
+      message: "Please select your primary cooking fuel, or choose None."
+    };
+  }
 
 
   if (selectedFuel === "lpg") {
@@ -2361,6 +2497,8 @@ function setupScrollAnimations() {
  */
 
 window.CarbonLens = {
+  validateNumericInputValue,
+  validateForm,
   calculateFootprint,
   calculateEnergyEmissions,
   calculateTransportationEmissions,
