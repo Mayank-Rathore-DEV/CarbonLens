@@ -141,6 +141,8 @@ function initializeApp() {
 
   setupPNGInputHelper();
 
+  setupVehicleDistanceHelper();
+
   setupPrivateVehicleFields();
 
   setupVehicleEfficiencyUnit();
@@ -340,6 +342,38 @@ function setupPNGInputHelper() {
     }
     const annual = isMonthly ? entered * 12 : entered;
     preview.textContent = `Annual consumption used in the calculation: ${annual.toLocaleString("en-IN", { maximumFractionDigits: 2 })} Sm³/year.${isMonthly ? " Monthly usage is multiplied by 12." : ""}`;
+  };
+
+  input.addEventListener("input", update);
+  period.addEventListener("change", update);
+  update();
+}
+
+
+function getAnnualVehicleDistance() {
+  const enteredValue = getRequiredNumber("vehicle-distance");
+  const period = document.getElementById("vehicle-distance-period")?.value || "annual";
+  return period === "monthly" ? enteredValue * 12 : enteredValue;
+}
+
+function setupVehicleDistanceHelper() {
+  const input = document.getElementById("vehicle-distance");
+  const period = document.getElementById("vehicle-distance-period");
+  const unit = document.getElementById("vehicle-distance-input-unit");
+  const preview = document.getElementById("vehicle-distance-annual-preview");
+  if (!input || !period || !unit || !preview) return;
+
+  const update = () => {
+    const isMonthly = period.value === "monthly";
+    unit.textContent = isMonthly ? "km / month" : "km / year";
+    input.placeholder = isMonthly ? "e.g. 1000" : "e.g. 12000";
+    const entered = input.value.trim() === "" ? NaN : Number(input.value);
+    if (!Number.isFinite(entered) || entered < 0) {
+      preview.textContent = "Annual distance used in the calculation: enter your distance in kilometres.";
+      return;
+    }
+    const annual = isMonthly ? entered * 12 : entered;
+    preview.textContent = `Annual distance used in the calculation: ${annual.toLocaleString("en-IN", { maximumFractionDigits: 0 })} km/year.${isMonthly ? " Monthly distance is multiplied by 12." : ""}`;
   };
 
   input.addEventListener("input", update);
@@ -1041,9 +1075,7 @@ function validateForm() {
 
 
     const distance =
-      getRequiredNumber(
-        "vehicle-distance"
-      );
+      getAnnualVehicleDistance();
 
 
     if (
@@ -1378,7 +1410,7 @@ function buildCalculationDetails(householdSize) {
   if(fuel==="png"){const n=getAnnualPNGConsumption(),d=getEmissionFactorData(EMISSION_FACTORS.energy,"png");add("energy","Piped natural gas",`${formatNumber(n,2)} Sm³/year`,d,`${formatNumber(n,2)} Sm³/year × ${d.factor} ÷ ${householdSize} people`,n*d.factor/householdSize,"Monthly bill usage, when selected, is annualized by multiplying by 12.");}
   const choice=document.querySelector('input[name="privateVehicle"]:checked');
   if(choice&&choice.value==="yes"){
-    const type=vehicleType?vehicleType.value:"",km=getNumber("vehicle-distance"),eff=getNumber("vehicle-efficiency"),occupancy=getNumber("vehicle-occupancy"),data=getVehicleFactorData(type);
+    const type=vehicleType?vehicleType.value:"",km=getAnnualVehicleDistance(),eff=getNumber("vehicle-efficiency"),occupancy=getNumber("vehicle-occupancy"),data=getVehicleFactorData(type);
     if(data&&km>0&&eff>0&&occupancy>0){const ev=type==="ev",activity=km/eff,factor=ev?getEmissionFactorData(EMISSION_FACTORS.transportation,"ev"):data,label=({"petrol-car":"Petrol car","diesel-car":"Diesel car","cng-car":"CNG car","petrol-bike":"Petrol two-wheeler",ev:"Electric vehicle"})[type]||"Private vehicle";const unit=ev?"kWh":(data.unit.includes("kg")?"kg":"litres");const formula=ev?`(${formatNumber(km,0)} km ÷ ${formatNumber(eff,1)} km/kWh) × ${factor.factor} ÷ ${occupancy} people`:`(${formatNumber(km,0)} km ÷ ${formatNumber(eff,1)} km/${unit==="kg"?"kg":"litre"}) × ${factor.factor} ÷ ${occupancy} people`;add("transport",label,`${formatNumber(km,0)} km vehicle distance · ${formatNumber(occupancy,1)} occupants`,factor,formula,activity*factor.factor/occupancy);}
   }
   [["rail-distance","Passenger rail",EMISSION_FACTORS.publicTransport.rail],["bus-distance","City bus",EMISSION_FACTORS.publicTransport.bus],["domestic-flight-distance","Domestic flights",EMISSION_FACTORS.flights.domestic],["international-flight-distance","International flights",EMISSION_FACTORS.flights.international]].forEach(([id,label,d])=>{const km=getNumber(id);add("transport",label,`${formatNumber(km,0)} passenger-km`,d,`${formatNumber(km,0)} passenger-km × ${d.factor} ${d.unit}`,km*d.factor);});
@@ -1715,9 +1747,7 @@ function calculateTransportationEmissions() {
 
 
     const distance =
-      getNumber(
-        "vehicle-distance"
-      );
+      getAnnualVehicleDistance();
 
 
     const efficiency =
