@@ -1209,9 +1209,8 @@ function calculateEnergyEmissions(
         "lpg"
       );
 
-
-    const cylinderMassKg =
-      14.2;
+         const cylinderMassKg =
+           EMISSION_FACTORS.energy.lpg.cylinderMassKg;
 
 
     if (
