@@ -11,7 +11,7 @@
       content="CarbonLens is a personal carbon footprint calculator that helps you estimate, understand, and reduce your annual carbon emissions."
     />
 
-    <meta name="theme-color" content="#0b0f0d" />
+    <meta name="theme-color" content="#101b17" />
 
     <title>CarbonLens — Personal Carbon Footprint Calculator</title>
 
@@ -1057,6 +1057,24 @@
           <!-- ===============================================
            EMISSIONS BREAKDOWN
            =============================================== -->
+
+          <section class="results-explorer" aria-labelledby="explorer-title">
+            <div class="explorer-heading">
+              <div><p class="eyebrow">YOUR EMISSIONS, VISUALLY</p><h3 id="explorer-title">What makes up your footprint?</h3><p>Select a category to inspect its share and estimated annual emissions.</p></div>
+              <span class="explorer-unit">kgCO₂e / person / year</span>
+            </div>
+            <div class="explorer-layout">
+              <div class="donut-wrap"><div class="donut-chart" id="emissions-donut" role="img" aria-label="Emissions breakdown chart"><div class="donut-hole"><span>Total footprint</span><strong id="donut-total">—</strong><small>kgCO₂e / year</small></div></div></div>
+              <div class="donut-legend" id="donut-legend" aria-label="Emissions categories">
+                <button type="button" class="donut-legend-item" data-category="energy" aria-pressed="false"><span class="legend-swatch energy"></span><span class="legend-copy"><strong>Energy</strong><small id="donut-energy-value">—</small></span><b id="donut-energy-share">—</b></button>
+                <button type="button" class="donut-legend-item" data-category="transport" aria-pressed="false"><span class="legend-swatch transport"></span><span class="legend-copy"><strong>Transportation</strong><small id="donut-transport-value">—</small></span><b id="donut-transport-share">—</b></button>
+                <button type="button" class="donut-legend-item" data-category="food" aria-pressed="false"><span class="legend-swatch food"></span><span class="legend-copy"><strong>Food</strong><small id="donut-food-value">—</small></span><b id="donut-food-share">—</b></button>
+                <button type="button" class="donut-legend-item" data-category="waste" aria-pressed="false"><span class="legend-swatch waste"></span><span class="legend-copy"><strong>Waste</strong><small id="donut-waste-value">—</small></span><b id="donut-waste-share">—</b></button>
+                <div class="donut-selection" id="donut-selection" aria-live="polite"><span>SELECT A CATEGORY</span><strong>Explore your breakdown</strong><p>Choose any category to see how much it contributes to your annual estimate.</p></div>
+              </div>
+            </div>
+            <p class="guest-privacy-note"><span aria-hidden="true">↗</span> Guest calculation · Your answers are used only to calculate this result. CarbonLens does not save them.</p>
+          </section>
 
           <div class="breakdown-section">
             <div class="section-heading">
