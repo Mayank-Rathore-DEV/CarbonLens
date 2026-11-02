@@ -108,6 +108,11 @@ test("energy calculation handles grid electricity and LPG", () => {
   assert.equal(calc.api.calculateEnergyEmissions(100), 152.71);
 });
 
+test("utility-bill electricity is treated as grid import without a second solar deduction", () => {
+  const calc = createCalculator({ "cooking-fuel": "none" });
+  assert.equal(calc.api.calculateEnergyEmissions(100), 67.51);
+});
+
 test("monthly electricity input is annualized before emissions are calculated", () => {
   const calc = createCalculator({
     "household-size": 1,
