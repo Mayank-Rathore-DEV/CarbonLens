@@ -72,6 +72,21 @@ test("LPG cylinder mass is configured as 14.2 kg", () => {
   assert.equal(EMISSION_FACTORS.energy.lpg.cylinderMassKg, 14.2);
 });
 
+test("factor metadata distinguishes geographic scope and confidence", () => {
+  assert.equal(EMISSION_FACTORS.energy.electricity.confidence, "high");
+  assert.match(EMISSION_FACTORS.food.rice.geographicScope, /Global/);
+  assert.match(EMISSION_FACTORS.flights.domestic.geographicScope, /not India-specific/);
+  assert.equal(EMISSION_FACTORS.waste.food.confidence, "low");
+  assert.equal(EMISSION_FACTORS.waste.mixed.confidence, "low");
+});
+
+test("combustion fuel factors are labelled as CO2 rather than CO2e", () => {
+  assert.equal(EMISSION_FACTORS.energy.lpg.unit, "kgCO2/kg LPG");
+  assert.equal(EMISSION_FACTORS.transportation["petrol-car"].unit, "kgCO2/litre");
+  assert.equal(EMISSION_FACTORS.transportation["diesel-car"].unit, "kgCO2/litre");
+  assert.equal(EMISSION_FACTORS.transportation.ev.unit, "kgCO2/kWh");
+});
+
 test("getEmissionFactor returns a configured factor", () => {
   assert.equal(getEmissionFactor(EMISSION_FACTORS.energy, "lpg"), 3.00);
 });
