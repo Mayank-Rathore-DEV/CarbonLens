@@ -191,11 +191,11 @@ test("monthly private-vehicle distance is annualized in emissions and source det
 
   const result = calc.api.calculateFootprint();
   assert.ok(result);
-  assert.ok(Math.abs(result.transport - 277.2) < 1e-9);
+  assert.ok(Math.abs(result.transport - 2772) < 1e-9);
 
   const vehicleRow = result.details.transport.find(item => item.label === "Petrol car");
   assert.ok(vehicleRow);
-  assert.ok(Math.abs(vehicleRow.emissions - 277.2) < 1e-9);
+  assert.ok(Math.abs(vehicleRow.emissions - 2772) < 1e-9);
   assert.match(vehicleRow.activity, /12,000 km/);
 });
 
