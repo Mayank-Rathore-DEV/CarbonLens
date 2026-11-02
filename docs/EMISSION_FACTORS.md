@@ -286,3 +286,44 @@ Active in the prototype as a low-confidence, CO2-only Indian Railways proxy.
 The rounded single factor does not distinguish suburban/non-suburban service
 or passenger class. It is not suitable for metro/MRTS or formal inventory
 reporting without updated, mode-specific data.
+
+
+## 15. Passenger Aviation Factors — Active Prototype Inputs
+
+### Factors currently used
+
+- Domestic flights: 0.1252 kg CO2e/passenger-km.
+- International flights (non-UK average): 0.0778 kg CO2e/passenger-km.
+
+### Source
+
+UK Department for Energy Security and Net Zero, 2026 Government
+Greenhouse Gas Conversion Factors for Company Reporting, Methodology
+Report, Table 43 (average passenger factors).
+
+Official source:
+https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2026
+
+Methodology report:
+https://assets.publishing.service.gov.uk/media/6a2940543b15d05a7ce3202e/2026-GHG-conversion-factors-methodology-report.pdf
+
+### Included and excluded emissions
+
+The table reports total passenger GHG factors including CO2, CH4 and N2O.
+The base factors used here exclude the distance uplift and the 1.7
+radiative-forcing uplift applied to aviation CO2 in separate reporting
+factors. The radiative-forcing multiplier is uncertain and is applied only
+to the CO2 component in the government methodology.
+
+### Geographic limitation
+
+These are UK-derived average aviation factors, not India-specific
+aircraft, route, airline, load-factor or cabin-class measurements.
+They are used as generic proxies until India-relevant route-specific
+data or an appropriate harmonised global dataset is adopted.
+
+### Status
+
+Active in the prototype as medium-confidence non-India-specific proxies.
+They must not be described as India-specific or as including aviation's
+non-CO2 radiative-forcing effects.
