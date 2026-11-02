@@ -2509,13 +2509,13 @@ function setupCSVExport() {
 
     const rows = [columns];
     const summary = [
-      ["Summary", "All categories", "Annual footprint per person", lastCalculation.total, "kgCO2e/year"],
+      ["Summary", "Headline total (energy, transport, food)", "Annual footprint per person", lastCalculation.total, "kgCO2e/year"],
       ["Summary", "Household", "Annual household footprint", lastCalculation.householdTotal, "kgCO2e/year"],
       ["Summary", "Household", "Household size", lastCalculation.householdSize, "people"],
       ["Summary", "Energy", "Per-person annual emissions", lastCalculation.energy, "kgCO2e/year"],
       ["Summary", "Transportation", "Per-person annual emissions", lastCalculation.transport, "kgCO2e/year"],
       ["Summary", "Food", "Per-person annual emissions", lastCalculation.food, "kgCO2e/year"],
-      ["Summary", "Waste", "Per-person annual emissions", lastCalculation.waste, "kgCO2e/year"]
+      ["Summary", "Experimental waste (excluded from headline)", "Per-person annual proxy estimate", lastCalculation.waste, "kgCO2e/year"]
     ];
 
     summary.forEach((item) => rows.push([
@@ -2526,7 +2526,7 @@ function setupCSVExport() {
       energy: "Energy",
       transport: "Transportation",
       food: "Food",
-      waste: "Waste"
+      waste: "Experimental waste (excluded from headline)"
     };
 
     Object.entries(lastCalculation.details || {}).forEach(([category, items]) => {
@@ -2541,7 +2541,7 @@ function setupCSVExport() {
     });
 
     rows.push([]);
-    rows.push(["Note", "", "Estimates use the factors and boundaries documented by this CarbonLens version. Categories may have different system boundaries; this is not a fully harmonised lifecycle inventory."]);
+    rows.push(["Note", "", "Estimates use the factors and boundaries documented by this CarbonLens version. The headline total includes energy, transportation and food only. Experimental waste is listed separately and excluded from the headline total. Categories may have different system boundaries; this is not a fully harmonised lifecycle inventory."]);
 
     const csv = "\uFEFF" + rows.map((row) => row.map(escapeCell).join(",")).join("\r\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
