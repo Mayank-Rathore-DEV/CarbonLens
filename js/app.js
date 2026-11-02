@@ -1377,8 +1377,6 @@ function buildCalculationDetails(householdSize) {
   const grid=getAnnualElectricityConsumption();
   const ef=getEmissionFactorData(EMISSION_FACTORS.energy,"electricity");
   add("energy","Grid electricity purchased",`${formatNumber(grid,1)} kWh`,ef,`${formatNumber(grid,1)} kWh × ${ef.factor} kgCO₂/kWh ÷ ${householdSize} people`,grid*ef.factor/householdSize,"Annualised utility-bill kWh is treated as grid electricity imported. On-site solar is not subtracted again.");
-  const ef=getEmissionFactorData(EMISSION_FACTORS.energy,"electricity");
-  add("energy","Grid electricity",`${formatNumber(grid,1)} kWh net of solar`,ef,`${formatNumber(grid,1)} kWh × ${ef.factor} kgCO₂e/kWh ÷ ${householdSize} people`,grid*ef.factor/householdSize,"Household electricity is allocated evenly across household members. Solar reduces grid electricity; it is not counted as negative emissions.");
   const fuel=cookingFuel?cookingFuel.value:"";
   if(fuel==="lpg"){const n=getNumber("lpg-cylinders"),d=getEmissionFactorData(EMISSION_FACTORS.energy,"lpg");add("energy","LPG cooking gas",`${formatNumber(n,2)} cylinders × ${d.cylinderMassKg} kg`,d,`${formatNumber(n,2)} × ${d.cylinderMassKg} kg × ${d.factor} ÷ ${householdSize} people`,n*d.cylinderMassKg*d.factor/householdSize);}
   if(fuel==="png"){const n=getAnnualPNGConsumption(),d=getEmissionFactorData(EMISSION_FACTORS.energy,"png");add("energy","Piped natural gas",`${formatNumber(n,2)} Sm³/year`,d,`${formatNumber(n,2)} Sm³/year × ${d.factor} ÷ ${householdSize} people`,n*d.factor/householdSize,"Monthly bill usage, when selected, is annualized by multiplying by 12.");}
