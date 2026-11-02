@@ -932,7 +932,7 @@ function validateForm() {
     );
 
   if (
-    !Number.isFinite(householdSize) ||
+    !Number.isInteger(householdSize) ||
     householdSize < 1 ||
     householdSize > 30
   ) {
@@ -1070,42 +1070,32 @@ function validateForm() {
     }
 
 
-    const efficiency =
-      getRequiredNumber(
-        "vehicle-efficiency"
-      );
+    if (distance > 0) {
+      const efficiency =
+        getRequiredNumber("vehicle-efficiency");
 
+      if (!Number.isFinite(efficiency) || efficiency <= 0) {
+        return {
+          valid: false,
+          field: "vehicle-efficiency",
+          message: "Please enter a vehicle efficiency greater than zero."
+        };
+      }
 
-    if (
-      !Number.isFinite(efficiency) ||
-      efficiency <= 0
-    ) {
-      return {
-        valid: false,
-        field: "vehicle-efficiency",
-        message:
-          "Please enter a vehicle efficiency greater than zero."
-      };
-    }
+      const occupancy =
+        getRequiredNumber("vehicle-occupancy");
 
-
-    const occupancy =
-      getRequiredNumber(
-        "vehicle-occupancy"
-      );
-
-
-    if (
-      !Number.isFinite(occupancy) ||
-      occupancy < 1 ||
-      occupancy > 20
-    ) {
-      return {
-        valid: false,
-        field: "vehicle-occupancy",
-        message:
-          "Vehicle occupancy must be between 1 and 20 people."
-      };
+      if (
+        !Number.isInteger(occupancy) ||
+        occupancy < 1 ||
+        occupancy > 20
+      ) {
+        return {
+          valid: false,
+          field: "vehicle-occupancy",
+          message: "Vehicle occupancy must be a whole number between 1 and 20."
+        };
+      }
     }
   }
 
