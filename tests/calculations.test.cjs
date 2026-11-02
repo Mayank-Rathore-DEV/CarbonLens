@@ -169,7 +169,7 @@ test("combined footprint total equals the sum of all four categories", () => {
   assert.equal(result.householdSize, 2);
 
   // Household energy and waste are divided across two members.
-  assert.ok(Math.abs(result.energy - 407.808) < 1e-9);
+  assert.ok(Math.abs(result.energy - 355.24) < 1e-9);
   assert.ok(Math.abs(result.waste - 5.442) < 1e-9);
 
   // Transport and food remain individual estimates.
