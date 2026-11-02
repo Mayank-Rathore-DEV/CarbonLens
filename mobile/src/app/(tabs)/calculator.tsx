@@ -264,7 +264,7 @@ export default function CalculatorScreen() {
               </View>
             </View>
           ))}
-          <Text style={styles.methodNote}>Method: activity data × emission factor. Electricity uses the India CEA FY 2025–26 factor (0.6751 kg CO₂/kWh). Household energy and waste are divided by household size; food and travel are personal inputs. Food factors are global averages, and waste factors are low-confidence estimates.</Text>
+          <Text style={styles.methodNote}>Method: activity data × emission factor. Electricity uses the India CEA FY 2025–26 grid factor (0.6751 kg CO₂/kWh) on annualised bill kWh. Household energy and waste are divided by household size; food and travel are personal inputs. Food factors are global lifecycle averages; waste factors are low-confidence proxies. Transport, fuel and electricity factors do not all cover the same greenhouse gases or lifecycle stages: rail, bus and fuel-combustion factors are CO₂-only, while the aviation factors include CO₂, CH₄ and N₂O but exclude radiative-forcing and distance uplifts. Treat this as a partial indicative estimate, not a complete harmonised CO₂e inventory.</Text>
           <Pressable style={styles.primaryButton} onPress={reset}>
             <Text style={styles.primaryButtonText}>Calculate again</Text>
           </Pressable>
