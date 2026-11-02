@@ -149,6 +149,8 @@ function initializeApp() {
 
   setupReportExport();
 
+  setupCSVExport();
+
   setupFormReset();
 
   setupSmoothNavigation();
@@ -2450,6 +2452,76 @@ function setupReportExport() {
     }
 
     window.print();
+  });
+}
+
+/* Export the exact activity-level calculation behind the current result. */
+function setupCSVExport() {
+  const exportButton = document.getElementById("export-csv");
+  if (!exportButton) return;
+
+  exportButton.addEventListener("click", () => {
+    if (!lastCalculation || !resultsSection || resultsSection.hidden) return;
+
+    const columns = [
+      "Record type", "Category", "Metric", "Value", "Unit", "Activity",
+      "Emission factor", "Factor unit", "Formula", "Emissions kgCO2e",
+      "Confidence", "Geographic scope", "Reference year", "Source", "Source URL"
+    ];
+
+    const escapeCell = (value) => {
+      const text = value === null || value === undefined ? "" : String(value);
+      return '"' + text.replace(/"/g, '""') + '"';
+    };
+
+    const rows = [columns];
+    const summary = [
+      ["Summary", "All categories", "Annual footprint per person", lastCalculation.total, "kgCO2e/year"],
+      ["Summary", "Household", "Annual household footprint", lastCalculation.householdTotal, "kgCO2e/year"],
+      ["Summary", "Household", "Household size", lastCalculation.householdSize, "people"],
+      ["Summary", "Energy", "Per-person annual emissions", lastCalculation.energy, "kgCO2e/year"],
+      ["Summary", "Transportation", "Per-person annual emissions", lastCalculation.transport, "kgCO2e/year"],
+      ["Summary", "Food", "Per-person annual emissions", lastCalculation.food, "kgCO2e/year"],
+      ["Summary", "Waste", "Per-person annual emissions", lastCalculation.waste, "kgCO2e/year"]
+    ];
+
+    summary.forEach((item) => rows.push([
+      ...item, "", "", "", "", "", "", "", "", ""
+    ]));
+
+    const categoryLabels = {
+      energy: "Energy",
+      transport: "Transportation",
+      food: "Food",
+      waste: "Waste"
+    };
+
+    Object.entries(lastCalculation.details || {}).forEach(([category, items]) => {
+      (items || []).forEach((item) => {
+        rows.push([
+          "Activity", categoryLabels[category] || category, item.label,
+          item.activity, "", item.activity, item.factor, item.unit,
+          item.formula, item.emissions, item.confidence, item.region,
+          item.referenceYear, item.source, item.sourceUrl
+        ]);
+      });
+    });
+
+    rows.push([]);
+    rows.push(["Note", "", "Estimates use the factors and boundaries documented by this CarbonLens version. Categories may have different system boundaries; this is not a fully harmonised lifecycle inventory."]);
+
+    const csv = "\uFEFF" + rows.map((row) => row.map(escapeCell).join(",")).join("\r\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const date = new Date().toISOString().slice(0, 10);
+
+    link.href = url;
+    link.download = `carbonlens-report-${date}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
   });
 }
 
