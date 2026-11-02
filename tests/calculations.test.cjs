@@ -247,7 +247,7 @@ test("combined footprint total equals the sum of all four categories", () => {
     const detailTotal = result.details[category].reduce((sum, item) => sum + item.emissions, 0);
     assert.ok(Math.abs(detailTotal - result[category]) < 1e-9, `${category} detail rows must reconcile`);
   }
-  assert.ok(result.details.energy.some(item => item.label === "Grid electricity"));
+  assert.ok(result.details.energy.some(item => item.label === "Grid electricity purchased"));
   assert.ok(result.details.transport.some(item => item.label === "Passenger rail"));
   assert.ok(result.details.food.some(item => item.label === "Rice"));
   assert.ok(result.details.waste.some(item => item.label === "Food waste"));
