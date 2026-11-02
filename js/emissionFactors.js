@@ -75,11 +75,11 @@ const EMISSION_FACTORS = {
       basis: "electricity consumption",
 
       region: "India",
-
-      referenceYear: "FY 2024-25",
+       
+      referenceYear: "FY 2025-26",
 
       source:
-        "Central Electricity Authority — CO2 Baseline Database for the Indian Power Sector V21.0",
+       "Central Electricity Authority — CO2 Baseline Database for the Indian Power Sector V22.0",
 
       sourceUrl:
         "https://cea.nic.in/cdm-co2-baseline-database/",
