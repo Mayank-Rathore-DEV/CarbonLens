@@ -5,7 +5,16 @@
    FILE:
    calculator.js
 
-   PURPOSE:
+   STATUS: LEGACY / EXPERIMENTAL — NOT USED BY THE CURRENT APP
+
+   The live website calculator is implemented in app.js.
+   The Expo mobile calculator uses mobile/src/lib/calculator.ts.
+   This older module is not loaded by index.html or the mobile app,
+   is not covered by the current test suite, and must not be treated
+   as an authoritative calculation engine until it is refactored
+   against the current factor register and covered by tests.
+
+   PURPOSE (original):
    ------------------------------------------------------------
    This file converts user activity data into estimated
    greenhouse-gas emissions.
