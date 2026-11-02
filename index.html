@@ -247,9 +247,14 @@
               </label>
 
               <p class="input-help">
-                Check your electricity bills for your annual consumption if
-                possible.
+                Use the kWh (units) printed on your electricity bill. Do not enter the rupee amount.
               </p>
+
+              <label class="input-sub-label" for="electricity-period">What period does your kWh figure cover?</label>
+              <select id="electricity-period" name="electricityPeriod" class="input-period-select">
+                <option value="monthly">One typical month</option>
+                <option value="annual" selected>Full year</option>
+              </select>
 
               <div class="input-with-unit">
                 <input
@@ -257,13 +262,18 @@
                   name="electricity"
                   type="number"
                   min="0"
-                  step="1"
-                  placeholder="e.g. 4000"
+                  step="0.1"
+                  placeholder="e.g. 300"
                   required
+                  inputmode="decimal"
+                  aria-describedby="electricity-annual-preview"
                 />
 
-                <span> kWh / year </span>
+                <span id="electricity-input-unit"> kWh / year </span>
               </div>
+              <p class="input-conversion-preview" id="electricity-annual-preview" aria-live="polite">
+                Annual consumption used in the calculation: enter your kWh figure.
+              </p>
             </div>
 
             <div class="form-group">
