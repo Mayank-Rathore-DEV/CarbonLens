@@ -1282,10 +1282,59 @@ function calculateFootprint() {
     waste: sanitizeNumber(personalWaste),
     householdEnergy: sanitizeNumber(energy),
     householdWaste: sanitizeNumber(waste),
-    householdSize
+    householdSize,
+    details: buildCalculationDetails(householdSize)
   };
 }
 
+
+
+/* Transparent, per-source calculation detail data. */
+function buildCalculationDetails(householdSize) {
+  const rows = { energy: [], transport: [], food: [], waste: [] };
+  const add = (category,label,activity,data,formula,emissions,note) => {
+    if (!data || !Number.isFinite(emissions) || emissions <= 0) return;
+    rows[category].push({label,activity,factor:data.factor,unit:data.unit||"",formula,emissions:sanitizeNumber(emissions),source:data.source||"Source not specified",sourceUrl:data.sourceUrl||"",referenceYear:data.referenceYear||"",region:data.region||"",notes:note||data.notes||""});
+  };
+  const electricity=getRequiredNumber("electricity"), solar=getNumber("solar"), grid=Math.max(electricity-solar,0);
+  const ef=getEmissionFactorData(EMISSION_FACTORS.energy,"electricity");
+  add("energy","Grid electricity",`${formatNumber(grid,1)} kWh net of solar`,ef,`${formatNumber(grid,1)} kWh × ${ef.factor} kgCO₂e/kWh ÷ ${householdSize} people`,grid*ef.factor/householdSize,"Household electricity is allocated evenly across household members. Solar reduces grid electricity; it is not counted as negative emissions.");
+  const fuel=cookingFuel?cookingFuel.value:"";
+  if(fuel==="lpg"){const n=getNumber("lpg-cylinders"),d=getEmissionFactorData(EMISSION_FACTORS.energy,"lpg");add("energy","LPG cooking gas",`${formatNumber(n,2)} cylinders × ${d.cylinderMassKg} kg`,d,`${formatNumber(n,2)} × ${d.cylinderMassKg} kg × ${d.factor} ÷ ${householdSize} people`,n*d.cylinderMassKg*d.factor/householdSize);}
+  if(fuel==="png"){const n=getNumber("png-consumption"),d=getEmissionFactorData(EMISSION_FACTORS.energy,"png");add("energy","Piped natural gas",`${formatNumber(n,1)} Sm³`,d,`${formatNumber(n,1)} Sm³ × ${d.factor} ÷ ${householdSize} people`,n*d.factor/householdSize);}
+  const choice=document.querySelector('input[name="privateVehicle"]:checked');
+  if(choice&&choice.value==="yes"){
+    const type=vehicleType?vehicleType.value:"",km=getNumber("vehicle-distance"),eff=getNumber("vehicle-efficiency"),occupancy=getNumber("vehicle-occupancy"),data=getVehicleFactorData(type);
+    if(data&&km>0&&eff>0&&occupancy>0){const ev=type==="ev",activity=km/eff,factor=ev?getEmissionFactorData(EMISSION_FACTORS.transportation,"ev"):data,label=({"petrol-car":"Petrol car","diesel-car":"Diesel car","cng-car":"CNG car","petrol-bike":"Petrol two-wheeler",ev:"Electric vehicle"})[type]||"Private vehicle";const unit=ev?"kWh":(data.unit.includes("kg")?"kg":"litres");const formula=ev?`(${formatNumber(km,0)} km ÷ ${formatNumber(eff,1)} km/kWh) × ${factor.factor} ÷ ${occupancy} people`:`(${formatNumber(km,0)} km ÷ ${formatNumber(eff,1)} km/${unit==="kg"?"kg":"litre"}) × ${factor.factor} ÷ ${occupancy} people`;add("transport",label,`${formatNumber(km,0)} km vehicle distance · ${formatNumber(occupancy,1)} occupants`,factor,formula,activity*factor.factor/occupancy);}
+  }
+  [["rail-distance","Passenger rail",EMISSION_FACTORS.publicTransport.rail],["bus-distance","City bus",EMISSION_FACTORS.publicTransport.bus],["domestic-flight-distance","Domestic flights",EMISSION_FACTORS.flights.domestic],["international-flight-distance","International flights",EMISSION_FACTORS.flights.international]].forEach(([id,label,d])=>{const km=getNumber(id);add("transport",label,`${formatNumber(km,0)} passenger-km`,d,`${formatNumber(km,0)} passenger-km × ${d.factor} ${d.unit}`,km*d.factor);});
+  [["beef-kg","Beef","beef"],["lamb-kg","Lamb","lamb"],["pork-kg","Pork","pork"],["poultry-kg","Poultry","poultry"],["cheese-kg","Cheese","cheese"],["milk-kg","Milk","milk"],["eggs-kg","Eggs","eggs"],["rice-kg","Rice","rice"],["tofu-kg","Tofu","tofu"],["peas-kg","Peas","peas"],["beans-kg","Beans / pulses","beans"],["potatoes-kg","Potatoes","potatoes"],["root-vegetables-kg","Root vegetables","rootVegetables"],["bananas-kg","Bananas","bananas"],["apples-kg","Apples","apples"],["tomatoes-kg","Tomatoes","tomatoes"]].forEach(([id,label,key])=>{const kg=getNumber(id),d=getEmissionFactorData(EMISSION_FACTORS.food,key);add("food",label,`${formatNumber(kg,2)} kg consumed per person`,d,`${formatNumber(kg,2)} kg × ${d.factor} ${d.unit}`,kg*d.factor,"Global lifecycle average; not India-specific.");});
+  [["food-waste-kg","Food waste",EMISSION_FACTORS.waste.food],["mixed-waste-kg","Mixed waste",EMISSION_FACTORS.waste.mixed]].forEach(([id,label,d])=>{const kg=getNumber(id);add("waste",label,`${formatNumber(kg,2)} kg household waste`,d,`${formatNumber(kg,2)} kg × ${d.factor} ${d.unit} ÷ ${householdSize} people`,kg*d.factor/householdSize,"Household waste is allocated evenly per person. Factor is an estimate and depends on disposal method.");});
+  return rows;
+}
+
+function renderCalculationDetails(result) {
+  const root=document.getElementById("calculation-details");
+  if(!root||!result||!result.details)return;
+  root.textContent="";
+  const intro=document.createElement("p");intro.className="details-intro";intro.textContent="Each line shows the activity, factor and arithmetic behind the estimate. Household energy and waste are divided by household size; food and travel are personal inputs.";root.appendChild(intro);
+  [["energy","Energy",result.energy],["transport","Transportation",result.transport],["food","Food",result.food],["waste","Waste",result.waste]].forEach(([key,label,total])=>{
+    const section=document.createElement("details");section.className="calculation-detail";
+    const summary=document.createElement("summary"),name=document.createElement("span"),amount=document.createElement("strong");name.textContent=label;amount.textContent=`${formatNumber(total,2)} kgCO₂e / person / year`;summary.append(name,amount);section.appendChild(summary);
+    const items=result.details[key];
+    if(!items.length){const empty=document.createElement("p");empty.className="detail-empty";empty.textContent="No activity was entered for this category.";section.appendChild(empty);}
+    items.forEach(item=>{
+      const line=document.createElement("article");line.className="detail-line";
+      const title=document.createElement("h4"),value=document.createElement("strong"),activity=document.createElement("p"),math=document.createElement("code"),source=document.createElement("p");
+      title.textContent=item.label;value.textContent=`${formatNumber(item.emissions,2)} kgCO₂e`;activity.textContent="Activity: "+item.activity;math.textContent=item.formula;
+      source.className="detail-source";source.textContent=`Factor: ${item.factor} ${item.unit}${item.referenceYear?" · "+item.referenceYear:""}${item.region?" · "+item.region:""} · Source: ${item.source}`;
+      line.append(title,value,activity,math,source);
+      if(item.notes){const note=document.createElement("p");note.className="detail-note";note.textContent=item.notes;line.appendChild(note);}
+      if(item.sourceUrl){const link=document.createElement("a");link.href=item.sourceUrl;link.target="_blank";link.rel="noopener noreferrer";link.textContent="Open source reference";line.appendChild(link);}
+      section.appendChild(line);
+    });root.appendChild(section);
+  });
+}
 
 /* ============================================================
    15. ENERGY CALCULATION
@@ -2083,6 +2132,7 @@ function displayResults(
 
 
   updateDonutChart(result);
+  renderCalculationDetails(result);
 
   updateBreakdownBars(
     result
@@ -2701,6 +2751,7 @@ window.CarbonLens = {
   validateNumericInputValue,
   validateForm,
   calculateFootprint,
+  buildCalculationDetails,
   getFootprintInsights,
   calculateEnergyEmissions,
   calculateTransportationEmissions,
