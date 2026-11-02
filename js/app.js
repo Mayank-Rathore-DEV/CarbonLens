@@ -1087,37 +1087,43 @@ function calculateFootprint() {
     calculateWasteEmissions();
 
 
+  /*
+   * Energy and waste are household totals.
+   * Transport and food are already individual estimates.
+   */
+  const personalEnergy = energy / householdSize;
+  const personalWaste = waste / householdSize;
+
   const total =
-    energy +
+    personalEnergy +
     transport +
     food +
-    waste;
+    personalWaste;
 
+  const householdTotal =
+    energy +
+    waste +
+    (transport + food) * householdSize;
 
   if (
-    !Number.isFinite(total)
+    !Number.isFinite(total) ||
+    !Number.isFinite(householdTotal)
   ) {
     console.error(
       "CarbonLens: calculation produced an invalid total."
     );
-
     return null;
   }
 
-
   return {
     total: sanitizeNumber(total),
-
-    energy: sanitizeNumber(energy),
-
-    transport: sanitizeNumber(
-      transport
-    ),
-
+    householdTotal: sanitizeNumber(householdTotal),
+    energy: sanitizeNumber(personalEnergy),
+    transport: sanitizeNumber(transport),
     food: sanitizeNumber(food),
-
-    waste: sanitizeNumber(waste),
-
+    waste: sanitizeNumber(personalWaste),
+    householdEnergy: sanitizeNumber(energy),
+    householdWaste: sanitizeNumber(waste),
     householdSize
   };
 }
@@ -1832,11 +1838,8 @@ function displayResults(
     total / 1000;
 
 
-  const perPerson =
-    result.householdSize > 0
-      ? total /
-        result.householdSize
-      : total;
+  const householdTotal =
+    sanitizeNumber(result.householdTotal);
 
 
   resultsSection.hidden =
@@ -1879,7 +1882,7 @@ function displayResults(
   setText(
     perPersonEmissions,
     formatNumber(
-      perPerson,
+      householdTotal,
       1
     )
   );
