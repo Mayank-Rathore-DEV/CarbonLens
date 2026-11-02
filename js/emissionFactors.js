@@ -525,7 +525,7 @@ const EMISSION_FACTORS = {
         "https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2026",
 
       notes:
-        "Average domestic passenger aviation factor. This is not India-specific."
+        "2026 UK average domestic passenger factor including CO2, CH4 and N2O. It excludes the distance and radiative-forcing uplifts in the base factor and is not India-specific."
 
     },
 
