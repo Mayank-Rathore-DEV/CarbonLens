@@ -236,8 +236,9 @@ Emissions = Passenger distance (km)
 
 ### Status
 
-Active in the prototype as a low-confidence, CO2-only proxy.
-Not suitable for BRTS, intercity buses or formal inventory reporting.
+Retained only for an experimental waste estimate that is excluded from the
+headline footprint. It is a low-confidence Beijing-context proxy, not an
+India-specific municipal-waste factor.
 
 ---
 
@@ -282,10 +283,9 @@ Emissions = Passenger distance (km)
 
 ### Status
 
-Active in the prototype as a low-confidence, CO2-only Indian Railways proxy.
-The rounded single factor does not distinguish suburban/non-suburban service
-or passenger class. It is not suitable for metro/MRTS or formal inventory
-reporting without updated, mode-specific data.
+Retained only for an experimental waste estimate that is excluded from the
+headline footprint. It is a low-confidence New Zealand landfill-with-gas-
+recovery proxy, not an India-specific mixed-waste factor.
 
 
 ## 15. Passenger Aviation Factors — Active Prototype Inputs
