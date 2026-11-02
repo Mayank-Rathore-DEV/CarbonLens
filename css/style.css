@@ -443,3 +443,144 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
+
+
+/* ============================================================
+   PRINT-READY FOOTPRINT REPORT
+   ============================================================ */
+.report-export {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.45rem;
+}
+
+.report-export p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .report-export {
+    align-items: flex-start;
+  }
+
+  .report-export p {
+    text-align: left;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #17191c !important;
+    color-scheme: light;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  #results,
+  #results * {
+    visibility: visible !important;
+  }
+
+  #results {
+    position: absolute !important;
+    inset: 0 auto auto 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #17191c !important;
+  }
+
+  #results .report-export,
+  #results button,
+  #results input,
+  #results .scenario-activity-controls input,
+  #results .guest-privacy-note {
+    display: none !important;
+  }
+
+  #results .results-header,
+  #results .result-main-card,
+  #results .result-card,
+  #results .results-explorer,
+  #results .reduction-planner-section,
+  #results .calculation-details-section,
+  #results .breakdown-section,
+  #results .insight-panel,
+  #results .methodology-notice,
+  #results .calculation-detail,
+  #results .scenario-results > div {
+    break-inside: avoid;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #17191c !important;
+    border-color: #d7dadd !important;
+  }
+
+  #results h2,
+  #results h3,
+  #results h4,
+  #results strong,
+  #results b,
+  #results p,
+  #results span,
+  #results small,
+  #results summary,
+  #results li {
+    color: #17191c !important;
+  }
+
+  #results .eyebrow,
+  #results .result-unit,
+  #results .explorer-unit,
+  #results .details-basis,
+  #results .insight-disclaimer,
+  #results .scenario-assumptions {
+    color: #555b63 !important;
+  }
+
+  #results .donut-chart {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  #results .donut-hole {
+    background: #ffffff !important;
+    border-color: #d7dadd !important;
+  }
+
+  #results details {
+    break-inside: avoid;
+  }
+
+  #results .results-explorer,
+  #results .calculation-details-section,
+  #results .reduction-planner-section,
+  #results .breakdown-section,
+  #results .insight-panel,
+  #results .methodology-notice {
+    margin-top: 10mm !important;
+  }
+
+  #results a {
+    color: #30363d !important;
+    text-decoration: underline;
+  }
+}
