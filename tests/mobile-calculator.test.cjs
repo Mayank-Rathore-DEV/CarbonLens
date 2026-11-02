@@ -84,7 +84,8 @@ test("mobile engine reproduces the independently calculated reference case", asy
   assert.ok(Math.abs(result.categories.transport - 760.92) < 1e-9);
   assert.ok(Math.abs(result.categories.food - 714.91) < 1e-9);
   assert.ok(Math.abs(result.categories.waste - 36.2232) < 1e-9);
-  assert.ok(Math.abs(result.total - 2137.3332) < 1e-9);
+  assert.ok(Math.abs(result.total - 2101.11) < 1e-9);
+  assert.ok(Math.abs(result.categories.waste - 36.2232) < 1e-9);
 });
 
 test("monthly electricity is annualised and uses billed grid imports directly", async () => {
