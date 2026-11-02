@@ -244,32 +244,39 @@ test("footprint insights handle an all-zero result without dividing by zero", ()
 });
 
 
-test("scenario planner calculates reductions without changing the baseline", () => {
+test("activity scenario planner sums distinct source-row reductions without double counting", () => {
   const calc = createCalculator();
-  const result = calc.api.calculateReductionScenario(
-    { energy: 100, transport: 200, food: 300, waste: 40 },
-    { energy: 20, transport: 10, food: 0, waste: 50 }
-  );
+  const result = calc.api.calculateReductionScenario({
+    energy: 100, transport: 200, food: 300, waste: 40,
+    details: {
+      energy: [{ label: "Grid electricity", emissions: 60 }, { label: "LPG", emissions: 40 }],
+      transport: [{ label: "Car", emissions: 150 }, { label: "Rail", emissions: 50 }],
+      food: [{ label: "Rice", emissions: 200 }, { label: "Dairy", emissions: 100 }],
+      waste: [{ label: "Food waste", emissions: 40 }]
+    }
+  }, { "energy:0": 20, "transport:0": 10, "food:1": 50, "waste:0": 25 });
   assert.equal(result.current, 640);
-  assert.equal(result.savingsByCategory.energy, 20);
-  assert.equal(result.savingsByCategory.transport, 20);
-  assert.equal(result.savingsByCategory.food, 0);
-  assert.equal(result.savingsByCategory.waste, 20);
-  assert.equal(result.saved, 60);
-  assert.equal(result.projected, 580);
-  assert.equal(result.savedPercent, 9.375);
+  assert.equal(result.savingsByCategory.energy, 12);
+  assert.equal(result.savingsByCategory.transport, 15);
+  assert.equal(result.savingsByCategory.food, 50);
+  assert.equal(result.savingsByCategory.waste, 10);
+  assert.equal(result.saved, 87);
+  assert.equal(result.projected, 553);
+  assert.equal(result.savedPercent, 87 / 640 * 100);
+  assert.equal(result.activities.length, 7);
   assert.equal(result.largestCategory, "food");
 });
 
-test("scenario planner clamps reductions and safely handles a zero footprint", () => {
+test("activity scenario planner clamps sliders and handles zero emissions", () => {
   const calc = createCalculator();
-  const result = calc.api.calculateReductionScenario(
-    { energy: 0, transport: 0, food: 0, waste: 0 },
-    { energy: 90, transport: -10 }
-  );
+  const result = calc.api.calculateReductionScenario({
+    energy: 0, transport: 0, food: 0, waste: 0,
+    details: { energy: [{ label: "Grid", emissions: 0 }], transport: [], food: [], waste: [] }
+  }, { "energy:0": 90, "transport:0": -10 });
   assert.equal(result.saved, 0);
   assert.equal(result.projected, 0);
   assert.equal(result.savedPercent, 0);
-  assert.equal(result.reductions.energy, 50);
-  assert.equal(result.reductions.transport, 0);
+  assert.equal(result.reductions["energy:0"], 50);
+  assert.equal(result.reductions["transport:0"], 0);
 });
+
