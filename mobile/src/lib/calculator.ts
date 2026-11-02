@@ -109,17 +109,25 @@ export function calculateFootprint(values: CalculatorValues): CalculationResult 
   }
 
   const householdSize = readNumber(values, "householdSize");
-  if (!Number.isInteger(householdSize) || householdSize < 1) {
-    throw new CalculationInputError("Enter a whole household size of at least 1.", 0);
+  if (!Number.isInteger(householdSize) || householdSize < 1 || householdSize > 30) {
+    throw new CalculationInputError("Enter a whole household size between 1 and 30.", 0);
   }
 
   const electricity = annual(values, "electricity", "electricityPeriod");
   let householdEnergy = electricity * calculationFactors.electricity;
 
   if (values.cookingFuel === "lpg") {
-    householdEnergy += readNumber(values, "lpgCylinders") * calculationFactors.lpg.cylinderMassKg * calculationFactors.lpg.factor;
+    const cylinders = readNumber(values, "lpgCylinders");
+    if (cylinders <= 0) {
+      throw new CalculationInputError("Enter annual LPG cylinders used, greater than zero.", 0);
+    }
+    householdEnergy += cylinders * calculationFactors.lpg.cylinderMassKg * calculationFactors.lpg.factor;
   } else if (values.cookingFuel === "png") {
-    householdEnergy += annual(values, "pngConsumption", "pngPeriod") * calculationFactors.png;
+    const pngConsumption = annual(values, "pngConsumption", "pngPeriod");
+    if (pngConsumption <= 0) {
+      throw new CalculationInputError("Enter annual PNG consumption, greater than zero.", 0);
+    }
+    householdEnergy += pngConsumption * calculationFactors.png;
   } else if (!["electric", "none"].includes(values.cookingFuel)) {
     throw new CalculationInputError("Select a valid cooking fuel.", 0);
   }
@@ -134,8 +142,8 @@ export function calculateFootprint(values: CalculatorValues): CalculationResult 
       if (efficiency <= 0) {
         throw new CalculationInputError("Enter a vehicle efficiency greater than zero.", 1);
       }
-      if (!Number.isInteger(occupancy) || occupancy < 1) {
-        throw new CalculationInputError("Enter a whole number of occupants, at least 1.", 1);
+      if (!Number.isInteger(occupancy) || occupancy < 1 || occupancy > 20) {
+        throw new CalculationInputError("Enter a whole number of occupants between 1 and 20.", 1);
       }
 
       const factor = calculationFactors.vehicles[values.vehicleType];
