@@ -241,8 +241,6 @@ const EMISSION_FACTORS = {
 
       referenceYear: 2026,
 
-      sourceUrl: "https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html",
-
       source:
         "Approximate direct-combustion CO2 proxy. The per-litre or per-kilogram value is a simplified default, not a measured India-specific fuel factor. IPCC fuel-combustion guidance informs the accounting basis; upstream fuel production and vehicle lifecycle emissions are excluded.",
 
@@ -359,7 +357,9 @@ const EMISSION_FACTORS = {
       referenceYear: 2026,
 
       source:
-        "Approximate direct-combustion CO2 proxy. The per-litre or per-kilogram value is a simplified default, not a measured India-specific fuel factor. IPCC fuel-combustion guidance informs the accounting basis; upstream fuel production and vehicle lifecycle emissions are excluded."
+        "Approximate direct-combustion CO2 proxy. The per-litre or per-kilogram value is a simplified default, not a measured India-specific fuel factor. IPCC fuel-combustion guidance informs the accounting basis; upstream fuel production and vehicle lifecycle emissions are excluded.",
+
+      sourceUrl: "https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html"
 
     },
 
@@ -897,9 +897,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010",    apples: {
-
-      factor: 0.43,
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
