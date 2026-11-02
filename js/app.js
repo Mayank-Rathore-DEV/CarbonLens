@@ -2706,7 +2706,7 @@ function showFormSuccess(
    ============================================================ */
 
 const wizardSteps = Array.from(document.querySelectorAll(".wizard-step"));
-const wizardStepNames = ["Household & energy", "Transportation", "Food", "Waste"];
+const wizardStepNames = ["Household & energy", "Transportation", "Food", "Experimental waste"];
 let activeWizardStep = 0;
 
 function setupCalculatorWizard() {
