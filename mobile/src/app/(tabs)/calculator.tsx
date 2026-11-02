@@ -1,5 +1,12 @@
 import { useMemo, useState } from "react";
 import {
+  calculateFootprint,
+  CalculationInputError,
+  foodFactors,
+  type CalculatorValues,
+  type CalculationResult
+} from "../../lib/calculator";
+import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -17,7 +24,7 @@ const C = {
   mint: "#EDF5F0", peach: "#FBF1EA", red: "#B54747"
 };
 
-type Values = Record<string, string>;
+type Values = CalculatorValues;
 type FieldDef = { key: string; label: string; unit: string; hint?: string };
 
 const initialValues: Values = {
@@ -50,31 +57,12 @@ const foodFields: FieldDef[] = [
   { key: "tomatoes", label: "Tomatoes", unit: "kg / person / year" }
 ];
 
-const foodFactors: Record<string, number> = {
-  beef: 99.48, lamb: 39.72, pork: 12.31, poultry: 9.87, cheese: 23.88,
-  milk: 3.15, eggs: 4.67, rice: 4.45, tofu: 3.16, peas: 0.98,
-  beans: 1.37, potatoes: 0.46, rootVegetables: 0.43, bananas: 0.86,
-  apples: 0.43, tomatoes: 2.09
-};
-
 const steps = [
   { title: "Household energy", subtitle: "Electricity and cooking fuel", mark: "01" },
   { title: "Transport", subtitle: "Your annual travel activity", mark: "02" },
   { title: "Food", subtitle: "Average food consumed per person", mark: "03" },
   { title: "Waste", subtitle: "Household waste generated in a year", mark: "04" }
 ];
-
-function number(values: Values, key: string): number {
-  const raw = values[key]?.trim() ?? "";
-  if (!raw) return 0;
-  const parsed = Number(raw);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
-}
-
-function annual(values: Values, key: string, periodKey: string): number {
-  const value = number(values, key);
-  return values[periodKey] === "monthly" ? value * 12 : value;
-}
 
 function OptionGroup({
   value, options, onChange
@@ -146,10 +134,7 @@ function ChoiceField({
 export default function CalculatorScreen() {
   const [values, setValues] = useState<Values>(initialValues);
   const [step, setStep] = useState(0);
-  const [result, setResult] = useState<null | {
-    total: number; householdTotal: number;
-    categories: { energy: number; transport: number; food: number; waste: number };
-  }>(null);
+  const [result, setResult] = useState<CalculationResult | null>(null);
   const [error, setError] = useState("");
 
   const update = (key: string, value: string) => {
@@ -160,72 +145,17 @@ export default function CalculatorScreen() {
   const progress = useMemo(() => ((step + 1) / steps.length) * 100, [step]);
 
   const calculate = () => {
-    const householdSize = number(values, "householdSize");
-    if (householdSize < 1) {
-      setError("Enter a household size of at least 1.");
-      setStep(0);
-      return;
-    }
-
-    const electricity = annual(values, "electricity", "electricityPeriod");
-    // The bill figure is already grid electricity imported; do not subtract solar again.
-    let householdEnergy = electricity * 0.6751;
-
-    if (values.cookingFuel === "lpg") {
-      householdEnergy += number(values, "lpgCylinders") * 14.2 * 3.0;
-    } else if (values.cookingFuel === "png") {
-      householdEnergy += annual(values, "pngConsumption", "pngPeriod") * 2.0;
-    }
-
-    let transport = 0;
-    if (values.privateVehicle === "yes") {
-      const distance = annual(values, "vehicleDistance", "vehicleDistancePeriod");
-      const efficiency = number(values, "vehicleEfficiency");
-      const occupancy = number(values, "vehicleOccupancy");
-      if (distance > 0 && (efficiency <= 0 || occupancy <= 0)) {
-        setError("For private vehicle travel, enter a valid efficiency and number of occupants.");
-        setStep(1);
+    try {
+      setResult(calculateFootprint(values));
+    } catch (calculationError) {
+      if (calculationError instanceof CalculationInputError) {
+        setError(calculationError.message);
+        setStep(calculationError.step);
         return;
       }
-      if (distance > 0) {
-        const factors: Record<string, number> = {
-          "petrol-car": 2.31, "diesel-car": 2.68, "cng-car": 2.75,
-          "petrol-bike": 2.31, ev: 0.6751
-        };
-        transport += (distance / efficiency) * (factors[values.vehicleType] ?? 0) / occupancy;
-      }
-    }
 
-    transport += number(values, "railDistance") * 0.008;
-    transport += number(values, "busDistance") * 0.0152;
-    transport += number(values, "domesticFlightDistance") * 0.1252;
-    transport += number(values, "internationalFlightDistance") * 0.0778;
-
-    let food = 0;
-    Object.entries(foodFactors).forEach(([key, factor]) => {
-      food += number(values, key) * factor;
-    });
-
-    const householdWaste =
-      number(values, "foodWaste") * 0.4208 +
-      number(values, "mixedWaste") * 0.3338;
-
-    const energyPerPerson = householdEnergy / householdSize;
-    const wastePerPerson = householdWaste / householdSize;
-    const total = energyPerPerson + transport + food + wastePerPerson;
-
-    if (!Number.isFinite(total) || total < 0) {
       setError("We couldn't calculate this set of inputs. Check the numbers and try again.");
-      return;
     }
-
-    setResult({
-      total,
-      householdTotal: householdEnergy + householdWaste + (transport + food) * householdSize,
-      categories: {
-        energy: energyPerPerson, transport, food, waste: wastePerPerson
-      }
-    });
   };
 
   const reset = () => {
