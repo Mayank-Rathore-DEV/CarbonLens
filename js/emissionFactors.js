@@ -40,7 +40,13 @@ const EMISSION_FACTORS = {
     outputUnit: "kgCO2e",
 
     methodology:
-      "Activity data multiplied by category-specific emission factors.",
+      "Activity data multiplied by category-specific emission factors. Factors have different geographic scopes and system boundaries; category totals are indicative, not a fully harmonised lifecycle inventory.",
+
+    confidenceScale: {
+      high: "Strong primary or official source for the stated geography and activity.",
+      medium: "Published factor or established default with geographic or boundary limitations.",
+      low: "Proxy or context-specific estimate; use only as a rough indicator."
+    },
 
     importantNote:
       "Results are estimates. Emission factors vary by geography, " +
@@ -69,6 +75,10 @@ const EMISSION_FACTORS = {
     electricity: {
 
       factor: 0.6751,
+
+      confidence: "high",
+
+      geographicScope: "India national grid",
 
       unit: "kgCO2/kWh",
 
@@ -104,7 +114,7 @@ const EMISSION_FACTORS = {
 
       factor: 0,
 
-      unit: "kgCO2e/kWh",
+      unit: "kgCO2/kWh",
 
       basis: "on-site solar generation",
 
@@ -130,9 +140,13 @@ const EMISSION_FACTORS = {
 
       factor: 3.00,
 
+      confidence: "medium",
+
+      geographicScope: "Generic fuel-combustion default applied to India",
+
       cylinderMassKg: 14.2,
 
-      unit: "kgCO2e/kg LPG",
+      unit: "kgCO2/kg LPG",
 
       basis: "fuel combustion",
 
@@ -165,7 +179,11 @@ const EMISSION_FACTORS = {
 
       factor: 2.00,
 
-      unit: "kgCO2e/Sm3",
+      confidence: "medium",
+
+      geographicScope: "Generic natural-gas combustion estimate",
+
+      unit: "kgCO2/Sm³",
 
       basis: "natural gas combustion",
 
@@ -206,7 +224,11 @@ const EMISSION_FACTORS = {
 
       factor: 2.31,
 
-      unit: "kgCO2e/litre",
+      confidence: "medium",
+
+      geographicScope: "Fuel-combustion default; excludes upstream fuel and vehicle lifecycle emissions",
+
+      unit: "kgCO2/litre",
 
       region: "India",
 
@@ -232,6 +254,10 @@ const EMISSION_FACTORS = {
       calculationBasis: "fuel",
 
       factor: 2.68,
+
+      confidence: "medium",
+
+      geographicScope: "Fuel-combustion default; excludes upstream fuel and vehicle lifecycle emissions",
 
       unit: "kgCO2e/litre",
 
@@ -269,7 +295,11 @@ const EMISSION_FACTORS = {
 
       factor: 2.75,
 
-      unit: "kgCO2e/kg CNG",
+      confidence: "medium",
+
+      geographicScope: "Fuel-combustion default; excludes upstream fuel and vehicle lifecycle emissions",
+
+      unit: "kgCO2/kg CNG",
 
       efficiencyUnit: "km/kg",
 
@@ -377,6 +407,8 @@ const EMISSION_FACTORS = {
 
       factor: 0.0080,
 
+      geographicScope: "India passenger transport",
+
       unit: "kgCO2e/passenger-km",
 
       calculationBasis: "passenger distance",
@@ -384,10 +416,17 @@ const EMISSION_FACTORS = {
       region: "India",
 
       source:
-        "India GHG inventory reporting factor derived from DEFRA 2024 conversion factors.",
+        "India GHG Program passenger-transport factor; also reported in Infosys ESG Databook FY 2024-25.",
+
+      sourceUrl:
+        "https://www.infosys.com/sustainability/documents/infosys-esg-databook-2024-25.pdf",
+
+      referenceYear: "FY 2024-25",
+
+      confidence: "medium",
 
       notes:
-        "Use as an estimate. Actual rail emissions vary by train technology, occupancy and electricity/fuel mix."
+        "India-specific passenger-kilometre proxy. Original underlying factor documentation should be checked before formal inventory use."
 
     },
 
@@ -400,6 +439,8 @@ const EMISSION_FACTORS = {
 
       factor: 0.0152,
 
+      geographicScope: "India passenger transport",
+
       unit: "kgCO2e/passenger-km",
 
       calculationBasis: "passenger distance",
@@ -407,10 +448,17 @@ const EMISSION_FACTORS = {
       region: "India",
 
       source:
-        "India GHG inventory reporting factor derived from DEFRA 2024 conversion factors.",
+        "India GHG Program passenger-transport factor; also reported in Infosys ESG Databook FY 2024-25.",
+
+      sourceUrl:
+        "https://www.infosys.com/sustainability/documents/infosys-esg-databook-2024-25.pdf",
+
+      referenceYear: "FY 2024-25",
+
+      confidence: "medium",
 
       notes:
-        "Actual bus emissions vary with vehicle type, fuel, route and passenger occupancy."
+        "India-specific passenger-kilometre proxy. Actual bus emissions vary with vehicle type, fuel, route and passenger occupancy."
 
     }
 
@@ -434,6 +482,10 @@ const EMISSION_FACTORS = {
     domestic: {
 
       factor: 0.1252,
+
+      confidence: "medium",
+
+      geographicScope: "UK government generic aviation proxy; not India-specific",
 
       unit: "kgCO2e/passenger-km",
 
@@ -466,6 +518,10 @@ const EMISSION_FACTORS = {
     international: {
 
       factor: 0.0778,
+
+      confidence: "medium",
+
+      geographicScope: "UK government generic aviation proxy; not India-specific",
 
       unit: "kgCO2e/passenger-km",
 
@@ -513,6 +569,12 @@ const EMISSION_FACTORS = {
 
       factor: 99.48,
 
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+
       unit: "kgCO2e/kg",
 
       source:
@@ -527,6 +589,12 @@ const EMISSION_FACTORS = {
     lamb: {
 
       factor: 39.72,
+
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
 
       unit: "kgCO2e/kg",
 
@@ -543,6 +611,12 @@ const EMISSION_FACTORS = {
 
       factor: 12.31,
 
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+
       unit: "kgCO2e/kg",
 
       source:
@@ -557,6 +631,12 @@ const EMISSION_FACTORS = {
     poultry: {
 
       factor: 9.87,
+
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
 
       unit: "kgCO2e/kg",
 
@@ -573,6 +653,12 @@ const EMISSION_FACTORS = {
 
       factor: 23.88,
 
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+
       unit: "kgCO2e/kg",
 
       source:
@@ -587,6 +673,12 @@ const EMISSION_FACTORS = {
     milk: {
 
       factor: 3.15,
+
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
 
       unit: "kgCO2e/kg",
 
@@ -603,6 +695,12 @@ const EMISSION_FACTORS = {
 
       factor: 4.67,
 
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+
       unit: "kgCO2e/kg",
 
       source:
@@ -617,6 +715,12 @@ const EMISSION_FACTORS = {
     rice: {
 
       factor: 4.45,
+
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
 
       unit: "kgCO2e/kg",
 
@@ -633,6 +737,12 @@ const EMISSION_FACTORS = {
 
       factor: 3.16,
 
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+
       unit: "kgCO2e/kg",
 
       source:
@@ -647,6 +757,12 @@ const EMISSION_FACTORS = {
     peas: {
 
       factor: 0.98,
+
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
 
       unit: "kgCO2e/kg",
 
@@ -670,6 +786,12 @@ const EMISSION_FACTORS = {
 
       factor: 1.37,
 
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+
       unit: "kgCO2e/kg",
 
       source:
@@ -684,6 +806,12 @@ const EMISSION_FACTORS = {
     potatoes: {
 
       factor: 0.46,
+
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
 
       unit: "kgCO2e/kg",
 
@@ -700,6 +828,12 @@ const EMISSION_FACTORS = {
 
       factor: 0.43,
 
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+
       unit: "kgCO2e/kg",
 
       source:
@@ -714,6 +848,12 @@ const EMISSION_FACTORS = {
     bananas: {
 
       factor: 0.86,
+
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
 
       unit: "kgCO2e/kg",
 
@@ -744,6 +884,12 @@ const EMISSION_FACTORS = {
     tomatoes: {
 
       factor: 2.09,
+
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
 
       unit: "kgCO2e/kg",
 
@@ -790,16 +936,17 @@ const EMISSION_FACTORS = {
       calculationBasis: "waste mass",
 
       source:
-        "Published food-waste disposal emission-factor estimate",
+        "Research estimate: food-waste disposal factor reported in a Beijing urban-dining lifecycle study.",
 
       sourceUrl:
-        "https://academic.oup.com/",
+        "https://academic.oup.com/ijlct/article/doi/10.1093/ijlct/ctac069/6673065",
 
-      confidence:
-        "medium",
+      referenceYear: 2022,
+
+      confidence: "low",
 
       notes:
-        "Waste-treatment emissions vary substantially by disposal method. This is not an India-specific municipal-waste factor."
+        "Context-specific published disposal estimate, not an India-specific municipal-waste factor. Do not treat as a universal household waste rate; actual values depend on treatment and methane capture."
 
     },
 
@@ -813,16 +960,15 @@ const EMISSION_FACTORS = {
       calculationBasis: "waste mass",
 
       source:
-        "Government waste-emissions methodology estimate",
+        "New Zealand Measuring Emissions Guide — waste proxy factor.",
 
       sourceUrl:
         "https://measuringemissionsguide.environment.govt.nz/10_materials_waste.html",
 
-      confidence:
-        "medium",
+      confidence: "low",
 
       notes:
-        "Proxy factor. Actual emissions depend strongly on landfill, recycling, incineration and methane-management practices."
+        "New Zealand proxy, not an India-specific factor. Actual emissions depend strongly on landfill, recycling, incineration and methane-management practices."
 
     }
 
