@@ -145,6 +145,28 @@ test("household size and vehicle occupancy must be whole people", async () => {
   );
 });
 
+test("household size and vehicle occupancy enforce the UI limits", async () => {
+  const { calculateFootprint, CalculationInputError } = await calculatorModule;
+
+  assert.throws(
+    () => calculateFootprint({ ...baseValues, householdSize: "31" }),
+    (error) => error instanceof CalculationInputError && error.step === 0
+  );
+  assert.throws(
+    () => calculateFootprint({ ...baseValues, vehicleOccupancy: "21" }),
+    (error) => error instanceof CalculationInputError && error.step === 1
+  );
+});
+
+test("selected cooking fuel requires a positive annual quantity", async () => {
+  const { calculateFootprint, CalculationInputError } = await calculatorModule;
+
+  assert.throws(
+    () => calculateFootprint({ ...baseValues, lpgCylinders: "" }),
+    (error) => error instanceof CalculationInputError && error.step === 0
+  );
+});
+
 test("zero activity produces zero emissions without division errors", async () => {
   const { calculateFootprint } = await calculatorModule;
   const result = calculateFootprint({
