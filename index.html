@@ -339,9 +339,14 @@
               <label for="png-consumption"> PNG consumption </label>
 
               <p class="input-help">
-                Enter your annual PNG consumption using the unit shown on your
-                gas bill.
+                Use the gas volume shown on your bill in SCM or Sm³ (standard cubic metres). Do not enter the rupee amount.
               </p>
+
+              <label class="input-sub-label" for="png-period">What period does your gas-volume figure cover?</label>
+              <select id="png-period" name="pngPeriod" class="input-period-select">
+                <option value="monthly">One typical month</option>
+                <option value="annual" selected>Full year</option>
+              </select>
 
               <div class="input-with-unit">
                 <input
@@ -350,12 +355,16 @@
                   type="number"
                   min="0.01"
                   step="0.01"
-                  value="0"
-                  placeholder="Enter annual consumption"
+                  placeholder="e.g. 12"
+                  inputmode="decimal"
+                  aria-describedby="png-annual-preview"
                 />
 
-                <span> annual usage </span>
+                <span id="png-input-unit">Sm³ / year</span>
               </div>
+              <p class="input-conversion-preview" id="png-annual-preview" aria-live="polite">
+                Annual consumption used in the calculation: enter your gas volume.
+              </p>
             </div>
           </fieldset>
 </div>
