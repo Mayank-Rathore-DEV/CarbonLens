@@ -2082,6 +2082,8 @@ function displayResults(
   );
 
 
+  updateDonutChart(result);
+
   updateBreakdownBars(
     result
   );
@@ -2112,6 +2114,59 @@ function displayResults(
   }, 100);
 }
 
+
+
+/* Interactive category explorer: all values come from the calculation result. */
+function updateDonutChart(result) {
+  const chart = document.getElementById("emissions-donut");
+  const legend = document.getElementById("donut-legend");
+  const selection = document.getElementById("donut-selection");
+  if (!chart || !legend) return;
+  const categories = [
+    { key: "energy", label: "Energy", color: "#a6b58b", value: sanitizeNumber(result.energy), detail: "Home electricity and cooking fuel, allocated across household members." },
+    { key: "transport", label: "Transportation", color: "#d58b58", value: sanitizeNumber(result.transport), detail: "Allocated private-vehicle emissions plus public transport and air travel." },
+    { key: "food", label: "Food", color: "#79a99a", value: sanitizeNumber(result.food), detail: "Estimated emissions associated with the food quantities entered." },
+    { key: "waste", label: "Waste", color: "#9b91bd", value: sanitizeNumber(result.waste), detail: "Your allocated share of household food and mixed waste emissions." }
+  ];
+  const total = categories.reduce((sum, item) => sum + item.value, 0);
+  const totalLabel = document.getElementById("donut-total");
+  if (totalLabel) totalLabel.textContent = formatNumber(total, 0);
+  let cursor = 0;
+  const stops = categories.map(item => {
+    const start = total > 0 ? cursor / total * 100 : 0;
+    cursor += item.value;
+    const end = total > 0 ? cursor / total * 100 : 0;
+    return `${item.color} ${start}% ${end}%`;
+  });
+  chart.style.background = total > 0 ? `conic-gradient(${stops.join(", ")})` : "conic-gradient(#34423a 0% 100%)";
+  categories.forEach(item => {
+    const share = total > 0 ? item.value / total * 100 : 0;
+    const value = document.getElementById(`donut-${item.key}-value`);
+    const percent = document.getElementById(`donut-${item.key}-share`);
+    if (value) value.textContent = `${formatNumber(item.value, 1)} kgCO₂e`;
+    if (percent) percent.textContent = `${share.toFixed(1)}%`;
+  });
+  const buttons = legend.querySelectorAll("[data-category]");
+  buttons.forEach(button => {
+    const item = categories.find(category => category.key === button.dataset.category);
+    button.onclick = () => {
+      buttons.forEach(other => other.setAttribute("aria-pressed", String(other === button)));
+      const share = total > 0 ? item.value / total * 100 : 0;
+      if (!selection) return;
+      selection.replaceChildren();
+      const eyebrow = document.createElement("span");
+      const heading = document.createElement("strong");
+      const paragraph = document.createElement("p");
+      eyebrow.textContent = "CATEGORY DETAIL";
+      heading.textContent = `${item.label} · ${formatNumber(item.value, 1)} kgCO₂e`;
+      paragraph.textContent = `${share.toFixed(1)}% of your estimated footprint. ${item.detail}`;
+      selection.append(eyebrow, heading, paragraph);
+    };
+  });
+  const largest = [...categories].sort((left, right) => right.value - left.value)[0];
+  const initial = largest && largest.value > 0 ? largest : categories[0];
+  legend.querySelector(`[data-category="${initial.key}"]`)?.click();
+}
 
 /* ============================================================
    21. BREAKDOWN PROGRESS BARS
