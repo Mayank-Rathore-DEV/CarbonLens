@@ -209,11 +209,24 @@
         </div>
 
         <form id="carbon-form" novalidate>
+          <div class="wizard-progress" id="wizard-progress" aria-label="Calculator progress">
+            <div class="wizard-progress-top">
+              <span class="wizard-step-count" id="wizard-step-count">Step 1 of 4</span>
+              <span class="wizard-step-name" id="wizard-step-name">Household &amp; energy</span>
+            </div>
+            <div class="wizard-progress-track" role="progressbar" aria-label="Calculator completion" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1" id="wizard-progress-track">
+              <span id="wizard-progress-fill"></span>
+            </div>
+            <div class="wizard-step-dots" aria-hidden="true">
+              <span class="is-active"></span><span></span><span></span><span></span>
+            </div>
+          </div>
           <!-- ===============================================
            HOUSEHOLD ENERGY
            =============================================== -->
 
-          <fieldset class="form-section">
+          <div class="wizard-step" data-step="0" aria-label="Step 1: Household & energy">
+<fieldset class="form-section">
             <legend>Household Energy</legend>
 
             <p class="fieldset-description">
@@ -349,12 +362,14 @@
               </div>
             </div>
           </fieldset>
+</div>
 
           <!-- ===============================================
            PRIVATE TRANSPORTATION
            =============================================== -->
 
-          <fieldset class="form-section">
+          <div class="wizard-step" data-step="1" aria-label="Step 2: Transportation">
+<fieldset class="form-section">
             <legend>Private Transportation</legend>
 
             <p class="fieldset-description">
@@ -488,11 +503,7 @@
             </div>
           </fieldset>
 
-          <!-- ===============================================
-           PUBLIC TRANSPORTATION
-           =============================================== -->
-
-          <fieldset class="form-section">
+<fieldset class="form-section">
             <legend>Public Transportation</legend>
 
             <p class="fieldset-description">
@@ -537,11 +548,7 @@
             </div>
           </fieldset>
 
-          <!-- ===============================================
-           AIR TRAVEL
-           =============================================== -->
-
-          <fieldset class="form-section">
+<fieldset class="form-section">
             <legend>Air Travel</legend>
 
             <p class="fieldset-description">
@@ -595,12 +602,14 @@
               </div>
             </div>
           </fieldset>
+</div>
 
           <!-- ===============================================
            FOOD
            =============================================== -->
 
-          <fieldset class="form-section">
+          <div class="wizard-step" data-step="2" aria-label="Step 3: Food">
+<fieldset class="form-section">
             <legend>Food</legend>
 
             <p class="fieldset-description">
@@ -888,12 +897,14 @@
               </div>
             </div>
           </fieldset>
+</div>
 
           <!-- ===============================================
            WASTE
            =============================================== -->
 
-          <fieldset class="form-section">
+          <div class="wizard-step" data-step="3" aria-label="Step 4: Waste">
+<fieldset class="form-section">
             <legend>Waste</legend>
 
             <p class="fieldset-description">
@@ -936,11 +947,23 @@
               </div>
             </div>
           </fieldset>
+</div>
 
           <!-- ===============================================
            CALCULATOR ACTIONS
            =============================================== -->
 
+
+          <div class="wizard-review" id="wizard-review" hidden>
+            <h3>Quick review</h3>
+            <p>Check that these estimates represent a typical year. You can go back and change any answer.</p>
+            <dl id="wizard-review-list"></dl>
+          </div>
+          <div class="wizard-navigation" id="wizard-navigation">
+            <button type="button" class="button secondary-button" id="wizard-back" disabled>Back</button>
+            <span class="wizard-navigation-hint" id="wizard-navigation-hint">Your answers stay here as you move between steps.</span>
+            <button type="button" class="button primary-button" id="wizard-next">Continue</button>
+          </div>
           <div class="calculator-actions">
             <button
               type="submit"
