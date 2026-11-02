@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "CarbonLens",
+    "slug": "carbonlens",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "carbonlens",
+    "userInterfaceStyle": "light",
+    "android": {
+      "package": "com.mayankrathore.carbonlens",
+      "versionCode": 1
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}
