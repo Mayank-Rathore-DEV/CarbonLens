@@ -139,6 +139,8 @@ function initializeApp() {
 
   setupElectricityInputHelper();
 
+  setupPNGInputHelper();
+
   setupPrivateVehicleFields();
 
   setupVehicleEfficiencyUnit();
@@ -306,6 +308,38 @@ function setupElectricityInputHelper() {
     }
     const annual = isMonthly ? entered * 12 : entered;
     preview.textContent = `Annual consumption used in the calculation: ${annual.toLocaleString("en-IN", { maximumFractionDigits: 1 })} kWh/year.${isMonthly ? " Monthly usage is multiplied by 12." : ""}`;
+  };
+
+  input.addEventListener("input", update);
+  period.addEventListener("change", update);
+  update();
+}
+
+
+function getAnnualPNGConsumption() {
+  const enteredValue = getRequiredNumber("png-consumption");
+  const period = document.getElementById("png-period")?.value || "annual";
+  return period === "monthly" ? enteredValue * 12 : enteredValue;
+}
+
+function setupPNGInputHelper() {
+  const input = document.getElementById("png-consumption");
+  const period = document.getElementById("png-period");
+  const unit = document.getElementById("png-input-unit");
+  const preview = document.getElementById("png-annual-preview");
+  if (!input || !period || !unit || !preview) return;
+
+  const update = () => {
+    const isMonthly = period.value === "monthly";
+    unit.textContent = isMonthly ? "Sm³ / month" : "Sm³ / year";
+    input.placeholder = isMonthly ? "e.g. 12" : "e.g. 144";
+    const entered = input.value.trim() === "" ? NaN : Number(input.value);
+    if (!Number.isFinite(entered) || entered <= 0) {
+      preview.textContent = "Annual consumption used in the calculation: enter your gas volume in Sm³.";
+      return;
+    }
+    const annual = isMonthly ? entered * 12 : entered;
+    preview.textContent = `Annual consumption used in the calculation: ${annual.toLocaleString("en-IN", { maximumFractionDigits: 2 })} Sm³/year.${isMonthly ? " Monthly usage is multiplied by 12." : ""}`;
   };
 
   input.addEventListener("input", update);
@@ -959,7 +993,7 @@ function validateForm() {
   if (selectedFuel === "png") {
 
     const png =
-      getNumber("png-consumption");
+      getAnnualPNGConsumption();
 
     if (
       !Number.isFinite(png) ||
@@ -1336,12 +1370,12 @@ function buildCalculationDetails(householdSize) {
     if (!data || !Number.isFinite(emissions) || emissions <= 0) return;
     rows[category].push({label,activity,factor:data.factor,unit:data.unit||"",formula,emissions:sanitizeNumber(emissions),source:data.source||"Source not specified",sourceUrl:data.sourceUrl||"",referenceYear:data.referenceYear||"",region:data.geographicScope||data.region||"",confidence:data.confidence||"medium",notes:note||data.notes||""});
   };
-  const electricity=getRequiredNumber("electricity"), solar=getNumber("solar"), grid=Math.max(electricity-solar,0);
+  const electricity=getAnnualElectricityConsumption(), solar=getNumber("solar"), grid=Math.max(electricity-solar,0);
   const ef=getEmissionFactorData(EMISSION_FACTORS.energy,"electricity");
   add("energy","Grid electricity",`${formatNumber(grid,1)} kWh net of solar`,ef,`${formatNumber(grid,1)} kWh × ${ef.factor} kgCO₂e/kWh ÷ ${householdSize} people`,grid*ef.factor/householdSize,"Household electricity is allocated evenly across household members. Solar reduces grid electricity; it is not counted as negative emissions.");
   const fuel=cookingFuel?cookingFuel.value:"";
   if(fuel==="lpg"){const n=getNumber("lpg-cylinders"),d=getEmissionFactorData(EMISSION_FACTORS.energy,"lpg");add("energy","LPG cooking gas",`${formatNumber(n,2)} cylinders × ${d.cylinderMassKg} kg`,d,`${formatNumber(n,2)} × ${d.cylinderMassKg} kg × ${d.factor} ÷ ${householdSize} people`,n*d.cylinderMassKg*d.factor/householdSize);}
-  if(fuel==="png"){const n=getNumber("png-consumption"),d=getEmissionFactorData(EMISSION_FACTORS.energy,"png");add("energy","Piped natural gas",`${formatNumber(n,1)} Sm³`,d,`${formatNumber(n,1)} Sm³ × ${d.factor} ÷ ${householdSize} people`,n*d.factor/householdSize);}
+  if(fuel==="png"){const n=getAnnualPNGConsumption(),d=getEmissionFactorData(EMISSION_FACTORS.energy,"png");add("energy","Piped natural gas",`${formatNumber(n,2)} Sm³/year`,d,`${formatNumber(n,2)} Sm³/year × ${d.factor} ÷ ${householdSize} people`,n*d.factor/householdSize,"Monthly bill usage, when selected, is annualized by multiplying by 12.");}
   const choice=document.querySelector('input[name="privateVehicle"]:checked');
   if(choice&&choice.value==="yes"){
     const type=vehicleType?vehicleType.value:"",km=getNumber("vehicle-distance"),eff=getNumber("vehicle-efficiency"),occupancy=getNumber("vehicle-occupancy"),data=getVehicleFactorData(type);
@@ -1610,9 +1644,7 @@ function calculateEnergyEmissions(
   ) {
 
     const pngConsumption =
-      getNumber(
-        "png-consumption"
-      );
+      getAnnualPNGConsumption();
 
 
     const pngFactor =
