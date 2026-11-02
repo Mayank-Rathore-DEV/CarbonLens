@@ -122,6 +122,27 @@ test("monthly electricity input is annualized before emissions are calculated", 
   assert.ok(Math.abs(result.energy - 810.12) < 1e-9);
 });
 
+test("monthly PNG bill input is annualized consistently in emissions and source details", () => {
+  const calc = createCalculator({
+    "household-size": 1,
+    electricity: 0,
+    "electricity-period": "annual",
+    solar: 0,
+    "cooking-fuel": "png",
+    "png-consumption": 10,
+    "png-period": "monthly"
+  });
+
+  const result = calc.api.calculateFootprint();
+  assert.ok(result);
+  assert.ok(Math.abs(result.energy - 240) < 1e-9);
+
+  const pngRow = result.details.energy.find(item => item.label === "Piped natural gas");
+  assert.ok(pngRow);
+  assert.ok(Math.abs(pngRow.emissions - 240) < 1e-9);
+  assert.match(pngRow.activity, /120 Sm³\/year/);
+});
+
 test("food calculation combines different food categories", () => {
   const calc = createCalculator({
     "beef-kg": 1,
