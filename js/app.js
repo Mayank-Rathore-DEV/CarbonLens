@@ -145,6 +145,8 @@ function initializeApp() {
 
   setupCalculatorWizard();
 
+  setupReductionPlanner();
+
   setupFormReset();
 
   setupSmoothNavigation();
@@ -1336,6 +1338,79 @@ function renderCalculationDetails(result) {
   });
 }
 
+
+/* Transparent scenario model: category reductions scale the selected
+   category total linearly. This is a what-if estimate, not a forecast. */
+function calculateReductionScenario(result, reductions = {}) {
+  const categories = ["energy", "transport", "food", "waste"];
+  const current = categories.reduce((sum, key) => sum + sanitizeNumber(result[key]), 0);
+  const savingsByCategory = {};
+  const appliedReductions = {};
+  categories.forEach((key) => {
+    const percentage = Math.min(50, Math.max(0, Number(reductions[key]) || 0));
+    appliedReductions[key] = percentage;
+    savingsByCategory[key] = sanitizeNumber(result[key]) * percentage / 100;
+  });
+  const saved = categories.reduce((sum, key) => sum + savingsByCategory[key], 0);
+  const projected = Math.max(0, current - saved);
+  return {
+    current,
+    saved,
+    projected,
+    savedPercent: current > 0 ? saved / current * 100 : 0,
+    savingsByCategory,
+    reductions: appliedReductions,
+    largestCategory: categories.sort((a, b) => sanitizeNumber(result[b]) - sanitizeNumber(result[a]))[0]
+  };
+}
+
+function setupReductionPlanner() {
+  const root = document.getElementById("reduction-planner");
+  if (!root) return;
+  root.querySelectorAll("[data-reduction]").forEach((input) => {
+    input.addEventListener("input", () => {
+      if (lastCalculation) renderReductionPlanner(lastCalculation, false);
+    });
+  });
+  const reset = document.getElementById("reduction-reset");
+  if (reset) reset.addEventListener("click", () => {
+    root.querySelectorAll("[data-reduction]").forEach((input) => { input.value = "0"; });
+    if (lastCalculation) renderReductionPlanner(lastCalculation, false);
+  });
+}
+
+function renderReductionPlanner(result, resetControls = true) {
+  const root = document.getElementById("reduction-planner");
+  if (!root || !result) return;
+  const controls = [...root.querySelectorAll("[data-reduction]")];
+  if (resetControls) controls.forEach((input) => { input.value = "0"; });
+  const reductions = {};
+  controls.forEach((input) => { reductions[input.dataset.reduction] = Number(input.value); });
+  const scenario = calculateReductionScenario(result, reductions);
+  const set = (id, value) => { const node = document.getElementById(id); if (node) node.textContent = value; };
+  set("scenario-current", formatNumber(scenario.current, 1));
+  set("scenario-saved", formatNumber(scenario.saved, 1));
+  set("scenario-projected", formatNumber(scenario.projected, 1));
+  set("scenario-saved-percent", scenario.savedPercent.toFixed(1) + "%");
+  controls.forEach((input) => {
+    const key = input.dataset.reduction;
+    const output = document.getElementById("reduction-" + key + "-value");
+    if (output) output.textContent = input.value + "%";
+    const saving = document.getElementById("reduction-" + key + "-saving");
+    if (saving) saving.textContent = "Estimated saving: " + formatNumber(scenario.savingsByCategory[key], 1) + " kgCO₂e/year";
+  });
+  const ranked = ["energy", "transport", "food", "waste"]
+    .map((key) => ({ key, value: sanitizeNumber(result[key]) }))
+    .sort((a, b) => b.value - a.value);
+  const largest = ranked.find((item) => item.value > 0);
+  set("scenario-priority", largest
+    ? "Your largest current category is " + ({energy:"Energy",transport:"Transportation",food:"Food",waste:"Waste"}[largest.key]) +
+      " at " + formatNumber(largest.value, 1) + " kgCO₂e per person per year. Test reductions here first."
+    : "Your current estimate is zero, so there is no modelled reduction opportunity yet.");
+  const status = document.getElementById("scenario-assumptions");
+  if (status) status.textContent = "Model assumption: each slider reduces that entire category by the selected percentage. This assumes emissions fall proportionally with activity. It does not model a specific product, behaviour, rebound effect, or guaranteed outcome. Waste uses low-confidence proxy factors, so treat waste savings with extra caution.";
+}
+
 /* ============================================================
    15. ENERGY CALCULATION
    ============================================================ */
@@ -2133,6 +2208,7 @@ function displayResults(
 
   updateDonutChart(result);
   renderCalculationDetails(result);
+  renderReductionPlanner(result);
 
   updateBreakdownBars(
     result
@@ -2753,6 +2829,7 @@ window.CarbonLens = {
   calculateFootprint,
   buildCalculationDetails,
   getFootprintInsights,
+  calculateReductionScenario,
   calculateEnergyEmissions,
   calculateTransportationEmissions,
   calculateFoodEmissions,
