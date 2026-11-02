@@ -67,20 +67,33 @@ emission factors, and calculation assumptions.
 - Independent scientific review
 
 - 
-## 9. Electricity Reporting Period
+## 9. Electricity Emission Factor
 
-CarbonLens will initially use Indian financial years
-for annual electricity-emission calculations.
+CarbonLens uses the Central Electricity Authority (CEA)
+CO2 Baseline Database Version 22.0.
 
-Each electricity consumption period must be matched
-with the corresponding CEA emission factor.
+Selected reporting period: FY 2025-26
 
-The application will not automatically use the latest
-factor for historical electricity consumption.
+Selected electricity emission factor:
+0.6751 kg CO2/kWh
 
-The initial electricity factor is expressed in kg CO2/kWh,
-not kg CO2e/kWh.
+This value represents the all-India weighted-average
+grid emission rate including imports.
 
-The selected factor and its source version must be
-preserved with every calculation.
+Source:
+Central Electricity Authority — CO2 Baseline Database
+for the Indian Power Sector, Version 22.0.
+
+https://cea.nic.in/cdm-co2-baseline-database/
+
+The factor is expressed in kg CO2/kWh, not kg CO2e/kWh.
+
+Electricity consumption must be matched with the
+appropriate reporting-year emission factor.
+
+The application must preserve the factor's source
+and reporting period with each calculation.
+
+This is a national-average estimate. Actual electricity
+emissions may vary by region and time.
 
