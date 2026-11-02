@@ -573,7 +573,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -594,7 +594,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -615,7 +615,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -636,7 +636,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -657,7 +657,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -678,7 +678,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -699,7 +699,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -720,7 +720,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -741,7 +741,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -762,7 +762,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -790,7 +790,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -811,7 +811,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -832,7 +832,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -853,7 +853,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
@@ -889,7 +889,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Published 2018; underlying data approximately 2010"
+      referenceYear: "Published 2018; underlying data approximately 2010",
 
       unit: "kgCO2e/kg",
 
