@@ -56,18 +56,15 @@ const EMISSION_FACTORS = {
 
   energy: {
 
-    /*
-     * India electricity grid factor
-     *
-     * CEA V21.0
-     * FY 2024-25
-     *
-     * 0.7117 tCO2/MWh
-     * =
-     * 0.7117 kgCO2/kWh
-     *
-     * This is a location-based grid factor.
-     */
+     /*
+ * India electricity grid factor
+ *
+ * CEA V22.0
+ * FY 2025-26
+ *
+ * 0.6751 kgCO2/kWh
+ */
+     
 
     electricity: {
 
