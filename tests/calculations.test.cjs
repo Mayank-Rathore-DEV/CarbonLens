@@ -242,3 +242,34 @@ test("footprint insights handle an all-zero result without dividing by zero", ()
   assert.equal(insight.share, 0);
   assert.match(insight.summary, /add up to zero/);
 });
+
+
+test("scenario planner calculates reductions without changing the baseline", () => {
+  const calc = createCalculator();
+  const result = calc.api.calculateReductionScenario(
+    { energy: 100, transport: 200, food: 300, waste: 40 },
+    { energy: 20, transport: 10, food: 0, waste: 50 }
+  );
+  assert.equal(result.current, 640);
+  assert.equal(result.savingsByCategory.energy, 20);
+  assert.equal(result.savingsByCategory.transport, 20);
+  assert.equal(result.savingsByCategory.food, 0);
+  assert.equal(result.savingsByCategory.waste, 20);
+  assert.equal(result.saved, 60);
+  assert.equal(result.projected, 580);
+  assert.equal(result.savedPercent, 9.375);
+  assert.equal(result.largestCategory, "food");
+});
+
+test("scenario planner clamps reductions and safely handles a zero footprint", () => {
+  const calc = createCalculator();
+  const result = calc.api.calculateReductionScenario(
+    { energy: 0, transport: 0, food: 0, waste: 0 },
+    { energy: 90, transport: -10 }
+  );
+  assert.equal(result.saved, 0);
+  assert.equal(result.projected, 0);
+  assert.equal(result.savedPercent, 0);
+  assert.equal(result.reductions.energy, 50);
+  assert.equal(result.reductions.transport, 0);
+});
