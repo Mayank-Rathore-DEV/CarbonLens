@@ -692,9 +692,11 @@ function validateNumericInputValue(rawValue, constraints = {}) {
   const max = constraints.max === null || constraints.max === undefined || constraints.max === ""
     ? NaN
     : Number(constraints.max);
-  const step = constraints.step === null || constraints.step === undefined || constraints.step === "any" || constraints.step === ""
+  const step = constraints.step === "any"
     ? NaN
-    : Number(constraints.step);
+    : constraints.step === null || constraints.step === undefined || constraints.step === ""
+      ? 1
+      : Number(constraints.step);
 
   if (Number.isFinite(min) && value < min) {
     return "Value must be at least " + min + ".";
@@ -880,13 +882,13 @@ function validateForm() {
 
     if (
       !Number.isFinite(lpg) ||
-      lpg < 0
+      lpg <= 0
     ) {
       return {
         valid: false,
         field: "lpg-cylinders",
         message:
-          "Please enter a valid number of LPG cylinders."
+          "Please enter an annual LPG quantity greater than zero."
       };
     }
   }
@@ -899,13 +901,13 @@ function validateForm() {
 
     if (
       !Number.isFinite(png) ||
-      png < 0
+      png <= 0
     ) {
       return {
         valid: false,
         field: "png-consumption",
         message:
-          "Please enter a valid annual PNG consumption."
+          "Please enter an annual PNG quantity greater than zero."
       };
     }
   }
