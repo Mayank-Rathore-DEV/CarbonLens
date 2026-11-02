@@ -108,6 +108,20 @@ test("energy calculation handles grid electricity and LPG", () => {
   assert.equal(calc.api.calculateEnergyEmissions(100, 20), 139.208);
 });
 
+test("monthly electricity input is annualized before emissions are calculated", () => {
+  const calc = createCalculator({
+    "household-size": 1,
+    electricity: 100,
+    "electricity-period": "monthly",
+    solar: 0,
+    "cooking-fuel": "none"
+  });
+
+  const result = calc.api.calculateFootprint();
+  assert.ok(result);
+  assert.ok(Math.abs(result.energy - 810.12) < 1e-9);
+});
+
 test("food calculation combines different food categories", () => {
   const calc = createCalculator({
     "beef-kg": 1,
