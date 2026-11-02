@@ -443,9 +443,17 @@
               </div>
 
               <div class="form-group">
-                <label for="vehicle-distance">
-                  Distance travelled per year
-                </label>
+                <label for="vehicle-distance">Distance travelled</label>
+
+                <p class="input-help">
+                  Use your odometer difference or an estimate of your usual driving distance. Enter the distance for the vehicle, not per passenger.
+                </p>
+
+                <label class="input-sub-label" for="vehicle-distance-period">What period does your distance figure cover?</label>
+                <select id="vehicle-distance-period" name="vehicleDistancePeriod" class="input-period-select">
+                  <option value="monthly">One typical month</option>
+                  <option value="annual" selected>Full year</option>
+                </select>
 
                 <div class="input-with-unit">
                   <input
@@ -454,11 +462,16 @@
                     type="number"
                     min="0"
                     step="1"
-                    placeholder="e.g. 12000"
+                    placeholder="e.g. 1000"
+                    inputmode="decimal"
+                    aria-describedby="vehicle-distance-annual-preview"
                   />
 
-                  <span> km / year </span>
+                  <span id="vehicle-distance-input-unit">km / year</span>
                 </div>
+                <p class="input-conversion-preview" id="vehicle-distance-annual-preview" aria-live="polite">
+                  Annual distance used in the calculation: enter your distance in kilometres.
+                </p>
               </div>
 
               <div class="form-group">
