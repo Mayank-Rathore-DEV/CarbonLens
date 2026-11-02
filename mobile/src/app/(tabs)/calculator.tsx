@@ -39,7 +39,7 @@ const initialValues: Values = {
 };
 
 const foodFields: FieldDef[] = [
-  { key: "beef", label: "Beef", unit: "kg / person / year" },
+  { key: "beef", label: "Beef (beef-herd proxy)", unit: "kg / person / year", hint: "Uses the global beef-herd factor, not dairy-herd beef or an India-specific buffalo factor." },
   { key: "lamb", label: "Lamb / mutton", unit: "kg / person / year" },
   { key: "pork", label: "Pork", unit: "kg / person / year" },
   { key: "poultry", label: "Chicken / poultry", unit: "kg / person / year" },
@@ -49,7 +49,7 @@ const foodFields: FieldDef[] = [
   { key: "rice", label: "Rice", unit: "kg / person / year" },
   { key: "tofu", label: "Tofu", unit: "kg / person / year" },
   { key: "peas", label: "Peas", unit: "kg / person / year" },
-  { key: "beans", label: "Beans / pulses", unit: "kg / person / year" },
+  { key: "beans", label: "Beans / pulses", unit: "kg / person / year", hint: "Mapped to the global \"Other Pulses\" category; not an India-specific dal factor." },
   { key: "potatoes", label: "Potatoes", unit: "kg / person / year" },
   { key: "rootVegetables", label: "Root vegetables", unit: "kg / person / year" },
   { key: "bananas", label: "Bananas", unit: "kg / person / year" },
