@@ -112,9 +112,10 @@ validation of the underlying CEA dataset.
 
 ## 11. LPG Emission Factor — Research Record
 
-### Candidate Factor
+### Source-derived factor and active calculator value
 
-2.985 kg CO2 per kg of LPG.
+IPCC-derived estimate: 2.985 kg CO2 per kg of LPG.
+The calculator currently rounds this to 3.00 kg CO2/kg LPG.
 
 ### Source Data
 
@@ -147,69 +148,62 @@ LPG emissions = LPG consumed (kg)
 
 ### Status
 
-Research candidate — not yet approved
-for production calculations.
+Active in the prototype as a rounded direct-combustion CO2 estimate.
+It is not a full lifecycle or complete CO2e factor and is not approved
+for formal greenhouse-gas inventory reporting.
 
-## 12. Road Transport Fuel — Research Record
+## 12. Private Road Vehicle Fuel Factors — Active Prototype Inputs
 
-### Candidate Emission Factors
+### Factors currently used by the calculator
 
-- Petrol: 2.27 kg CO2/litre
-- Diesel: 2.6444 kg CO2/litre
+- Petrol: 2.31 kg CO2/litre
+- Diesel: 2.68 kg CO2/litre
+- CNG: 2.75 kg CO2/kg CNG
+- Petrol two-wheeler: 2.31 kg CO2/litre
+- Electric vehicle: 0.6751 kg CO2/kWh (CEA FY 2025–26 grid factor)
 
-### Source
+### Source and accounting basis
 
-India GHG Program,
-India Specific Road Transport Emission Factors,
-Technical Paper.
+The petrol, diesel and CNG values are approximate direct-combustion CO2
+proxies informed by IPCC 2006 fuel-combustion defaults and assumed fuel
+properties. They are not India-specific fuel assays and do not include
+upstream fuel production, vehicle manufacture, or a complete CH4/N2O
+calculation. The EV factor uses the CEA India grid factor and operational
+electricity consumption only.
+
+The India GHG Program 2015 Road Transport Technical Paper reports
+vehicle-kilometre factors for specific vehicle classes. Those are not the
+same factors as the fuel-based inputs above and must not be cited as their
+source. They may be evaluated as an alternative model in a future revision.
 
 ### Calculation
 
-Fuel-based emissions:
+For combustion vehicles:
 
-Emissions = Fuel consumed (litres)
-× Fuel emission factor (kg CO2/litre)
+Emissions = (annual vehicle-km / real-world km per litre or km per kg)
+× fuel CO2 factor
 
-### Example
+For EVs:
 
-10 litres of petrol:
+Emissions = (annual vehicle-km / real-world km per kWh)
+× CEA grid CO2 factor
 
-10 × 2.27 = 22.7 kg CO2
+The app divides whole-vehicle emissions by the entered occupancy to
+allocate the result to one passenger.
 
-10 litres of diesel:
+### Status and limitations
 
-10 × 2.6444 = 26.444 kg CO2
-
-### Important Methodology Note
-
-These are fuel-based CO2 factors,
-not universal vehicle-kilometre factors.
-
-To estimate emissions per kilometre,
-vehicle fuel efficiency must also be considered:
-
-Emissions per km =
-Fuel emission factor / Mileage (km/litre)
-
-### Limitations
-
-- The source is an older India-specific
-  technical reference (2015).
-- These factors represent CO2, not automatically CO2e.
-- Actual vehicle emissions vary with fuel,
-  vehicle technology, age and operating conditions.
-- Updated factors and independent review are required.
-
-### Status
-
-Research candidates — not approved
-for production calculations.
+Active in the prototype as direct operational CO2 estimates only.
+Not a complete CO2e or lifecycle factor set. Actual values vary by fuel
+composition, vehicle technology, age, maintenance, traffic and driving
+conditions. Formal reporting requires updated India-specific data and
+independent review.
 
 ## 13. City Bus Emission Factor — Research Record
 
-### Candidate Factor
+### Factor used by the calculator
 
-0.015161 kg CO2/passenger-km.
+0.0152 kg CO2/passenger-km (rounded from the source value 0.015161).
 
 ### Source
 
@@ -242,17 +236,18 @@ Emissions = Passenger distance (km)
 
 ### Status
 
-Research candidate — not approved
-for production calculations.
+Active in the prototype as a low-confidence, CO2-only proxy.
+Not suitable for BRTS, intercity buses or formal inventory reporting.
 
 ---
 
 ## 14. Indian Railways Emission Factor — Research Record
 
-### Candidate Factors
+### Source values and active calculator proxy
 
 - Non-suburban rail: 0.007837 kg CO2/passenger-km.
 - Suburban rail: 0.007976 kg CO2/passenger-km.
+- Calculator proxy: 0.0080 kg CO2/passenger-km (rounded generic value).
 
 ### Source
 
@@ -287,5 +282,48 @@ Emissions = Passenger distance (km)
 
 ### Status
 
-Research candidates — not approved
-for production calculations.
+Active in the prototype as a low-confidence, CO2-only Indian Railways proxy.
+The rounded single factor does not distinguish suburban/non-suburban service
+or passenger class. It is not suitable for metro/MRTS or formal inventory
+reporting without updated, mode-specific data.
+
+
+## 15. Passenger Aviation Factors — Active Prototype Inputs
+
+### Factors currently used
+
+- Domestic flights: 0.1252 kg CO2e/passenger-km.
+- International flights (non-UK average): 0.0778 kg CO2e/passenger-km.
+
+### Source
+
+UK Department for Energy Security and Net Zero, 2026 Government
+Greenhouse Gas Conversion Factors for Company Reporting, Methodology
+Report, Table 43 (average passenger factors).
+
+Official source:
+https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2026
+
+Methodology report:
+https://assets.publishing.service.gov.uk/media/6a2940543b15d05a7ce3202e/2026-GHG-conversion-factors-methodology-report.pdf
+
+### Included and excluded emissions
+
+The table reports total passenger GHG factors including CO2, CH4 and N2O.
+The base factors used here exclude the distance uplift and the 1.7
+radiative-forcing uplift applied to aviation CO2 in separate reporting
+factors. The radiative-forcing multiplier is uncertain and is applied only
+to the CO2 component in the government methodology.
+
+### Geographic limitation
+
+These are UK-derived average aviation factors, not India-specific
+aircraft, route, airline, load-factor or cabin-class measurements.
+They are used as generic proxies until India-relevant route-specific
+data or an appropriate harmonised global dataset is adopted.
+
+### Status
+
+Active in the prototype as medium-confidence non-India-specific proxies.
+They must not be described as India-specific or as including aviation's
+non-CO2 radiative-forcing effects.

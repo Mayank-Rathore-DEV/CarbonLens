@@ -1,5 +1,12 @@
 import { useMemo, useState } from "react";
 import {
+  calculateFootprint,
+  CalculationInputError,
+  foodFactors,
+  type CalculatorValues,
+  type CalculationResult
+} from "../../lib/calculator";
+import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -17,11 +24,11 @@ const C = {
   mint: "#EDF5F0", peach: "#FBF1EA", red: "#B54747"
 };
 
-type Values = Record<string, string>;
+type Values = CalculatorValues;
 type FieldDef = { key: string; label: string; unit: string; hint?: string };
 
 const initialValues: Values = {
-  householdSize: "1", electricity: "", electricityPeriod: "monthly", solar: "",
+  householdSize: "1", electricity: "", electricityPeriod: "monthly",
   cookingFuel: "lpg", lpgCylinders: "", pngConsumption: "", pngPeriod: "monthly",
   privateVehicle: "no", vehicleType: "petrol-car", vehicleDistance: "",
   vehicleDistancePeriod: "monthly", vehicleEfficiency: "", vehicleOccupancy: "1",
@@ -50,31 +57,12 @@ const foodFields: FieldDef[] = [
   { key: "tomatoes", label: "Tomatoes", unit: "kg / person / year" }
 ];
 
-const foodFactors: Record<string, number> = {
-  beef: 99.48, lamb: 39.72, pork: 12.31, poultry: 9.87, cheese: 23.88,
-  milk: 3.15, eggs: 4.67, rice: 4.45, tofu: 3.16, peas: 0.98,
-  beans: 1.37, potatoes: 0.46, rootVegetables: 0.43, bananas: 0.86,
-  apples: 0.43, tomatoes: 2.09
-};
-
 const steps = [
   { title: "Household energy", subtitle: "Electricity and cooking fuel", mark: "01" },
   { title: "Transport", subtitle: "Your annual travel activity", mark: "02" },
   { title: "Food", subtitle: "Average food consumed per person", mark: "03" },
   { title: "Waste", subtitle: "Household waste generated in a year", mark: "04" }
 ];
-
-function number(values: Values, key: string): number {
-  const raw = values[key]?.trim() ?? "";
-  if (!raw) return 0;
-  const parsed = Number(raw);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
-}
-
-function annual(values: Values, key: string, periodKey: string): number {
-  const value = number(values, key);
-  return values[periodKey] === "monthly" ? value * 12 : value;
-}
 
 function OptionGroup({
   value, options, onChange
@@ -146,10 +134,7 @@ function ChoiceField({
 export default function CalculatorScreen() {
   const [values, setValues] = useState<Values>(initialValues);
   const [step, setStep] = useState(0);
-  const [result, setResult] = useState<null | {
-    total: number; householdTotal: number;
-    categories: { energy: number; transport: number; food: number; waste: number };
-  }>(null);
+  const [result, setResult] = useState<CalculationResult | null>(null);
   const [error, setError] = useState("");
 
   const update = (key: string, value: string) => {
@@ -160,72 +145,17 @@ export default function CalculatorScreen() {
   const progress = useMemo(() => ((step + 1) / steps.length) * 100, [step]);
 
   const calculate = () => {
-    const householdSize = number(values, "householdSize");
-    if (householdSize < 1) {
-      setError("Enter a household size of at least 1.");
-      setStep(0);
-      return;
-    }
-
-    const electricity = annual(values, "electricity", "electricityPeriod");
-    const solar = number(values, "solar");
-    let householdEnergy = Math.max(electricity - solar, 0) * 0.6751;
-
-    if (values.cookingFuel === "lpg") {
-      householdEnergy += number(values, "lpgCylinders") * 14.2 * 3.0;
-    } else if (values.cookingFuel === "png") {
-      householdEnergy += annual(values, "pngConsumption", "pngPeriod") * 2.0;
-    }
-
-    let transport = 0;
-    if (values.privateVehicle === "yes") {
-      const distance = annual(values, "vehicleDistance", "vehicleDistancePeriod");
-      const efficiency = number(values, "vehicleEfficiency");
-      const occupancy = number(values, "vehicleOccupancy");
-      if (distance > 0 && (efficiency <= 0 || occupancy <= 0)) {
-        setError("For private vehicle travel, enter a valid efficiency and number of occupants.");
-        setStep(1);
+    try {
+      setResult(calculateFootprint(values));
+    } catch (calculationError) {
+      if (calculationError instanceof CalculationInputError) {
+        setError(calculationError.message);
+        setStep(calculationError.step);
         return;
       }
-      if (distance > 0) {
-        const factors: Record<string, number> = {
-          "petrol-car": 2.31, "diesel-car": 2.68, "cng-car": 2.75,
-          "petrol-bike": 2.31, ev: 0.6751
-        };
-        transport += (distance / efficiency) * (factors[values.vehicleType] ?? 0) / occupancy;
-      }
-    }
 
-    transport += number(values, "railDistance") * 0.008;
-    transport += number(values, "busDistance") * 0.0152;
-    transport += number(values, "domesticFlightDistance") * 0.1252;
-    transport += number(values, "internationalFlightDistance") * 0.0778;
-
-    let food = 0;
-    Object.entries(foodFactors).forEach(([key, factor]) => {
-      food += number(values, key) * factor;
-    });
-
-    const householdWaste =
-      number(values, "foodWaste") * 0.4208 +
-      number(values, "mixedWaste") * 0.3338;
-
-    const energyPerPerson = householdEnergy / householdSize;
-    const wastePerPerson = householdWaste / householdSize;
-    const total = energyPerPerson + transport + food + wastePerPerson;
-
-    if (!Number.isFinite(total) || total < 0) {
       setError("We couldn't calculate this set of inputs. Check the numbers and try again.");
-      return;
     }
-
-    setResult({
-      total,
-      householdTotal: householdEnergy + householdWaste + (transport + food) * householdSize,
-      categories: {
-        energy: energyPerPerson, transport, food, waste: wastePerPerson
-      }
-    });
   };
 
   const reset = () => {
@@ -264,7 +194,7 @@ export default function CalculatorScreen() {
               </View>
             </View>
           ))}
-          <Text style={styles.methodNote}>Method: activity data × emission factor. Electricity uses the India CEA FY 2025–26 factor (0.6751 kg CO₂/kWh). Household energy and waste are divided by household size; food and travel are personal inputs. Food factors are global averages, and waste factors are low-confidence estimates.</Text>
+          <Text style={styles.methodNote}>Method: activity data × emission factor. Electricity uses the India CEA FY 2025–26 grid factor (0.6751 kg CO₂/kWh) on annualised bill kWh. Household energy and waste are divided by household size; food and travel are personal inputs. Food factors are global lifecycle averages; waste factors are low-confidence proxies. Transport, fuel and electricity factors do not all cover the same greenhouse gases or lifecycle stages: rail, bus and fuel-combustion factors are CO₂-only, while the aviation factors include CO₂, CH₄ and N₂O but exclude radiative-forcing and distance uplifts. Treat this as a partial indicative estimate, not a complete harmonised CO₂e inventory.</Text>
           <Pressable style={styles.primaryButton} onPress={reset}>
             <Text style={styles.primaryButtonText}>Calculate again</Text>
           </Pressable>
@@ -301,7 +231,6 @@ export default function CalculatorScreen() {
                 <NumberField label="People in your household" unit="people" value={values.householdSize} onChange={(v) => update("householdSize", v)} hint="Used to allocate household electricity, cooking fuel and waste per person." placeholder="1" />
                 <NumberField label="Grid electricity consumption" unit={values.electricityPeriod === "monthly" ? "kWh / month" : "kWh / year"} value={values.electricity} onChange={(v) => update("electricity", v)} hint="Use your electricity bill. Monthly use is multiplied by 12." />
                 <ChoiceField label="Electricity bill period" value={values.electricityPeriod} options={[{ label: "Monthly", value: "monthly" }, { label: "Annual", value: "annual" }]} onChange={(v) => update("electricityPeriod", v)} />
-                <NumberField label="Solar electricity generated" unit="kWh / year" value={values.solar} onChange={(v) => update("solar", v)} hint="Enter annual on-site solar generation, if applicable. Leave blank if none." />
                 <ChoiceField label="Main cooking fuel" value={values.cookingFuel} options={[{ label: "LPG", value: "lpg" }, { label: "PNG", value: "png" }, { label: "Electric", value: "electric" }, { label: "None", value: "none" }]} onChange={(v) => update("cookingFuel", v)} />
                 {values.cookingFuel === "lpg" ? <NumberField label="LPG cylinders used" unit="14.2 kg cylinders / year" value={values.lpgCylinders} onChange={(v) => update("lpgCylinders", v)} hint="Count full domestic cylinders used by the household in one year." /> : null}
                 {values.cookingFuel === "png" ? (
@@ -331,8 +260,8 @@ export default function CalculatorScreen() {
                   </>
                 ) : null}
                 <Text style={styles.groupLabel}>Public transport and flights</Text>
-                <NumberField label="Passenger rail" unit="passenger-km / year" value={values.railDistance} onChange={(v) => update("railDistance", v)} />
-                <NumberField label="City bus" unit="passenger-km / year" value={values.busDistance} onChange={(v) => update("busDistance", v)} />
+                <NumberField label="Indian Railways travel" unit="passenger-km / year" value={values.railDistance} onChange={(v) => update("railDistance", v)} hint="Indian Railways only; exclude metro/MRTS. The underlying factor uses 2014–15 data." />
+                <NumberField label="Intracity bus" unit="passenger-km / year" value={values.busDistance} onChange={(v) => update("busDistance", v)} hint="City bus only; exclude BRTS and intercity buses. Factor is from a 2015 India study." />
                 <NumberField label="Domestic flights" unit="passenger-km / year" value={values.domesticFlightDistance} onChange={(v) => update("domesticFlightDistance", v)} />
                 <NumberField label="International flights" unit="passenger-km / year" value={values.internationalFlightDistance} onChange={(v) => update("internationalFlightDistance", v)} />
                 <Text style={styles.infoNote}>For public transport and flights, enter your own passenger distance for the year.</Text>

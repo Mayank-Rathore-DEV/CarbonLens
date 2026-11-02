@@ -932,7 +932,7 @@ function validateForm() {
     );
 
   if (
-    !Number.isFinite(householdSize) ||
+    !Number.isInteger(householdSize) ||
     householdSize < 1 ||
     householdSize > 30
   ) {
@@ -961,40 +961,6 @@ function validateForm() {
       field: "electricity",
       message:
         "Please enter a valid electricity consumption value."
-    };
-  }
-
-
-  /* ----------------------------------------------------------
-     Solar
-     ---------------------------------------------------------- */
-
-  const solar =
-    getNumber("solar");
-
-  if (
-    !Number.isFinite(solar) ||
-    solar < 0
-  ) {
-    return {
-      valid: false,
-      field: "solar",
-      message:
-        "Please enter a valid annual solar generation value."
-    };
-  }
-
-
-  /* ----------------------------------------------------------
-     Solar cannot exceed electricity consumption
-     ---------------------------------------------------------- */
-
-  if (solar > electricity) {
-    return {
-      valid: false,
-      field: "solar",
-      message:
-        "Solar generation cannot be greater than the annual electricity consumption entered for this calculation."
     };
   }
 
@@ -1104,42 +1070,32 @@ function validateForm() {
     }
 
 
-    const efficiency =
-      getRequiredNumber(
-        "vehicle-efficiency"
-      );
+    if (distance > 0) {
+      const efficiency =
+        getRequiredNumber("vehicle-efficiency");
 
+      if (!Number.isFinite(efficiency) || efficiency <= 0) {
+        return {
+          valid: false,
+          field: "vehicle-efficiency",
+          message: "Please enter a vehicle efficiency greater than zero."
+        };
+      }
 
-    if (
-      !Number.isFinite(efficiency) ||
-      efficiency <= 0
-    ) {
-      return {
-        valid: false,
-        field: "vehicle-efficiency",
-        message:
-          "Please enter a vehicle efficiency greater than zero."
-      };
-    }
+      const occupancy =
+        getRequiredNumber("vehicle-occupancy");
 
-
-    const occupancy =
-      getRequiredNumber(
-        "vehicle-occupancy"
-      );
-
-
-    if (
-      !Number.isFinite(occupancy) ||
-      occupancy < 1 ||
-      occupancy > 20
-    ) {
-      return {
-        valid: false,
-        field: "vehicle-occupancy",
-        message:
-          "Vehicle occupancy must be between 1 and 20 people."
-      };
+      if (
+        !Number.isInteger(occupancy) ||
+        occupancy < 1 ||
+        occupancy > 20
+      ) {
+        return {
+          valid: false,
+          field: "vehicle-occupancy",
+          message: "Vehicle occupancy must be a whole number between 1 and 20."
+        };
+      }
     }
   }
 
@@ -1337,19 +1293,12 @@ function calculateFootprint() {
     getAnnualElectricityConsumption();
 
 
-  const solar =
-    getNumber("solar");
-
-
   /* ----------------------------------------------------------
      Calculate categories
      ---------------------------------------------------------- */
 
   const energy =
-    calculateEnergyEmissions(
-      electricity,
-      solar
-    );
+    calculateEnergyEmissions(electricity);
 
 
   const transport =
@@ -1415,9 +1364,9 @@ function buildCalculationDetails(householdSize) {
     if (!data || !Number.isFinite(emissions) || emissions <= 0) return;
     rows[category].push({label,activity,factor:data.factor,unit:data.unit||"",formula,emissions:sanitizeNumber(emissions),source:data.source||"Source not specified",sourceUrl:data.sourceUrl||"",referenceYear:data.referenceYear||"",region:data.geographicScope||data.region||"",confidence:data.confidence||"medium",notes:note||data.notes||""});
   };
-  const electricity=getAnnualElectricityConsumption(), solar=getNumber("solar"), grid=Math.max(electricity-solar,0);
+  const grid=getAnnualElectricityConsumption();
   const ef=getEmissionFactorData(EMISSION_FACTORS.energy,"electricity");
-  add("energy","Grid electricity",`${formatNumber(grid,1)} kWh net of solar`,ef,`${formatNumber(grid,1)} kWh × ${ef.factor} kgCO₂e/kWh ÷ ${householdSize} people`,grid*ef.factor/householdSize,"Household electricity is allocated evenly across household members. Solar reduces grid electricity; it is not counted as negative emissions.");
+  add("energy","Grid electricity purchased",`${formatNumber(grid,1)} kWh`,ef,`${formatNumber(grid,1)} kWh × ${ef.factor} kgCO₂/kWh ÷ ${householdSize} people`,grid*ef.factor/householdSize,"Annualised utility-bill kWh is treated as grid electricity imported. On-site solar is not subtracted again.");
   const fuel=cookingFuel?cookingFuel.value:"";
   if(fuel==="lpg"){const n=getNumber("lpg-cylinders"),d=getEmissionFactorData(EMISSION_FACTORS.energy,"lpg");add("energy","LPG cooking gas",`${formatNumber(n,2)} cylinders × ${d.cylinderMassKg} kg`,d,`${formatNumber(n,2)} × ${d.cylinderMassKg} kg × ${d.factor} ÷ ${householdSize} people`,n*d.cylinderMassKg*d.factor/householdSize);}
   if(fuel==="png"){const n=getAnnualPNGConsumption(),d=getEmissionFactorData(EMISSION_FACTORS.energy,"png");add("energy","Piped natural gas",`${formatNumber(n,2)} Sm³/year`,d,`${formatNumber(n,2)} Sm³/year × ${d.factor} ÷ ${householdSize} people`,n*d.factor/householdSize,"Monthly bill usage, when selected, is annualized by multiplying by 12.");}
@@ -1575,27 +1524,19 @@ function renderReductionPlanner(result, resetControls = true) {
    15. ENERGY CALCULATION
    ============================================================ */
 
-function calculateEnergyEmissions(
-  electricity,
-  solar
-) {
+function calculateEnergyEmissions(electricity) {
 
   let emissions = 0;
 
 
   /* ----------------------------------------------------------
-     Grid electricity
-     
-     The emission-factor file defines solar generation as
-     operationally zero and specifies that solar generation
-     reduces the electricity attributable to the grid.
+     Grid electricity purchased
+
+     The user enters utility-bill kWh, which is already grid
+     import. Do not subtract rooftop solar a second time.
      ---------------------------------------------------------- */
 
-  const gridElectricity =
-    Math.max(
-      electricity - solar,
-      0
-    );
+  const gridElectricity = electricity;
 
 
   const electricityFactor =
@@ -2864,7 +2805,6 @@ function updateWizardReview() {
   const rows = [
     ["Household size", `${read("household-size")} people`],
     ["Electricity", `${read("electricity")} kWh/year`],
-    ["Solar generation", `${read("solar")} kWh/year`],
     ["Cooking fuel", fuel],
     ["Private vehicle", privateVehicle === "yes" ? read("vehicle-type") : "No"],
     ["Train / bus", `${read("rail-distance")} / ${read("bus-distance")} passenger-km`],

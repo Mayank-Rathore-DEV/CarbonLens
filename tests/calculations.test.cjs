@@ -105,7 +105,12 @@ test("energy calculation handles grid electricity and LPG", () => {
     "cooking-fuel": "lpg",
     "lpg-cylinders": 2
   });
-  assert.equal(calc.api.calculateEnergyEmissions(100, 20), 139.208);
+  assert.ok(Math.abs(calc.api.calculateEnergyEmissions(100) - 152.71) < 1e-9);
+});
+
+test("utility-bill electricity is treated as grid import without a second solar deduction", () => {
+  const calc = createCalculator({ "cooking-fuel": "none" });
+  assert.equal(calc.api.calculateEnergyEmissions(100), 67.51);
 });
 
 test("monthly electricity input is annualized before emissions are calculated", () => {
@@ -113,7 +118,6 @@ test("monthly electricity input is annualized before emissions are calculated", 
     "household-size": 1,
     electricity: 100,
     "electricity-period": "monthly",
-    solar: 0,
     "cooking-fuel": "none"
   });
 
@@ -127,7 +131,6 @@ test("monthly PNG bill input is annualized consistently in emissions and source 
     "household-size": 1,
     electricity: 0,
     "electricity-period": "annual",
-    solar: 0,
     "cooking-fuel": "png",
     "png-consumption": 10,
     "png-period": "monthly"
@@ -180,7 +183,6 @@ test("monthly private-vehicle distance is annualized in emissions and source det
     "household-size": 1,
     electricity: 0,
     "electricity-period": "annual",
-    solar: 0,
     "cooking-fuel": "none",
     "vehicle-type": "petrol-car",
     "vehicle-distance": 1000,
@@ -213,7 +215,6 @@ test("combined footprint total equals the sum of all four categories", () => {
   const calc = createCalculator({
     "household-size": 2,
     electricity: 1000,
-    solar: 200,
     "cooking-fuel": "lpg",
     "lpg-cylinders": 4,
     "vehicle-type": "petrol-car",
@@ -246,13 +247,13 @@ test("combined footprint total equals the sum of all four categories", () => {
     const detailTotal = result.details[category].reduce((sum, item) => sum + item.emissions, 0);
     assert.ok(Math.abs(detailTotal - result[category]) < 1e-9, `${category} detail rows must reconcile`);
   }
-  assert.ok(result.details.energy.some(item => item.label === "Grid electricity"));
+  assert.ok(result.details.energy.some(item => item.label === "Grid electricity purchased"));
   assert.ok(result.details.transport.some(item => item.label === "Passenger rail"));
   assert.ok(result.details.food.some(item => item.label === "Rice"));
   assert.ok(result.details.waste.some(item => item.label === "Food waste"));
 
   // Household energy and waste are divided across two members.
-  assert.ok(Math.abs(result.energy - 355.24) < 1e-9);
+  assert.ok(Math.abs(result.energy - 422.75) < 1e-9);
   assert.ok(Math.abs(result.waste - 5.442) < 1e-9);
 
   // Transport and food remain individual estimates.

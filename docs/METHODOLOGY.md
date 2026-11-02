@@ -6,33 +6,40 @@
 CarbonLens estimates greenhouse gas emissions
 associated with selected personal lifestyle activities.
 
-## 2. Initial Categories
+## 2. Categories currently included
 
-The initial version covers:
+The current calculator includes:
 
-- Household electricity
-- LPG consumption
-- Personal transportation
-- Food consumption
+- Household grid electricity
+- LPG and PNG cooking fuel
+- Private vehicle travel
+- Passenger rail and intracity bus travel
+- Domestic and international air travel
+- Selected food consumption
+- Food waste and mixed household waste
 
-## 3. Excluded Categories
+## 3. Categories excluded
 
-These categories are not included in the initial calculation:
+The current calculator does not include:
 
-- Shopping
-- Waste
+- Shopping and durable goods
 - Water consumption
 - Digital services
 - Carbon offsets
+- Solar-panel manufacturing and lifecycle emissions
 
-They may be added in future versions after suitable
-scientific data and calculation methods are established.
+Waste is included only as a low-confidence proxy estimate. It is not
+an India-specific municipal-waste inventory and should not be treated
+as a reliable measure of local disposal emissions.
 
 ## 4. Calculation Formula
 
 Emissions = Activity Data × Emission Factor
 
-Results are expressed in kg CO2e.
+The interface reports an indicative kg CO2e estimate, but the current factor set
+is not a fully harmonised greenhouse-gas inventory: some factors represent
+CO2 only, while other factors include multiple greenhouse gases. The result
+must therefore be described as a partial estimate, not a complete CO2e total.
 
 ## 5. Data Sources
 
@@ -97,3 +104,39 @@ and reporting period with each calculation.
 This is a national-average estimate. Actual electricity
 emissions may vary by region and time.
 
+
+
+## 10. Electricity bill boundary — rooftop solar
+
+The household electricity input is the annualised kWh imported from the
+utility grid, taken from the electricity bill. The calculator applies the
+CEA grid factor directly to this imported electricity.
+
+Do not subtract rooftop solar generation from a utility-bill kWh figure:
+the bill already reflects the electricity imported from the grid (including
+any applicable net-metering treatment). Subtracting solar generation again
+would double-count the solar reduction and understate emissions.
+
+On-site solar generation is therefore not a separate calculator input in
+this version. Embodied emissions from solar panels and their lifecycle are
+outside the current operational electricity boundary.
+
+
+## 11. Mixed greenhouse-gas coverage and interpretation
+
+The calculator currently combines factors with different gas coverage and
+system boundaries. In particular:
+
+- CEA electricity, LPG/PNG combustion, road-fuel combustion, Indian rail,
+  and Indian intracity bus factors are CO2-only operational/combustion
+  proxies.
+- The 2026 UK government domestic and non-UK international aviation
+  passenger factors include CO2, CH4 and N2O but exclude the distance and
+  radiative-forcing uplifts in the base values used here.
+- Food factors are global lifecycle CO2e averages.
+- Waste factors are low-confidence, non-India-specific disposal proxies.
+
+These factors cannot be presented as a single fully harmonised lifecycle
+inventory. The result is an indicative partial footprint with explicit
+coverage limitations. Improving this requires compatible CO2e factors for
+all categories, with consistent boundaries and regional applicability.
