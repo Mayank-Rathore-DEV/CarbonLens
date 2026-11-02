@@ -72,6 +72,15 @@ test("LPG cylinder mass is configured as 14.2 kg", () => {
   assert.equal(EMISSION_FACTORS.energy.lpg.cylinderMassKg, 14.2);
 });
 
+test("food factors match the selected OWID 2010 global dataset mappings", () => {
+  assert.equal(EMISSION_FACTORS.food.beef.factor, 99.48);
+  assert.equal(EMISSION_FACTORS.food.lamb.factor, 39.72);
+  assert.equal(EMISSION_FACTORS.food.rice.factor, 4.45);
+  assert.equal(EMISSION_FACTORS.food.beans.factor, 1.79);
+  assert.match(EMISSION_FACTORS.food.beans.source, /Other Pulses/);
+  assert.equal(EMISSION_FACTORS.food.beef.geographicScope, "Global lifecycle dataset; not India-specific");
+});
+
 test("factor metadata distinguishes geographic scope and confidence", () => {
   assert.equal(EMISSION_FACTORS.energy.electricity.confidence, "high");
   assert.match(EMISSION_FACTORS.food.rice.geographicScope, /Global/);
