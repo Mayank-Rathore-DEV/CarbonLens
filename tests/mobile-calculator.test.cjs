@@ -1,5 +1,8 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const vm = require("node:vm");
 
 const calculatorModule = import("../mobile/src/lib/calculator.ts");
 
@@ -40,6 +43,38 @@ const baseValues = {
   foodWaste: "52",
   mixedWaste: "260"
 };
+
+test("mobile factors stay in sync with the authoritative web factor register", async () => {
+  const { calculationFactors, foodFactors } = await calculatorModule;
+  const context = { Number, Object, Array, console };
+  vm.createContext(context);
+  const factorSource = fs.readFileSync(
+    path.join(__dirname, "..", "js", "emissionFactors.js"),
+    "utf8"
+  );
+  vm.runInContext(factorSource, context, { filename: "emissionFactors.js" });
+  const web = vm.runInContext("EMISSION_FACTORS", context);
+
+  assert.equal(calculationFactors.electricity, web.energy.electricity.factor);
+  assert.equal(calculationFactors.lpg.factor, web.energy.lpg.factor);
+  assert.equal(calculationFactors.lpg.cylinderMassKg, web.energy.lpg.cylinderMassKg);
+  assert.equal(calculationFactors.png, web.energy.png.factor);
+  assert.equal(calculationFactors.vehicles["petrol-car"], web.transportation["petrol-car"].factor);
+  assert.equal(calculationFactors.vehicles["diesel-car"], web.transportation["diesel-car"].factor);
+  assert.equal(calculationFactors.vehicles["cng-car"], web.transportation["cng-car"].factor);
+  assert.equal(calculationFactors.vehicles["petrol-bike"], web.transportation["petrol-bike"].factor);
+  assert.equal(calculationFactors.vehicles.ev, web.transportation.ev.factor);
+  assert.equal(calculationFactors.publicTransport.rail, web.publicTransport.rail.factor);
+  assert.equal(calculationFactors.publicTransport.bus, web.publicTransport.bus.factor);
+  assert.equal(calculationFactors.flights.domestic, web.flights.domestic.factor);
+  assert.equal(calculationFactors.flights.international, web.flights.international.factor);
+  assert.equal(calculationFactors.waste.food, web.waste.food.factor);
+  assert.equal(calculationFactors.waste.mixed, web.waste.mixed.factor);
+
+  for (const [key, factor] of Object.entries(foodFactors)) {
+    assert.equal(factor, web.food[key].factor, "food factor mismatch: " + key);
+  }
+});
 
 test("mobile engine reproduces the independently calculated reference case", async () => {
   const { calculateFootprint } = await calculatorModule;
