@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   sectionSubtitle: { color: COLORS.muted, fontSize: 11, lineHeight: 16, marginTop: 4, maxWidth: 270 },
   sectionMeta: { color: COLORS.purple, fontSize: 9, fontWeight: "800", letterSpacing: 0.8 },
   categoryGrid: { flexDirection: "row", flexWrap: "wrap", gap: 10, marginBottom: 27 },
-  categoryCard: { width: "48.4%", minHeight: 145, backgroundColor: COLORS.white, borderWidth: 1, borderColor: COLORS.border, borderRadius: 17, padding: 13 },
+  categoryCard: { width: "47.5%", minHeight: 145, backgroundColor: COLORS.white, borderWidth: 1, borderColor: COLORS.border, borderRadius: 17, padding: 13 },
   categoryMark: { width: 29, height: 29, borderRadius: 10, alignItems: "center", justifyContent: "center", marginBottom: 9 },
   categoryInitial: { color: COLORS.ink, fontSize: 12, fontWeight: "800" },
   categoryName: { color: COLORS.ink, fontSize: 13, fontWeight: "800" },
