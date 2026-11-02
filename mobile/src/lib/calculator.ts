@@ -32,7 +32,7 @@ export const foodFactors: Record<string, number> = {
   rice: 4.45,
   tofu: 3.16,
   peas: 0.98,
-  beans: 1.37,
+  beans: 1.79,
   potatoes: 0.46,
   rootVegetables: 0.43,
   bananas: 0.86,
