@@ -87,6 +87,17 @@ const wasteProgress = document.getElementById(
   "waste-progress"
 );
 
+const categoryShareElements = {
+  energy: document.getElementById("energy-share"),
+  transport: document.getElementById("transport-share"),
+  food: document.getElementById("food-share"),
+  waste: document.getElementById("waste-share")
+};
+
+const insightSummary = document.getElementById("insight-summary");
+const insightAction = document.getElementById("insight-action");
+
+
 const formStatus = document.getElementById("form-status");
 
 const calculationStatus = document.getElementById(
@@ -214,7 +225,7 @@ function setupMobileNavigation() {
 
   menuToggle.addEventListener("click", () => {
     const isOpen =
-      mainMenu.classList.toggle("active");
+      mainMenu.classList.toggle("open");
 
     menuToggle.classList.toggle(
       "active",
@@ -239,7 +250,7 @@ function setupMobileNavigation() {
 
   navigationLinks.forEach((link) => {
     link.addEventListener("click", () => {
-      mainMenu.classList.remove("active");
+      mainMenu.classList.remove("open");
 
       menuToggle.classList.remove("active");
 
@@ -2067,9 +2078,7 @@ function displayResults(
   );
 
 
-  updateResultSummary(
-    total
-  );
+  updateResultSummary(result);
 
 
   if (calculationStatus) {
@@ -2135,6 +2144,13 @@ function updateBreakdownBars(
     result.waste,
     total
   );
+
+  Object.entries(categoryShareElements).forEach(([category, element]) => {
+    if (!element) return;
+    const value = sanitizeNumber(result[category]);
+    const share = total > 0 ? (value / total) * 100 : 0;
+    element.textContent = `${share.toFixed(1)}%`;
+  });
 }
 
 
@@ -2189,48 +2205,53 @@ function updateProgressBar(
    22. RESULT SUMMARY
    ============================================================ */
 
-function updateResultSummary(
-  total
-) {
+function getFootprintInsights(result) {
+  const categories = [
+    { key: "energy", label: "Energy", value: sanitizeNumber(result.energy) },
+    { key: "transport", label: "Transportation", value: sanitizeNumber(result.transport) },
+    { key: "food", label: "Food", value: sanitizeNumber(result.food) },
+    { key: "waste", label: "Waste", value: sanitizeNumber(result.waste) }
+  ];
 
-  if (!resultSummary) {
-    return;
+  const total = categories.reduce((sum, item) => sum + item.value, 0);
+  const ranked = [...categories].sort((left, right) => right.value - left.value);
+  const largest = ranked[0];
+  const share = total > 0 ? (largest.value / total) * 100 : 0;
+
+  if (total <= 0 || largest.value <= 0) {
+    return {
+      largest: null,
+      share: 0,
+      summary: "Your entered activities currently add up to zero estimated emissions. Check that the activity values reflect a typical year before drawing conclusions.",
+      action: "Review your electricity, travel, food and waste entries. Missing activity data can make an estimate look lower than it really is."
+    };
   }
 
+  const actions = {
+    energy: "Review your electricity bill and identify high-use appliances. Reduce avoidable cooling and standby use, and consider efficient appliances when replacing old ones.",
+    transport: "Look at your most frequent journeys first. Combine errands, use public transport for suitable routes, or share rides where practical.",
+    food: "Review your highest-impact food choices and avoid unnecessary food waste. Try replacing some high-impact meals with lower-impact alternatives that fit your diet.",
+    waste: "Separate wet and dry waste where local collection supports it, compost suitable organic waste, and avoid sending recyclable material into mixed waste."
+  };
 
-  const tonnes =
-    total / 1000;
-
-
-  let message;
-
-
-  if (tonnes < 2) {
-
-    message =
-      "Your estimated annual footprint is relatively low. Focus on the categories where your emissions are highest and look for practical reductions.";
-
-  } else if (tonnes < 5) {
-
-    message =
-      "Your estimated footprint is moderate. Reducing energy use, private transport and high-emission food choices can make a meaningful difference.";
-
-  } else if (tonnes < 10) {
-
-    message =
-      "Your estimated footprint is substantial. Transportation, energy and consumption patterns are likely areas worth examining closely.";
-
-  } else {
-
-    message =
-      "Your estimated footprint is high. Start with the largest categories in your breakdown and prioritize changes that can reduce emissions significantly.";
-  }
-
-
-  resultSummary.textContent =
-    message;
+  return {
+    largest: largest.key,
+    share,
+    summary: `${largest.label} is your largest estimated source at ${share.toFixed(1)}% of the footprint (${formatNumber(largest.value, 1)} kgCO₂e per person each year). Start by improving this category; the other categories remain part of the total.`,
+    action: actions[largest.key]
+  };
 }
 
+
+function updateResultSummary(result) {
+  if (!resultSummary) return;
+
+  const insights = getFootprintInsights(result);
+  resultSummary.textContent = insights.summary;
+
+  if (insightSummary) insightSummary.textContent = insights.summary;
+  if (insightAction) insightAction.textContent = insights.action;
+}
 
 /* ============================================================
    23. FORM STATUS
@@ -2502,6 +2523,7 @@ window.CarbonLens = {
   validateNumericInputValue,
   validateForm,
   calculateFootprint,
+  getFootprintInsights,
   calculateEnergyEmissions,
   calculateTransportationEmissions,
   calculateFoodEmissions,
