@@ -2247,7 +2247,9 @@ function updateResultSummary(result) {
   if (!resultSummary) return;
 
   const insights = getFootprintInsights(result);
-  resultSummary.textContent = insights.summary;
+  resultSummary.textContent = insights.largest
+    ? `Your largest estimated source is ${insights.largest === "transport" ? "Transportation" : insights.largest.charAt(0).toUpperCase() + insights.largest.slice(1)} (${insights.share.toFixed(1)}%). Explore the breakdown and recommended next step below.`
+    : insights.summary;
 
   if (insightSummary) insightSummary.textContent = insights.summary;
   if (insightAction) insightAction.textContent = insights.action;
