@@ -2650,7 +2650,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{ou
 
 /* Activity-level carbon reduction planner */
 .reduction-planner-section{max-width:900px;margin:0 auto 36px;padding:28px;border:1px solid var(--border);border-radius:14px;background:#17251f}
-.scenario-priorty{margin:0 0 20px;padding:14px 16px;border-left:3px solid var(--primary);background:rgba(196,214,163,.06);color:#d9e2d0;font-size:.84rem;line-height:1.6}
+.scenario-priority{margin:0 0 20px;padding:14px 16px;border-left:3px solid var(--primary);background:rgba(196,214,163,.06);color:#d9e2d0;font-size:.84rem;line-height:1.6}
 .scenario-activity-controls{display:grid;gap:20px}
 .scenario-activity-group{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .scenario-activity-group h4{grid-column:1/-1;margin:0;color:#dce5d5;font-size:.95rem;font-weight:650}
