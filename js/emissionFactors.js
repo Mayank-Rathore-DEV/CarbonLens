@@ -104,13 +104,11 @@ const EMISSION_FACTORS = {
 
 
     /*
-     * Solar electricity
+     * Solar electricity (reference-only; not used by the current calculator)
      *
-     * Solar generation is NOT assigned a negative emission
-     * factor here.
-     *
-     * Solar generation is handled in app.js by reducing the
-     * grid electricity attributable to the household.
+     * The current calculator uses annualised utility-bill kWh as grid
+     * imports. It does not request solar generation or subtract it again.
+     * Solar-panel embodied emissions remain outside the model boundary.
      */
 
     solar: {
