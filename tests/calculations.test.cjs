@@ -204,3 +204,31 @@ test("zero activity produces zero emissions in optional categories", () => {
   assert.equal(calc.api.calculateWasteEmissions(), 0);
   assert.equal(calc.api.calculateTransportationEmissions(), 0);
 });
+
+
+test("footprint insights identify the largest category and its share", () => {
+  const calc = createCalculator();
+  const insight = calc.api.getFootprintInsights({
+    energy: 100,
+    transport: 500,
+    food: 200,
+    waste: 0
+  });
+  assert.equal(insight.largest, "transport");
+  assert.equal(insight.share, 62.5);
+  assert.match(insight.summary, /Transportation is your largest estimated source/);
+  assert.match(insight.action, /frequent journeys/);
+});
+
+test("footprint insights handle an all-zero result without dividing by zero", () => {
+  const calc = createCalculator();
+  const insight = calc.api.getFootprintInsights({
+    energy: 0,
+    transport: 0,
+    food: 0,
+    waste: 0
+  });
+  assert.equal(insight.largest, null);
+  assert.equal(insight.share, 0);
+  assert.match(insight.summary, /add up to zero/);
+});
