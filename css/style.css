@@ -208,6 +208,9 @@ h3 { font-size: 1.22rem; font-weight: 650; }
 .form-group:last-child { margin-bottom: 0; }
 .form-group > label:first-child, .form-group label, .form-label { display: block; margin-bottom: 7px; color: #302b3d; font-size: .91rem; font-weight: 650; }
 .input-help { margin: -1px 0 10px; color: var(--muted); font-size: .8rem; line-height: 1.55; }
+.input-sub-label { display: block; margin: 13px 0 6px; color: var(--ink-soft); font-size: .78rem; font-weight: 650; }
+.input-period-select { width: 100%; min-height: 44px; margin-bottom: 10px; }
+.input-conversion-preview { min-height: 1.4em; margin: 8px 0 0; color: var(--purple-deep); font-size: .77rem; font-weight: 550; }
 .input-with-unit { display: flex; align-items: center; gap: 12px; }
 .input-with-unit input { flex: 1; min-width: 0; }
 .input-with-unit span { color: var(--muted); font-size: .82rem; white-space: nowrap; }
