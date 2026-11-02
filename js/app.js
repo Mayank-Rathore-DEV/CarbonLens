@@ -2486,7 +2486,7 @@ function setupCSVExport() {
     ];
 
     summary.forEach((item) => rows.push([
-      ...item, "", "", "", "", "", "", "", "", ""
+      ...item, "", "", "", "", "", "", "", "", "", ""
     ]));
 
     const categoryLabels = {
@@ -2500,7 +2500,7 @@ function setupCSVExport() {
       (items || []).forEach((item) => {
         rows.push([
           "Activity", categoryLabels[category] || category, item.label,
-          item.activity, "", item.activity, item.factor, item.unit,
+          "", "", item.activity, item.factor, item.unit,
           item.formula, item.emissions, item.confidence, item.region,
           item.referenceYear, item.source, item.sourceUrl
         ]);
@@ -2514,14 +2514,15 @@ function setupCSVExport() {
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    const date = new Date().toISOString().slice(0, 10);
+    const now = new Date();
+    const date = [now.getFullYear(), String(now.getMonth() + 1).padStart(2, "0"), String(now.getDate()).padStart(2, "0")].join("-");
 
     link.href = url;
     link.download = `carbonlens-report-${date}.csv`;
     document.body.appendChild(link);
     link.click();
     link.remove();
-    URL.revokeObjectURL(url);
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
 }
 
