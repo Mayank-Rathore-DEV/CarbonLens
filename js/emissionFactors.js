@@ -815,7 +815,7 @@ const EMISSION_FACTORS = {
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg — "Other Pulses" proxy",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg; Other Pulses proxy",
 
       sourceUrl:
         "https://ourworldindata.org/grapher/ghg-per-kg-poore"
