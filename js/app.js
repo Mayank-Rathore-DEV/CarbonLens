@@ -593,6 +593,19 @@ function updateVehicleEfficiencyUnit() {
   efficiencyInput.placeholder =
     placeholderMap[selectedVehicle] ||
     "Enter efficiency";
+
+  const efficiencyHelp = document.getElementById("vehicle-efficiency-help");
+  if (efficiencyHelp) {
+    const helpMap = {
+      "petrol-car": "Use real-world km per litre from normal driving, not only the manufacturer's claimed mileage. A fuel log or trip-computer average is better.",
+      "diesel-car": "Use real-world km per litre from normal driving, not only the manufacturer's claimed mileage. A fuel log or trip-computer average is better.",
+      "cng-car": "Use real-world km per kg of CNG. Do not enter km per litre; check your fuel records or trip-computer average.",
+      "petrol-bike": "Use real-world km per litre from normal riding, not only the manufacturer's claimed mileage.",
+      ev: "Use real-world km per kWh. Check your vehicle's energy-consumption display; do not enter km per litre."
+    };
+    efficiencyHelp.textContent = helpMap[selectedVehicle] ||
+      "Use real-world efficiency from normal driving. Match the unit shown beside this field.";
+  }
 }
 
 
