@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: 22
       - name: Run test suite
-        run: node --test tests/*.test.cjs
+        run: node --experimental-strip-types --test tests/*.test.cjs
 
   mobile-typecheck:
     name: Type-check Expo mobile app
