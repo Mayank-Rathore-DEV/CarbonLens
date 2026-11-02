@@ -259,7 +259,7 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Fuel-combustion default; excludes upstream fuel and vehicle lifecycle emissions",
 
-      unit: "kgCO2e/litre",
+      unit: "kgCO2/litre",
 
       region: "India",
 
@@ -331,7 +331,7 @@ const EMISSION_FACTORS = {
 
       factor: 2.31,
 
-      unit: "kgCO2e/litre",
+      unit: "kgCO2/litre",
 
       efficiencyUnit: "km/litre",
 
