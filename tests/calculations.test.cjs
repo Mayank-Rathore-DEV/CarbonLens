@@ -182,6 +182,16 @@ test("combined footprint total equals the sum of all four categories", () => {
   assert.ok(result.total > 0);
   assert.equal(result.householdSize, 2);
 
+  // Source-level detail rows must reconcile with each displayed category.
+  for (const category of ["energy", "transport", "food", "waste"]) {
+    const detailTotal = result.details[category].reduce((sum, item) => sum + item.emissions, 0);
+    assert.ok(Math.abs(detailTotal - result[category]) < 1e-9, `${category} detail rows must reconcile`);
+  }
+  assert.ok(result.details.energy.some(item => item.label === "Grid electricity"));
+  assert.ok(result.details.transport.some(item => item.label === "Passenger rail"));
+  assert.ok(result.details.food.some(item => item.label === "Rice"));
+  assert.ok(result.details.waste.some(item => item.label === "Food waste"));
+
   // Household energy and waste are divided across two members.
   assert.ok(Math.abs(result.energy - 355.24) < 1e-9);
   assert.ok(Math.abs(result.waste - 5.442) < 1e-9);
