@@ -1254,9 +1254,7 @@ function calculateFootprint() {
 
 
   const electricity =
-    getRequiredNumber(
-      "electricity"
-    );
+    getAnnualElectricityConsumption();
 
 
   const solar =
