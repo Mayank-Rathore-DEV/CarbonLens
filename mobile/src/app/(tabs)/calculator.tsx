@@ -260,8 +260,8 @@ export default function CalculatorScreen() {
                   </>
                 ) : null}
                 <Text style={styles.groupLabel}>Public transport and flights</Text>
-                <NumberField label="Passenger rail" unit="passenger-km / year" value={values.railDistance} onChange={(v) => update("railDistance", v)} />
-                <NumberField label="City bus" unit="passenger-km / year" value={values.busDistance} onChange={(v) => update("busDistance", v)} />
+                <NumberField label="Indian Railways travel" unit="passenger-km / year" value={values.railDistance} onChange={(v) => update("railDistance", v)} hint="Indian Railways only; exclude metro/MRTS. The underlying factor uses 2014–15 data." />
+                <NumberField label="Intracity bus" unit="passenger-km / year" value={values.busDistance} onChange={(v) => update("busDistance", v)} hint="City bus only; exclude BRTS and intercity buses. Factor is from a 2015 India study." />
                 <NumberField label="Domestic flights" unit="passenger-km / year" value={values.domesticFlightDistance} onChange={(v) => update("domesticFlightDistance", v)} />
                 <NumberField label="International flights" unit="passenger-km / year" value={values.internationalFlightDistance} onChange={(v) => update("internationalFlightDistance", v)} />
                 <Text style={styles.infoNote}>For public transport and flights, enter your own passenger distance for the year.</Text>
