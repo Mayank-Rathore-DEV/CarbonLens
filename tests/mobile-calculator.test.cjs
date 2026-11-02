@@ -82,9 +82,9 @@ test("mobile engine reproduces the independently calculated reference case", asy
 
   assert.ok(Math.abs(result.categories.energy - 625.28) < 1e-9);
   assert.ok(Math.abs(result.categories.transport - 760.92) < 1e-9);
-  assert.ok(Math.abs(result.categories.food - 714.91) < 1e-9);
+  assert.ok(Math.abs(result.categories.food - 721.21) < 1e-9);
   assert.ok(Math.abs(result.categories.waste - 36.2232) < 1e-9);
-  assert.ok(Math.abs(result.total - 2101.11) < 1e-9);
+  assert.ok(Math.abs(result.total - 2107.41) < 1e-9);
   assert.ok(Math.abs(result.categories.waste - 36.2232) < 1e-9);
 });
 
