@@ -97,3 +97,19 @@ and reporting period with each calculation.
 This is a national-average estimate. Actual electricity
 emissions may vary by region and time.
 
+
+
+## 10. Electricity bill boundary — rooftop solar
+
+The household electricity input is the annualised kWh imported from the
+utility grid, taken from the electricity bill. The calculator applies the
+CEA grid factor directly to this imported electricity.
+
+Do not subtract rooftop solar generation from a utility-bill kWh figure:
+the bill already reflects the electricity imported from the grid (including
+any applicable net-metering treatment). Subtracting solar generation again
+would double-count the solar reduction and understate emissions.
+
+On-site solar generation is therefore not a separate calculator input in
+this version. Embodied emissions from solar panels and their lifecycle are
+outside the current operational electricity boundary.
