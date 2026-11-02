@@ -39,6 +39,9 @@ const EMISSION_FACTORS = {
 
     outputUnit: "kgCO2e",
 
+    methodologyVersion: "2026.11.02",
+    factorSetVersion: "india-baseline-2026-11",
+
     methodology:
       "Activity data multiplied by category-specific emission factors. Factors have different geographic scopes and system boundaries; category totals are indicative, not a fully harmonised lifecycle inventory.",
 
@@ -155,10 +158,12 @@ const EMISSION_FACTORS = {
       referenceYear: 2026,
 
       source:
-        "Approximate LPG combustion factor based on carbon content and standard combustion accounting.",
+        "Approximate LPG combustion factor derived from the IPCC 2006 Guidelines default LPG CO2 factor and net calorific value; rounded to 3.00 kg CO2/kg.",
+
+      sourceUrl: "https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html",
 
       notes:
-        "Does not represent the complete lifecycle of LPG."
+        "Approximate direct-combustion CO2 only. The IPCC default is 63,100 kg CO2/TJ and the cited net calorific value is 47.3 MJ/kg, giving about 2.985 kg CO2/kg before rounding. Does not represent the complete LPG lifecycle."
 
     },
 
@@ -192,10 +197,12 @@ const EMISSION_FACTORS = {
       referenceYear: 2026,
 
       source:
-        "Natural gas combustion estimate based on standard natural-gas carbon content.",
+        "Approximate natural-gas combustion factor using the IPCC 2006 Guidelines default natural-gas CO2 factor and an assumed standard-volume net calorific value.",
+
+      sourceUrl: "https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html",
 
       notes:
-        "The actual factor can vary with gas composition and supplier."
+        "Approximate direct-combustion CO2 only. The 2.00 kg CO2/Sm³ estimate assumes about 35.7 MJ/Sm³ net calorific value multiplied by the IPCC default of 56,100 kg CO2/TJ. Actual gas composition, calorific value and supplier standard-volume conditions can change the result."
 
     }
 
@@ -235,7 +242,9 @@ const EMISSION_FACTORS = {
       referenceYear: 2026,
 
       source:
-        "Standard petrol combustion emission factor.",
+        "Approximate direct-combustion CO2 proxy. The per-litre or per-kilogram value is a simplified default, not a measured India-specific fuel factor. IPCC fuel-combustion guidance informs the accounting basis; upstream fuel production and vehicle lifecycle emissions are excluded.",
+
+      sourceUrl: "https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html",
 
       notes:
         "Tailpipe-oriented fuel factor; upstream fuel production is not separately modelled."
@@ -266,7 +275,9 @@ const EMISSION_FACTORS = {
       referenceYear: 2026,
 
       source:
-        "Standard diesel combustion emission factor.",
+        "Approximate direct-combustion CO2 proxy. The per-litre or per-kilogram value is a simplified default, not a measured India-specific fuel factor. IPCC fuel-combustion guidance informs the accounting basis; upstream fuel production and vehicle lifecycle emissions are excluded.",
+
+      sourceUrl: "https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html",
 
       notes:
         "Tailpipe-oriented fuel factor; upstream fuel production is not separately modelled."
@@ -308,7 +319,9 @@ const EMISSION_FACTORS = {
       referenceYear: 2026,
 
       source:
-        "Natural-gas combustion estimate.",
+        "Approximate direct-combustion CO2 proxy. The per-litre or per-kilogram value is a simplified default, not a measured India-specific fuel factor. IPCC fuel-combustion guidance informs the accounting basis; upstream fuel production and vehicle lifecycle emissions are excluded.",
+
+      sourceUrl: "https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html",
 
       notes:
         "Actual CNG composition and methane leakage can change lifecycle emissions."
@@ -331,6 +344,10 @@ const EMISSION_FACTORS = {
 
       factor: 2.31,
 
+      confidence: "medium",
+
+      geographicScope: "Generic fuel-combustion proxy applied to India; not an India-specific fuel assay",
+
       unit: "kgCO2/litre",
 
       efficiencyUnit: "km/litre",
@@ -340,7 +357,7 @@ const EMISSION_FACTORS = {
       referenceYear: 2026,
 
       source:
-        "Standard petrol combustion emission factor."
+        "Approximate direct-combustion CO2 proxy. The per-litre or per-kilogram value is a simplified default, not a measured India-specific fuel factor. IPCC fuel-combustion guidance informs the accounting basis; upstream fuel production and vehicle lifecycle emissions are excluded."
 
     },
 
@@ -368,6 +385,10 @@ const EMISSION_FACTORS = {
       calculationBasis: "electricity",
 
       factor: 0.6751,
+
+      confidence: "high",
+
+      geographicScope: "India national grid; operational electricity emissions only",
 
       unit: "kgCO2/kWh",
 
