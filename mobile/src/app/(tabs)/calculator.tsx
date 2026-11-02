@@ -169,8 +169,7 @@ export default function CalculatorScreen() {
     const categoryRows = [
       { name: "Energy", value: result.categories.energy },
       { name: "Transport", value: result.categories.transport },
-      { name: "Food", value: result.categories.food },
-      { name: "Waste", value: result.categories.waste }
+      { name: "Food", value: result.categories.food }
     ];
     return (
       <SafeAreaView style={styles.safe} edges={["top"]}>
@@ -194,7 +193,13 @@ export default function CalculatorScreen() {
               </View>
             </View>
           ))}
-          <Text style={styles.methodNote}>Method: activity data × emission factor. Electricity uses the India CEA FY 2025–26 grid factor (0.6751 kg CO₂/kWh) on annualised bill kWh. Household energy and waste are divided by household size; food and travel are personal inputs. Food factors are global lifecycle averages; waste factors are low-confidence proxies. Transport, fuel and electricity factors do not all cover the same greenhouse gases or lifecycle stages: rail, bus and fuel-combustion factors are CO₂-only, while the aviation factors include CO₂, CH₄ and N₂O but exclude radiative-forcing and distance uplifts. Treat this as a partial indicative estimate, not a complete harmonised CO₂e inventory.</Text>
+          <View style={styles.resultCard}>
+            <Text style={styles.resultLabel}>Experimental waste estimate — excluded from the headline total</Text>
+            <Text style={styles.resultNumber}>{result.categories.waste.toLocaleString("en-IN", { maximumFractionDigits: 1 })}</Text>
+            <Text style={styles.resultUnit}>kg CO₂e per person / year (low-confidence proxy)</Text>
+            <Text style={styles.resultNote}>This is shown separately only. The factor assumes disposal conditions that may not match your local municipal system, so it is not added to your footprint total.</Text>
+          </View>
+          <Text style={styles.methodNote}>Method: activity data × emission factor. Electricity uses the India CEA FY 2025–26 grid factor (0.6751 kg CO₂/kWh) on annualised bill kWh. Household energy is divided by household size; food and travel are personal inputs. Food factors are global lifecycle averages. Waste is an experimental low-confidence proxy and is excluded from the headline total. Transport, fuel and electricity factors do not all cover the same greenhouse gases or lifecycle stages: rail, bus and fuel-combustion factors are CO₂-only, while the aviation factors include CO₂, CH₄ and N₂O but exclude radiative-forcing and distance uplifts. Treat this as a partial indicative estimate, not a complete harmonised CO₂e inventory.</Text>
           <Pressable style={styles.primaryButton} onPress={reset}>
             <Text style={styles.primaryButtonText}>Calculate again</Text>
           </Pressable>
