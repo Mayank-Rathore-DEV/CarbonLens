@@ -369,7 +369,7 @@ const EMISSION_FACTORS = {
 
       factor: 0.6751,
 
-      unit: "kgCO2e/kWh",
+      unit: "kgCO2/kWh",
 
       efficiencyUnit: "km/kWh",
 
