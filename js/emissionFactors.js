@@ -241,6 +241,8 @@ const EMISSION_FACTORS = {
 
       referenceYear: 2026,
 
+      sourceUrl: "https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html",
+
       source:
         "Approximate direct-combustion CO2 proxy. The per-litre or per-kilogram value is a simplified default, not a measured India-specific fuel factor. IPCC fuel-combustion guidance informs the accounting basis; upstream fuel production and vehicle lifecycle emissions are excluded.",
 
@@ -891,6 +893,14 @@ const EMISSION_FACTORS = {
 
       factor: 0.43,
 
+      confidence: "medium",
+
+      geographicScope: "Global lifecycle dataset; not India-specific",
+
+      referenceYear: "Published 2018; underlying data approximately 2010",    apples: {
+
+      factor: 0.43,
+
       unit: "kgCO2e/kg",
 
       source:
@@ -966,6 +976,10 @@ const EMISSION_FACTORS = {
 
       confidence: "low",
 
+      geographicScope: "Context-specific Beijing urban dining study; not India-specific",
+
+      referenceYear: "Study publication year; context-specific estimate",
+
       notes:
         "Context-specific published disposal estimate, not an India-specific municipal-waste factor. Do not treat as a universal household waste rate; actual values depend on treatment and methane capture."
 
@@ -987,6 +1001,10 @@ const EMISSION_FACTORS = {
         "https://measuringemissionsguide.environment.govt.nz/10_materials_waste.html",
 
       confidence: "low",
+
+      geographicScope: "New Zealand waste-treatment proxy; not India-specific",
+
+      referenceYear: "Guide reference year not confirmed",
 
       notes:
         "New Zealand proxy, not an India-specific factor. Actual emissions depend strongly on landfill, recycling, incineration and methane-management practices."
