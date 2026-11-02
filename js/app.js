@@ -147,6 +147,8 @@ function initializeApp() {
 
   setupReductionPlanner();
 
+  setupReportExport();
+
   setupFormReset();
 
   setupSmoothNavigation();
@@ -2431,6 +2433,24 @@ function updateProgressBar(
       percentage.toFixed(1)
     );
   }
+}
+
+
+/* ============================================================
+   REPORT EXPORT
+   ============================================================ */
+
+function setupReportExport() {
+  const exportButton = document.getElementById("export-report");
+  if (!exportButton) return;
+
+  exportButton.addEventListener("click", () => {
+    if (!lastCalculation || !resultsSection || resultsSection.hidden) {
+      return;
+    }
+
+    window.print();
+  });
 }
 
 
