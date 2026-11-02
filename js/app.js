@@ -1294,7 +1294,7 @@ function buildCalculationDetails(householdSize) {
   const rows = { energy: [], transport: [], food: [], waste: [] };
   const add = (category,label,activity,data,formula,emissions,note) => {
     if (!data || !Number.isFinite(emissions) || emissions <= 0) return;
-    rows[category].push({label,activity,factor:data.factor,unit:data.unit||"",formula,emissions:sanitizeNumber(emissions),source:data.source||"Source not specified",sourceUrl:data.sourceUrl||"",referenceYear:data.referenceYear||"",region:data.region||data.geographicScope||"",confidence:data.confidence||"medium",notes:note||data.notes||""});
+    rows[category].push({label,activity,factor:data.factor,unit:data.unit||"",formula,emissions:sanitizeNumber(emissions),source:data.source||"Source not specified",sourceUrl:data.sourceUrl||"",referenceYear:data.referenceYear||"",region:data.geographicScope||data.region||"",confidence:data.confidence||"medium",notes:note||data.notes||""});
   };
   const electricity=getRequiredNumber("electricity"), solar=getNumber("solar"), grid=Math.max(electricity-solar,0);
   const ef=getEmissionFactorData(EMISSION_FACTORS.energy,"electricity");
