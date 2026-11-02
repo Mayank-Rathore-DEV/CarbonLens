@@ -357,3 +357,64 @@ They are excluded from the headline footprint because the app does not
 capture the user's actual disposal route, landfill methane capture,
 composting, recycling or local waste composition. They must not be used
 as India-specific waste factors.
+
+
+## 17. Food Lifecycle Factors — Active Prototype Inputs
+
+### Source and scope
+
+The food factors are global mean greenhouse-gas emissions per kilogram of
+food product from Poore & Nemecek (2018), as processed by Our World in Data.
+The displayed dataset is for 2010 and uses kg CO2e/kg food. The underlying
+meta-analysis includes approximately 570 studies, 38,700 farms and 119
+countries; the values are global averages, not India-specific factors.
+
+Source:
+https://ourworldindata.org/grapher/ghg-per-kg-poore
+
+The dataset covers cradle-to-retail stages including land-use change,
+farm production, processing, transport to retail and packaging. It does
+not include household cooking, refrigeration after retail or household
+food waste.
+
+### Food mappings used
+
+| Calculator input | Factor (kg CO2e/kg) | Dataset mapping |
+|---|---:|---|
+| Beef | 99.48 | Beef (beef herd) |
+| Lamb / mutton | 39.72 | Lamb & Mutton |
+| Pork | 12.31 | Pig Meat |
+| Poultry | 9.87 | Poultry Meat |
+| Cheese | 23.88 | Cheese |
+| Milk | 3.15 | Milk |
+| Eggs | 4.67 | Eggs |
+| Rice | 4.45 | Rice |
+| Tofu | 3.16 | Tofu |
+| Peas | 0.98 | Peas |
+| Beans / pulses | 1.79 | Other Pulses |
+| Potatoes | 0.46 | Potatoes |
+| Root vegetables | 0.43 | Root Vegetables |
+| Bananas | 0.86 | Bananas |
+| Apples | 0.43 | Apples |
+| Tomatoes | 2.09 | Tomatoes |
+
+### Important mappings and limitations
+
+- The 99.48 beef value is specifically the beef-herd factor. The same
+  dataset reports 33.30 kg CO2e/kg for beef from dairy herds. The calculator
+  labels the input as a beef-herd proxy; it is not a buffalo-specific factor.
+- Beans/pulses is mapped to the dataset's "Other Pulses" value of 1.79.
+  The previous 1.37 value did not match this cited dataset and has been
+  corrected.
+- Food quantities are user-entered product mass per person per year.
+  Rice and pulses should be entered on a dry/uncooked weight basis.
+- These are global 2010 means. Indian production systems, irrigation,
+  fertilizer use, yields, livestock systems, cold chains and food loss can
+  differ substantially.
+
+### Status
+
+Active in the headline prototype as medium-confidence global lifecycle
+proxies. They are traceable and internally consistent with the selected
+OWID dataset, but they are not India-specific and should be replaced or
+supplemented when suitable Indian product-level LCA data are available.
