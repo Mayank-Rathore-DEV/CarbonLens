@@ -298,6 +298,7 @@ function setupElectricityInputHelper() {
   const update = () => {
     const isMonthly = period.value === "monthly";
     unit.textContent = isMonthly ? "kWh / month" : "kWh / year";
+    input.placeholder = isMonthly ? "e.g. 300" : "e.g. 3600";
     const entered = input.value.trim() === "" ? NaN : Number(input.value);
     if (!Number.isFinite(entered) || entered < 0) {
       preview.textContent = "Annual consumption used in the calculation: enter your kWh figure.";
