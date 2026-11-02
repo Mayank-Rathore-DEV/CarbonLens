@@ -430,26 +430,26 @@ const EMISSION_FACTORS = {
 
       factor: 0.0080,
 
-      geographicScope: "India passenger transport",
+      geographicScope: "Indian Railways only; not metro/MRTS",
 
-      unit: "kgCO2e/passenger-km",
+      unit: "kgCO2/passenger-km",
 
       calculationBasis: "passenger distance",
 
       region: "India",
 
       source:
-        "India GHG Program passenger-transport factor; also reported in Infosys ESG Databook FY 2024-25.",
+        "India GHG Program, India Specific Rail Transport Emission Factors for Passenger Travel and Material Transport, Version 1.0 (2015).",
 
       sourceUrl:
-        "https://www.infosys.com/sustainability/documents/infosys-esg-databook-2024-25.pdf",
+        "https://indiaghgp.org/sites/default/files/Rail%20Transport%20Emission.pdf",
 
-      referenceYear: "FY 2024-25",
+      referenceYear: "2014-15",
 
-      confidence: "medium",
+      confidence: "low",
 
       notes:
-        "India-specific passenger-kilometre proxy. Original underlying factor documentation should be checked before formal inventory use."
+        "The 0.0080 proxy rounds the 2014-15 non-suburban (0.007837) and suburban (0.007976) Indian Railways CO2 factors. The source excludes MRTS/metro and does not allocate emissions by AC/non-AC class. This is CO2, not a complete CO2e factor."
 
     },
 
@@ -462,26 +462,26 @@ const EMISSION_FACTORS = {
 
       factor: 0.0152,
 
-      geographicScope: "India passenger transport",
+      geographicScope: "Indian intracity bus only; excludes BRTS and intercity buses",
 
-      unit: "kgCO2e/passenger-km",
+      unit: "kgCO2/passenger-km",
 
       calculationBasis: "passenger distance",
 
       region: "India",
 
       source:
-        "India GHG Program passenger-transport factor; also reported in Infosys ESG Databook FY 2024-25.",
+        "India GHG Program, India Specific Road Transport Emission Factors, Version 1.0 (2015).",
 
       sourceUrl:
-        "https://www.infosys.com/sustainability/documents/infosys-esg-databook-2024-25.pdf",
+        "https://indiaghgp.org/sites/default/files/Road%20Transport%20Technical%20Paper.pdf",
 
-      referenceYear: "FY 2024-25",
+      referenceYear: "2015",
 
-      confidence: "medium",
+      confidence: "low",
 
       notes:
-        "India-specific passenger-kilometre proxy. Actual bus emissions vary with vehicle type, fuel, route and passenger occupancy."
+        "Rounded from 0.015161 kg CO2/passenger-km in the 2015 India GHG Program technical paper. The source explicitly excludes BRTS and intercity bus services. This is CO2, not a complete CO2e factor."
 
     }
 
