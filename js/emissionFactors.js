@@ -71,7 +71,7 @@ const EMISSION_FACTORS = {
 
     electricity: {
 
-      factor: 0.7117,
+      factor: 0.6751,
 
       unit: "kgCO2/kWh",
 
