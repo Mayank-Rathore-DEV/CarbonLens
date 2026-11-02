@@ -96,6 +96,7 @@ test("numeric input validation enforces required, minimum, maximum and step", ()
   assert.equal(validate("31", { max: "30" }), "Value must be no more than 30.");
   assert.equal(validate("2.5", { min: "0", step: "1" }), "Use increments of 1.");
   assert.equal(validate("2.5", { min: "0", step: "0.1" }), "");
+  assert.equal(validate("1.5", { min: "0" }), "Use increments of 1.");
   assert.equal(validate("not-a-number", {}), "Enter a valid number.");
 });
 
