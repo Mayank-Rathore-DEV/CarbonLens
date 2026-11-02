@@ -143,6 +143,8 @@ function initializeApp() {
 
   setupFormSubmission();
 
+  setupCalculatorWizard();
+
   setupFormReset();
 
   setupSmoothNavigation();
@@ -512,6 +514,11 @@ function handleFormSubmit(event) {
     validateForm();
 
   if (!validation.valid) {
+    const target = validation.field
+      ? document.getElementById(validation.field)
+      : null;
+    const targetStep = target ? target.closest(".wizard-step") : null;
+    if (targetStep) showWizardStep(Number(targetStep.dataset.step));
     showFormError(
       validation.message,
       validation.field
@@ -567,6 +574,8 @@ function setupFormReset() {
         updatePrivateVehicleFields();
 
         updateVehicleEfficiencyUnit();
+
+        resetCalculatorWizard();
       }, 0);
     }
   );
@@ -2340,6 +2349,118 @@ function showFormSuccess(
   formStatus.classList.add(
     "success"
   );
+}
+
+
+
+/* ============================================================
+   GUIDED CALCULATOR — FOUR CLEAR STEPS
+   ============================================================ */
+
+const wizardSteps = Array.from(document.querySelectorAll(".wizard-step"));
+const wizardStepNames = ["Household & energy", "Transportation", "Food", "Waste"];
+let activeWizardStep = 0;
+
+function setupCalculatorWizard() {
+  if (!carbonForm || wizardSteps.length !== 4) return;
+
+  const back = document.getElementById("wizard-back");
+  const next = document.getElementById("wizard-next");
+
+  back?.addEventListener("click", () => showWizardStep(activeWizardStep - 1));
+  next?.addEventListener("click", () => {
+    if (activeWizardStep < wizardSteps.length - 1) {
+      showWizardStep(activeWizardStep + 1);
+    }
+  });
+
+  showWizardStep(0);
+  updateWizardReview();
+  carbonForm.addEventListener("input", updateWizardReview);
+  carbonForm.addEventListener("change", updateWizardReview);
+}
+
+function showWizardStep(index) {
+  if (!wizardSteps.length) return;
+  activeWizardStep = Math.max(0, Math.min(index, wizardSteps.length - 1));
+
+  wizardSteps.forEach((step, stepIndex) => {
+    const active = stepIndex === activeWizardStep;
+    step.hidden = !active;
+    step.setAttribute("aria-hidden", String(!active));
+  });
+
+  const count = document.getElementById("wizard-step-count");
+  const name = document.getElementById("wizard-step-name");
+  const fill = document.getElementById("wizard-progress-fill");
+  const track = document.getElementById("wizard-progress-track");
+  const back = document.getElementById("wizard-back");
+  const next = document.getElementById("wizard-next");
+  const calculate = document.getElementById("calculate-button");
+  const dots = document.querySelectorAll(".wizard-step-dots span");
+  const review = document.getElementById("wizard-review");
+
+  if (count) count.textContent = `Step ${activeWizardStep + 1} of ${wizardSteps.length}`;
+  if (name) name.textContent = wizardStepNames[activeWizardStep];
+  if (fill) fill.style.width = `${((activeWizardStep + 1) / wizardSteps.length) * 100}%`;
+  if (track) track.setAttribute("aria-valuenow", String(activeWizardStep + 1));
+  if (back) back.disabled = activeWizardStep === 0;
+  if (next) next.hidden = activeWizardStep === wizardSteps.length - 1;
+  if (calculate) calculate.hidden = activeWizardStep !== wizardSteps.length - 1;
+  if (review) review.hidden = activeWizardStep !== wizardSteps.length - 1;
+
+  dots.forEach((dot, dotIndex) => {
+    dot.classList.toggle("is-active", dotIndex <= activeWizardStep);
+    dot.classList.toggle("is-current", dotIndex === activeWizardStep);
+  });
+
+  const status = document.getElementById("form-status");
+  if (status) {
+    status.textContent = "";
+    status.classList.remove("error");
+  }
+}
+
+function updateWizardReview() {
+  const list = document.getElementById("wizard-review-list");
+  if (!list) return;
+
+  const read = (id) => {
+    const field = document.getElementById(id);
+    if (!field) return "—";
+    if (field.type === "radio") return field.checked ? field.value : "—";
+    if (field.tagName === "SELECT") return field.selectedOptions?.[0]?.textContent?.trim() || "Not selected";
+    return field.value.trim() || "0 / not entered";
+  };
+
+  const privateVehicle = document.querySelector('input[name="privateVehicle"]:checked')?.value || "no";
+  const fuel = read("cooking-fuel");
+  const rows = [
+    ["Household size", `${read("household-size")} people`],
+    ["Electricity", `${read("electricity")} kWh/year`],
+    ["Solar generation", `${read("solar")} kWh/year`],
+    ["Cooking fuel", fuel],
+    ["Private vehicle", privateVehicle === "yes" ? read("vehicle-type") : "No"],
+    ["Train / bus", `${read("rail-distance")} / ${read("bus-distance")} passenger-km`],
+    ["Domestic / international flights", `${read("domestic-flight-distance")} / ${read("international-flight-distance")} passenger-km`],
+    ["Food entries", "Review the Food step"],
+    ["Food / mixed waste", `${read("food-waste-kg")} / ${read("mixed-waste-kg")} kg/year`]
+  ];
+
+  list.replaceChildren(...rows.map(([label, value]) => {
+    const wrapper = document.createElement("div");
+    const term = document.createElement("dt");
+    const description = document.createElement("dd");
+    term.textContent = label;
+    description.textContent = value;
+    wrapper.append(term, description);
+    return wrapper;
+  }));
+}
+
+function resetCalculatorWizard() {
+  showWizardStep(0);
+  updateWizardReview();
 }
 
 
