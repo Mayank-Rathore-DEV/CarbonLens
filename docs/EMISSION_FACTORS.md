@@ -236,9 +236,9 @@ Emissions = Passenger distance (km)
 
 ### Status
 
-Retained only for an experimental waste estimate that is excluded from the
-headline footprint. It is a low-confidence Beijing-context proxy, not an
-India-specific municipal-waste factor.
+Active in the headline calculation as a low-confidence, CO2-only
+intracity bus proxy. Excludes BRTS and intercity buses; not suitable for
+formal inventory reporting without updated data.
 
 ---
 
@@ -283,9 +283,9 @@ Emissions = Passenger distance (km)
 
 ### Status
 
-Retained only for an experimental waste estimate that is excluded from the
-headline footprint. It is a low-confidence New Zealand landfill-with-gas-
-recovery proxy, not an India-specific mixed-waste factor.
+Active in the headline calculation as a low-confidence, CO2-only
+Indian Railways proxy. It uses 2014–15 data, excludes metro/MRTS, and does
+not distinguish passenger class.
 
 
 ## 15. Passenger Aviation Factors — Active Prototype Inputs
@@ -327,3 +327,33 @@ data or an appropriate harmonised global dataset is adopted.
 Active in the prototype as medium-confidence non-India-specific proxies.
 They must not be described as India-specific or as including aviation's
 non-CO2 radiative-forcing effects.
+
+
+## 16. Experimental Waste Factors — Excluded from Headline
+
+### Food waste
+
+- Factor: 0.4208 kg CO2e/kg.
+- Source: Beijing urban-dining lifecycle study (2022), Table 4.
+- Scope: context-specific home-cooking food-waste disposal estimate.
+- Limitation: not India-specific and does not represent every local
+  treatment route.
+
+### Mixed household waste
+
+- Factor: 0.333843 kg CO2e/kg (calculator rounds to 0.3338).
+- Source: New Zealand Measuring Emissions Catalogue 2026, Table 10.3,
+  unknown-composition general waste sent to a municipal landfill with
+  landfill-gas recovery.
+- Important limitation: the factor is not a universal mixed-waste value.
+  New Zealand's same guide reports 0.635339 kg CO2e/kg for general waste
+  sent to a municipal landfill without gas recovery. Composting and
+  anaerobic digestion have different factors.
+
+### Status
+
+Both factors are retained only to show an experimental waste estimate.
+They are excluded from the headline footprint because the app does not
+capture the user's actual disposal route, landfill methane capture,
+composting, recycling or local waste composition. They must not be used
+as India-specific waste factors.
