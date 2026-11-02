@@ -21,7 +21,7 @@ type Values = Record<string, string>;
 type FieldDef = { key: string; label: string; unit: string; hint?: string };
 
 const initialValues: Values = {
-  householdSize: "1", electricity: "", electricityPeriod: "monthly", solar: "",
+  householdSize: "1", electricity: "", electricityPeriod: "monthly",
   cookingFuel: "lpg", lpgCylinders: "", pngConsumption: "", pngPeriod: "monthly",
   privateVehicle: "no", vehicleType: "petrol-car", vehicleDistance: "",
   vehicleDistancePeriod: "monthly", vehicleEfficiency: "", vehicleOccupancy: "1",
@@ -168,8 +168,8 @@ export default function CalculatorScreen() {
     }
 
     const electricity = annual(values, "electricity", "electricityPeriod");
-    const solar = number(values, "solar");
-    let householdEnergy = Math.max(electricity - solar, 0) * 0.6751;
+    // The bill figure is already grid electricity imported; do not subtract solar again.
+    let householdEnergy = electricity * 0.6751;
 
     if (values.cookingFuel === "lpg") {
       householdEnergy += number(values, "lpgCylinders") * 14.2 * 3.0;
@@ -301,7 +301,6 @@ export default function CalculatorScreen() {
                 <NumberField label="People in your household" unit="people" value={values.householdSize} onChange={(v) => update("householdSize", v)} hint="Used to allocate household electricity, cooking fuel and waste per person." placeholder="1" />
                 <NumberField label="Grid electricity consumption" unit={values.electricityPeriod === "monthly" ? "kWh / month" : "kWh / year"} value={values.electricity} onChange={(v) => update("electricity", v)} hint="Use your electricity bill. Monthly use is multiplied by 12." />
                 <ChoiceField label="Electricity bill period" value={values.electricityPeriod} options={[{ label: "Monthly", value: "monthly" }, { label: "Annual", value: "annual" }]} onChange={(v) => update("electricityPeriod", v)} />
-                <NumberField label="Solar electricity generated" unit="kWh / year" value={values.solar} onChange={(v) => update("solar", v)} hint="Enter annual on-site solar generation, if applicable. Leave blank if none." />
                 <ChoiceField label="Main cooking fuel" value={values.cookingFuel} options={[{ label: "LPG", value: "lpg" }, { label: "PNG", value: "png" }, { label: "Electric", value: "electric" }, { label: "None", value: "none" }]} onChange={(v) => update("cookingFuel", v)} />
                 {values.cookingFuel === "lpg" ? <NumberField label="LPG cylinders used" unit="14.2 kg cylinders / year" value={values.lpgCylinders} onChange={(v) => update("lpgCylinders", v)} hint="Count full domestic cylinders used by the household in one year." /> : null}
                 {values.cookingFuel === "png" ? (
