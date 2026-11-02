@@ -271,7 +271,7 @@ test("activity scenario planner clamps sliders and handles zero emissions", () =
   const calc = createCalculator();
   const result = calc.api.calculateReductionScenario({
     energy: 0, transport: 0, food: 0, waste: 0,
-    details: { energy: [{ label: "Grid", emissions: 0 }], transport: [], food: [], waste: [] }
+    details: { energy: [{ label: "Grid", emissions: 0 }], transport: [{ label: "Rail", emissions: 0 }], food: [], waste: [] }
   }, { "energy:0": 90, "transport:0": -10 });
   assert.equal(result.saved, 0);
   assert.equal(result.projected, 0);
