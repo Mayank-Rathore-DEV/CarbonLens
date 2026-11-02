@@ -573,15 +573,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -594,15 +594,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -615,15 +615,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -636,15 +636,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -657,15 +657,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -678,15 +678,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -699,15 +699,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -720,15 +720,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -741,15 +741,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -762,15 +762,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -790,15 +790,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data — beans/pulses estimate",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg — beans/pulses estimate",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -811,15 +811,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -832,15 +832,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -853,15 +853,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -873,10 +873,10 @@ const EMISSION_FACTORS = {
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     },
 
@@ -889,15 +889,15 @@ const EMISSION_FACTORS = {
 
       geographicScope: "Global lifecycle dataset; not India-specific",
 
-      referenceYear: "Poore & Nemecek 2018 (underlying studies vary)"
+      referenceYear: "Published 2018; underlying data approximately 2010"
 
       unit: "kgCO2e/kg",
 
       source:
-        "Poore & Nemecek (2018), Our World in Data",
+        "Poore & Nemecek (2018), processed by Our World in Data — global lifecycle GHG per kg",
 
       sourceUrl:
-        "https://ourworldindata.org/grapher/food-emissions-supply-chain"
+        "https://ourworldindata.org/grapher/ghg-per-kg-poore"
 
     }
 
