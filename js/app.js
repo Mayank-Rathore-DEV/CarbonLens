@@ -137,6 +137,8 @@ function initializeApp() {
 
   setupCookingFuelFields();
 
+  setupElectricityInputHelper();
+
   setupPrivateVehicleFields();
 
   setupVehicleEfficiencyUnit();
@@ -277,7 +279,42 @@ function setupMobileNavigation() {
 
 
 /* ============================================================
-   7. COOKING FUEL FIELDS
+   7. ELECTRICITY INPUT HELPER
+   ============================================================ */
+
+function getAnnualElectricityConsumption() {
+  const enteredValue = getRequiredNumber("electricity");
+  const period = document.getElementById("electricity-period")?.value || "annual";
+  return period === "monthly" ? enteredValue * 12 : enteredValue;
+}
+
+function setupElectricityInputHelper() {
+  const input = document.getElementById("electricity");
+  const period = document.getElementById("electricity-period");
+  const unit = document.getElementById("electricity-input-unit");
+  const preview = document.getElementById("electricity-annual-preview");
+  if (!input || !period || !unit || !preview) return;
+
+  const update = () => {
+    const isMonthly = period.value === "monthly";
+    unit.textContent = isMonthly ? "kWh / month" : "kWh / year";
+    const entered = input.value.trim() === "" ? NaN : Number(input.value);
+    if (!Number.isFinite(entered) || entered < 0) {
+      preview.textContent = "Annual consumption used in the calculation: enter your kWh figure.";
+      return;
+    }
+    const annual = isMonthly ? entered * 12 : entered;
+    preview.textContent = `Annual consumption used in the calculation: ${annual.toLocaleString("en-IN", { maximumFractionDigits: 1 })} kWh/year.${isMonthly ? " Monthly usage is multiplied by 12." : ""}`;
+  };
+
+  input.addEventListener("input", update);
+  period.addEventListener("change", update);
+  update();
+}
+
+
+/* ============================================================
+   8. COOKING FUEL FIELDS
    ============================================================ */
 
 function setupCookingFuelFields() {
@@ -831,9 +868,7 @@ function validateForm() {
      ---------------------------------------------------------- */
 
   const electricity =
-    getRequiredNumber(
-      "electricity"
-    );
+    getAnnualElectricityConsumption();
 
   if (
     !Number.isFinite(electricity) ||
@@ -843,7 +878,7 @@ function validateForm() {
       valid: false,
       field: "electricity",
       message:
-        "Please enter a valid annual electricity consumption."
+        "Please enter a valid electricity consumption value."
     };
   }
 
