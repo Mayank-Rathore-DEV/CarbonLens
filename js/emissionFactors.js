@@ -130,6 +130,8 @@ const EMISSION_FACTORS = {
 
       factor: 3.00,
 
+      cylinderMassKg: 14.2,
+
       unit: "kgCO2e/kg LPG",
 
       basis: "fuel combustion",
