@@ -1401,8 +1401,8 @@ function renderCalculationDetails(result) {
 /* Transparent scenario model: category reductions scale the selected
    category total linearly. This is a what-if estimate, not a forecast. */
 function calculateReductionScenario(result, reductions = {}) {
-  const categories = ["energy", "transport", "food", "waste"];
-  const savingsByCategory = { energy: 0, transport: 0, food: 0, waste: 0 };
+  const categories = ["energy", "transport", "food"];
+  const savingsByCategory = { energy: 0, transport: 0, food: 0 };
   const activities = [];
   categories.forEach((category) => {
     const rows = result.details && Array.isArray(result.details[category])
