@@ -2339,3 +2339,131 @@ select:focus-visible {
   }
 
 }
+
+/* =========================================================
+   PREMIUM RESULTS POLISH — insight panel and clear data labels
+   ========================================================= */
+
+.breakdown-label strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.breakdown-share {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid rgba(73, 209, 125, 0.18);
+  border-radius: 999px;
+  background: rgba(73, 209, 125, 0.07);
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+}
+
+.insight-panel {
+  position: relative;
+  margin-top: 34px;
+  padding: clamp(22px, 4vw, 34px);
+  overflow: hidden;
+  border: 1px solid rgba(73, 209, 125, 0.22);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(73, 209, 125, 0.13), transparent 38%),
+    linear-gradient(135deg, rgba(19, 35, 26, 0.96), rgba(12, 18, 15, 0.98));
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.18);
+}
+
+.insight-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.insight-mark {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border: 1px solid rgba(73, 209, 125, 0.25);
+  border-radius: 13px;
+  background: rgba(73, 209, 125, 0.1);
+  color: var(--primary);
+  font-size: 1.3rem;
+}
+
+.insight-heading .eyebrow {
+  margin-bottom: 4px;
+}
+
+.insight-heading h3 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.2rem, 3vw, 1.55rem);
+}
+
+.insight-summary {
+  max-width: 760px;
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.8;
+}
+
+.insight-recommendation {
+  margin-top: 22px;
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.recommendation-label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.insight-recommendation p {
+  margin: 0;
+  color: #fff;
+  line-height: 1.7;
+}
+
+.insight-disclaimer {
+  margin: 14px 0 0;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+.results-section,
+.breakdown-section,
+.insight-panel {
+  scroll-margin-top: 96px;
+}
+
+@media (max-width: 520px) {
+  .breakdown-label strong {
+    justify-content: flex-end;
+    text-align: right;
+    gap: 6px;
+  }
+
+  .insight-panel {
+    margin-top: 26px;
+    border-radius: 18px;
+  }
+
+  .insight-recommendation {
+    padding: 16px;
+  }
+}
