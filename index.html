@@ -1236,10 +1236,11 @@
           <h2>How CarbonLens calculates your footprint.</h2>
 
           <p class="methodology-boundary-note">
-            <strong>Important:</strong> CarbonLens combines factors with different boundaries and geographic scopes.
-            Electricity uses an India grid factor; food uses a global lifecycle dataset; aviation uses a UK government
-            proxy; and household waste includes low-confidence proxy estimates. These categories are useful for
-            understanding broad patterns, but should not be presented as a verified or fully India-specific footprint.
+            <strong>Important:</strong> CarbonLens combines factors with different geographic scopes and greenhouse-gas coverage.
+            Electricity, fuel combustion, Indian rail and intracity bus factors are CO₂-only proxies; food uses global
+            lifecycle CO₂e averages; aviation uses UK government CO₂ + CH₄ + N₂O factors that exclude distance and
+            radiative-forcing uplifts; and household waste uses low-confidence non-India-specific disposal proxies.
+            The result is a partial indicative estimate, not a verified, fully India-specific or harmonised CO₂e inventory.
             Confidence labels describe source quality and applicability: high = strong source for the stated activity and region;
             medium = published factor with limitations; low = context-specific proxy.
           </p>
@@ -1276,12 +1277,12 @@
           <article class="methodology-card">
             <span class="methodology-number"> 03 </span>
 
-            <h3>Convert to CO₂e</h3>
+            <h3>Document gas coverage</h3>
 
             <p>
-              Different greenhouse gases are expressed using
-              carbon-dioxide-equivalent values so their climate impact can be
-              represented consistently.
+              Some factors include multiple greenhouse gases, while several
+              operational factors currently represent CO₂ only. The result
+              preserves these limitations rather than implying full coverage.
             </p>
           </article>
 
