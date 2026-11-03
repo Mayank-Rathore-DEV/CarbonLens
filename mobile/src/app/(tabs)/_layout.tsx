@@ -1,6 +1,5 @@
 import { Tabs } from "expo-router";
 
-const INK = "#211D2B";
 const MUTED = "#8A8495";
 const PURPLE = "#5B45A0";
 
@@ -11,7 +10,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarActiveTintColor: PURPLE,
         tabBarInactiveTintColor: MUTED,
-        tabBarLabelStyle: { fontSize: 11, fontWeight: "600", marginBottom: 5 },
+        tabBarLabelStyle: { fontSize: 10, fontWeight: "600", marginBottom: 5 },
         tabBarStyle: {
           height: 66,
           paddingTop: 8,
@@ -24,6 +23,7 @@ export default function TabLayout() {
     >
       <Tabs.Screen name="index" options={{ title: "Home", tabBarLabel: "Home" }} />
       <Tabs.Screen name="calculator" options={{ title: "Calculator", tabBarLabel: "Calculator" }} />
+      <Tabs.Screen name="tools" options={{ title: "Tools", tabBarLabel: "Tools" }} />
       <Tabs.Screen name="activity" options={{ title: "History", tabBarLabel: "History" }} />
       <Tabs.Screen name="plan" options={{ title: "Plan", tabBarLabel: "Plan" }} />
     </Tabs>
