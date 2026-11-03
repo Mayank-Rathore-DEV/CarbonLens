@@ -24,7 +24,7 @@ export default function TabLayout() {
     >
       <Tabs.Screen name="index" options={{ title: "Home", tabBarLabel: "Home" }} />
       <Tabs.Screen name="calculator" options={{ title: "Calculator", tabBarLabel: "Calculator" }} />
-      <Tabs.Screen name="activity" options={{ title: "Activity", tabBarLabel: "Activity" }} />
+      <Tabs.Screen name="activity" options={{ title: "History", tabBarLabel: "History" }} />
     </Tabs>
   );
 }
