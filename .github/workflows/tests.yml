@@ -36,6 +36,10 @@ jobs:
           node-version: 22
       - name: Install mobile dependencies
         run: npm install --no-audit --no-fund --package-lock=false
+      - name: Validate Expo SDK dependency versions
+        run: npx expo install --check
+      - name: Run Expo Doctor
+        run: npx expo-doctor
       - name: Type-check mobile app
         run: npm run typecheck
       - name: Bundle Android app with Expo
