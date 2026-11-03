@@ -16,7 +16,7 @@ The goal is to make carbon footprint calculation simple, transparent, and scient
 - Estimate emissions from transportation.
 - Understand emissions associated with food consumption.
 - Provide practical suggestions to reduce environmental impact.
-- Save footprint estimates locally and compare successive calculations.
+- Save footprint estimates and their input snapshots locally, reuse previous answers and compare successive calculations.
 - Show category-level history and transparent change comparisons.
 - Set personal reduction targets and compare later estimates against a saved baseline.
 - Explore clearly labelled what-if scenarios and category-specific action ideas.
@@ -50,7 +50,7 @@ Every emission factor should have a documented source, unit, geographical releva
 
 ## Mobile App Status
 
-The Expo mobile app includes a multi-step calculator, local saved-estimate history, a dashboard connected to the latest saved result, comparisons between successive estimates, and a personal reduction-planning screen with saved goals and illustrative what-if scenarios. History is stored on-device with AsyncStorage; it is not synced to a cloud account. The comparison is between saved calculations, not a measured monthly trend.
+The Expo mobile app includes a multi-step calculator, local saved-estimate history with reusable input snapshots, a dashboard connected to the latest saved result, comparisons between successive estimates, and a personal reduction-planning screen with saved goals and illustrative what-if scenarios. History is stored on-device with AsyncStorage; it is not synced to a cloud account. The comparison is between saved calculations, not a measured monthly trend.
 
 ## Project Status
 
