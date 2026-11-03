@@ -17,6 +17,7 @@ import {
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { saveFootprintRecord } from "../../lib/history";
 
 const C = {
   page: "#F7F6FA", white: "#FFFFFF", ink: "#211D2B", muted: "#777183",
@@ -136,6 +137,7 @@ export default function CalculatorScreen() {
   const [step, setStep] = useState(0);
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [error, setError] = useState("");
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "failed">("idle");
 
   const update = (key: string, value: string) => {
     setValues((current) => ({ ...current, [key]: value }));
@@ -144,9 +146,21 @@ export default function CalculatorScreen() {
 
   const progress = useMemo(() => ((step + 1) / steps.length) * 100, [step]);
 
+  const persistResult = async (calculated: CalculationResult) => {
+    setSaveStatus("saving");
+    try {
+      await saveFootprintRecord(calculated);
+      setSaveStatus("saved");
+    } catch {
+      setSaveStatus("failed");
+    }
+  };
+
   const calculate = () => {
     try {
-      setResult(calculateFootprint(values));
+      const calculated = calculateFootprint(values);
+      setResult(calculated);
+      void persistResult(calculated);
     } catch (calculationError) {
       if (calculationError instanceof CalculationInputError) {
         setError(calculationError.message);
@@ -163,6 +177,7 @@ export default function CalculatorScreen() {
     setStep(0);
     setResult(null);
     setError("");
+    setSaveStatus("idle");
   };
 
   if (result) {
@@ -180,6 +195,18 @@ export default function CalculatorScreen() {
             <Text style={styles.resultNumber}>{result.total.toLocaleString("en-IN", { maximumFractionDigits: 1 })}</Text>
             <Text style={styles.resultUnit}>kg CO₂e per person / year</Text>
             <Text style={styles.resultNote}>Estimated from the activity data you entered. This is not a measured value.</Text>
+          </View>
+          <View style={styles.saveNotice}>
+            <Text style={styles.saveNoticeText}>
+              {saveStatus === "saving" ? "Saving this estimate on your device…" :
+                saveStatus === "saved" ? "Estimate saved on this device. Open History to compare it with earlier estimates." :
+                saveStatus === "failed" ? "This estimate could not be saved. Check your device storage and try again." : ""}
+            </Text>
+            {saveStatus === "failed" ? (
+              <Pressable onPress={() => void persistResult(result)} accessibilityRole="button">
+                <Text style={styles.saveRetry}>Try saving again</Text>
+              </Pressable>
+            ) : null}
           </View>
           <Text style={styles.sectionTitle}>Category breakdown</Text>
           {categoryRows.map((row) => (
@@ -360,6 +387,9 @@ const styles = StyleSheet.create({
   resultNumber: { color: C.ink, fontSize: 43, fontWeight: "800", letterSpacing: -1.5 },
   resultUnit: { color: C.purple, fontSize: 12, fontWeight: "800", marginTop: 3 },
   resultNote: { color: C.muted, fontSize: 11, lineHeight: 17, marginTop: 13 },
+  saveNotice: { backgroundColor: C.mint, borderRadius: 13, padding: 13, marginBottom: 18 },
+  saveNoticeText: { color: "#477B64", fontSize: 11, lineHeight: 17, fontWeight: "600" },
+  saveRetry: { color: C.purple, fontSize: 11, fontWeight: "800", marginTop: 8 },
   sectionTitle: { color: C.ink, fontSize: 17, fontWeight: "800", marginBottom: 13 },
   resultRow: { backgroundColor: C.white, borderWidth: 1, borderColor: C.border, borderRadius: 14, padding: 14, marginBottom: 9 },
   resultRowTop: { flexDirection: "row", justifyContent: "space-between", marginBottom: 10 },
