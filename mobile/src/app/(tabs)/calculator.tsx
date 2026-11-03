@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   calculateFootprint,
   CalculationInputError,
@@ -17,7 +17,7 @@ import {
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { saveFootprintRecord } from "../../lib/history";
+import { getLatestCalculatorValues, saveFootprintRecord } from "../../lib/history";
 
 const C = {
   page: "#F7F6FA", white: "#FFFFFF", ink: "#211D2B", muted: "#777183",
@@ -138,6 +138,17 @@ export default function CalculatorScreen() {
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [error, setError] = useState("");
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "failed">("idle");
+  const [lastInputs, setLastInputs] = useState<Values | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    getLatestCalculatorValues().then((saved) => {
+      if (active) setLastInputs(saved);
+    }).catch(() => {
+      if (active) setLastInputs(null);
+    });
+    return () => { active = false; };
+  }, []);
 
   const update = (key: string, value: string) => {
     setValues((current) => ({ ...current, [key]: value }));
@@ -146,10 +157,11 @@ export default function CalculatorScreen() {
 
   const progress = useMemo(() => ((step + 1) / steps.length) * 100, [step]);
 
-  const persistResult = async (calculated: CalculationResult) => {
+  const persistResult = async (calculated: CalculationResult, inputs: Values) => {
     setSaveStatus("saving");
     try {
-      await saveFootprintRecord(calculated);
+      await saveFootprintRecord(calculated, inputs);
+      setLastInputs({ ...inputs });
       setSaveStatus("saved");
     } catch {
       setSaveStatus("failed");
@@ -160,7 +172,7 @@ export default function CalculatorScreen() {
     try {
       const calculated = calculateFootprint(values);
       setResult(calculated);
-      void persistResult(calculated);
+      void persistResult(calculated, values);
     } catch (calculationError) {
       if (calculationError instanceof CalculationInputError) {
         setError(calculationError.message);
@@ -203,7 +215,7 @@ export default function CalculatorScreen() {
                 saveStatus === "failed" ? "This estimate could not be saved. Check your device storage and try again." : ""}
             </Text>
             {saveStatus === "failed" ? (
-              <Pressable onPress={() => void persistResult(result)} accessibilityRole="button">
+              <Pressable onPress={() => void persistResult(result, values)} accessibilityRole="button">
                 <Text style={styles.saveRetry}>Try saving again</Text>
               </Pressable>
             ) : null}
@@ -242,6 +254,22 @@ export default function CalculatorScreen() {
           <Text style={styles.eyebrow}>CARBON FOOTPRINT CALCULATOR</Text>
           <Text style={styles.title}>Let's measure your impact.</Text>
           <Text style={styles.subtitle}>Four short steps. Enter annual activity where possible; monthly options are provided where useful.</Text>
+
+          {step === 0 && lastInputs ? (
+            <View style={styles.reuseCard}>
+              <View style={styles.reuseCopy}>
+                <Text style={styles.reuseTitle}>Previous answers available</Text>
+                <Text style={styles.reuseText}>Prefill your last saved inputs, then update the figures for this period before calculating again.</Text>
+              </View>
+              <Pressable
+                onPress={() => { setValues({ ...initialValues, ...lastInputs }); setError(""); }}
+                accessibilityRole="button"
+                style={styles.reuseButton}
+              >
+                <Text style={styles.reuseButtonText}>Use last inputs</Text>
+              </Pressable>
+            </View>
+          ) : null}
 
           <View style={styles.progressMeta}>
             <Text style={styles.progressLabel}>STEP {step + 1} OF 4</Text>
@@ -349,6 +377,12 @@ const styles = StyleSheet.create({
   eyebrow: { color: C.purple, fontSize: 10, fontWeight: "800", letterSpacing: 1.4, marginBottom: 9 },
   title: { color: C.ink, fontSize: 29, lineHeight: 35, fontWeight: "800", letterSpacing: -0.9 },
   subtitle: { color: C.muted, fontSize: 13, lineHeight: 20, marginTop: 8, marginBottom: 22 },
+  reuseCard: { backgroundColor: C.purpleSoft, borderRadius: 14, padding: 13, marginBottom: 17 },
+  reuseCopy: { marginBottom: 10 },
+  reuseTitle: { color: C.ink, fontSize: 12, fontWeight: "800", marginBottom: 4 },
+  reuseText: { color: C.muted, fontSize: 10, lineHeight: 15 },
+  reuseButton: { alignSelf: "flex-start", borderRadius: 9, backgroundColor: C.purple, paddingHorizontal: 12, paddingVertical: 9 },
+  reuseButtonText: { color: C.white, fontSize: 10, fontWeight: "800" },
   progressMeta: { flexDirection: "row", justifyContent: "space-between", marginBottom: 8 },
   progressLabel: { color: C.purple, fontSize: 9, fontWeight: "800", letterSpacing: 0.8 },
   progressTrack: { height: 6, borderRadius: 5, backgroundColor: "#E8E4EF", overflow: "hidden", marginBottom: 18 },
