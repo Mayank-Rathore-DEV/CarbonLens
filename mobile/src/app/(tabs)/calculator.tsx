@@ -215,7 +215,7 @@ export default function CalculatorScreen() {
                 saveStatus === "failed" ? "This estimate could not be saved. Check your device storage and try again." : ""}
             </Text>
             {saveStatus === "failed" ? (
-              <Pressable onPress={() => void persistResult(result)} accessibilityRole="button">
+              <Pressable onPress={() => void persistResult(result, values)} accessibilityRole="button">
                 <Text style={styles.saveRetry}>Try saving again</Text>
               </Pressable>
             ) : null}
