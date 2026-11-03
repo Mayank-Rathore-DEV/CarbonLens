@@ -83,7 +83,7 @@ export default function PlanScreen() {
   useFocusEffect(useCallback(() => { void refresh(); }, [refresh]));
 
   const createGoal = async () => {
-    if (!latest) return;
+    if (!latest || latest.total <= 0) return;
     setSaving(true);
     setError("");
     try {
@@ -138,7 +138,7 @@ export default function PlanScreen() {
         ) : (
           <>
             <View style={styles.card}>
-              <Text style={styles.cardEyebrow}>YOUR CURRENT BASELINE</Text>
+              <Text style={styles.cardEyebrow}>LATEST SAVED ESTIMATE</Text>
               <Text style={styles.baseline}>{formatAmount(latest.total)} <Text style={styles.unit}>kg CO₂e/year</Text></Text>
               <Text style={styles.body}>Latest saved estimate · {formatDate(latest.createdAt)}</Text>
               {goal ? (
@@ -185,7 +185,8 @@ export default function PlanScreen() {
                     ))}
                   </View>
                   <Text style={styles.targetLine}>Target: {formatAmount(latest.total * (1 - reduction / 100))} kg CO₂e/year</Text>
-                  <Pressable onPress={() => void createGoal()} disabled={saving} style={[styles.primaryButton, saving && styles.disabledButton]}>
+                  {latest.total <= 0 ? <Text style={styles.disclaimer}>A reduction goal requires a baseline above zero. Update your activity inputs before setting a target.</Text> : null}
+                  <Pressable onPress={() => void createGoal()} disabled={saving || latest.total <= 0} style={[styles.primaryButton, (saving || latest.total <= 0) && styles.disabledButton]}>
                     <Text style={styles.primaryButtonText}>{saving ? "Saving goal…" : "Save my goal"}</Text>
                   </Pressable>
                   <Text style={styles.disclaimer}>This target is a personal planning choice, not a science-based pathway or a guarantee of achievable savings.</Text>
